@@ -96,21 +96,10 @@ void MainWindow::initOpenglWidget()
 
 
 
-
     widget->getOsgViewer()->setSceneData(model_3d);
 
 
 
-
-
-
-
-
-
-    //osg::ref_ptr<osg::Node> earth = createEarth();
-    //model_3d->addChild(earth);
-    //model_3d->addChild(milad);
-    // optimize the scene graph, remove redundant nodes and state etc.
     osgUtil::Optimizer optimizer;
     optimizer.optimize(model_3d);
 
@@ -118,9 +107,6 @@ void MainWindow::initOpenglWidget()
     //widget->getOsgViewer()->getCamera()->setViewport(200,67,600,500);
 
 }
-
-
-
 
 
 
@@ -195,64 +181,45 @@ osg::Node* MainWindow::createBase(const osg::Vec3 &center, float radius)
 osg::Node* MainWindow::createModel(const osg::Vec3& center, float radius)
 {
     osg::ref_ptr<osg::Group> miladmodel = new osg::Group;
-    osg::ref_ptr<osg::Node> milad = osgDB::readRefNodeFile("/home/client112/Downloads/OBJ/Milad.osgb");
+    milad = osgDB::readRefNodeFile("/home/client112/Downloads/OBJ/Milad.osgb");
     if (milad)
         {
         const osg::BoundingSphere& bs = milad->getBound();
         float size = radius/bs.radius()*0.3f;
                 positioned = new osg::MatrixTransform;
-                positioned->setDataVariance(osg::Object::STATIC);
-                positioned->setMatrix(osg::Matrix::translate(osg::Vec3(center.x(),center.y(),center.z()))*
-                                             osg::Matrix::scale(size,size,size)*
-                                             osg::Matrix::rotate(osg::inDegrees(90.0f),0.0f,0.0f,1.0f));
-
+                positioned->setDataVariance(osg::Object::DYNAMIC);
+//                positioned->setMatrix(osg::Matrix::translate(osg::Vec3(center.x(),center.y(),center.z()))*
+//                                             osg::Matrix::scale(size,size,size)*
+//                                             osg::Matrix::rotate(osg::inDegrees(90.0f),0.0f,0.0f,1.0f));
+                positioned->setMatrix(osg::Matrix::scale(size,size,size));
+                positioned->setUpdateCallback(new MyTransformCallback(0,0,0));
                 positioned->addChild(milad);
 
     }
-#ifndef OSG_GLES2_AVAILABLE
-    milad->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
-    #endif
 
-//    return miladmodel.release();
+
+
     return positioned;
 }
-
-osg::MatrixTransform MainWindow::updatePose(float x, float y, float z)
-{
-    positioned->setMatrix(osg::Matrix::translate(osg::Vec3(x,y,z))*
-                                 osg::Matrix::scale(6.1,6.1,6.1)*
-                                 osg::Matrix::rotate(osg::inDegrees(90.0f),2.0f,0.0f,1.0f));
-    //return *positioned;
-}
-
-
-
-
-
-
 
 
 
 void MainWindow::on_pushButton_pressed()
 {
 
-    osg::ref_ptr<osg::MatrixTransform> update = new osg::MatrixTransform;
-    update->setMatrix(osg::Matrix::translate(osg::Vec3(5,6,7))*
-                      osg::Matrix::scale(8,8,8)*
-                      osg::Matrix::rotate(osg::inDegrees(90.0f),0.0f,0.0f,1.0f));
+    positioned->setUpdateCallback(new MyTransformCallback(3,6,100));
 
-    //update->setUpdateCallback(updatePose(8,5,6),4,6);\
+    positioned->addChild(milad);
 
-    //update->addChild(tower);
-//    positioned->setMatrix(osg::Matrix::translate(osg::Vec3(5,6,7))*
-//                          osg::Matrix::scale(8,8,8)*
-//                          osg::Matrix::rotate(osg::inDegrees(90.0f),0.0f,0.0f,1.0f));
+}
 
-    //positioned->addChild(tower);
-    //positioned->setUpdateCallback(update);
+void MyTransformCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
+{
+    osg::MatrixTransform* transform = dynamic_cast<osg::MatrixTransform*>(node);
+    if (nv && transform && nv->getFrameStamp())
+    {
 
-
-    //model_3d->addChild(movingModel);
-
-
+        transform->setMatrix(osg::Matrix::translate(move));
+        traverse(node,nv);
+}
 }
