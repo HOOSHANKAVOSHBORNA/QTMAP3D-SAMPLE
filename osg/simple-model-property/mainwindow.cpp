@@ -8,6 +8,7 @@
 #include <osg/ShapeDrawable>
 #include <osgDB/FileUtils>
 
+#include <QDebug>
 
 #include <osg/MatrixTransform>
 #include <osg/Switch>
@@ -49,8 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     widget = new osgQOpenGLWidget(this);
     QObject::connect(widget, &osgQOpenGLWidget::initialized, this, &MainWindow::initOpenglWidget);
 
-    ui->verticalLayout_2->addWidget(widget);
-
+    ui->gridLayout->addWidget(widget);
 
 }
 
@@ -78,33 +78,19 @@ void MainWindow::initOpenglWidget()
     }
 
     osg::Vec3 center(0.0f,0.0f,0.f);
-    float radius = 80.0f;
-    double baseHeight = center.z()-radius*0.5;
-
-
     model_3d = new osg::Group;
     osg::ref_ptr<osg::Node> baseModel = createBase(osg::Vec3(center.x(), center.y(), center.z()),100);
-    tower = createModel(osg::Vec3(15, center.y(), 0),radius*2.f);
-
-
-
-
-    //model_3d->addChild(james_web);
+    tower = createModel();
     model_3d->addChild(tower);
     model_3d->addChild(baseModel);
-
-
-
-
     widget->getOsgViewer()->setSceneData(model_3d);
-
 
 
     osgUtil::Optimizer optimizer;
     optimizer.optimize(model_3d);
 
     //widget->getOsgViewer()->getCamera()->setClearColor(osg::Vec4(255.0f,33.0f,43.0f,100.0f));
-    //widget->getOsgViewer()->getCamera()->setViewport(200,67,600,500);
+    widget->getOsgViewer()->getCamera()->setViewport(20,67,800,600);
 
 }
 
@@ -178,38 +164,38 @@ osg::Node* MainWindow::createBase(const osg::Vec3 &center, float radius)
 
 }
 
-osg::Node* MainWindow::createModel(const osg::Vec3& center, float radius)
+osg::Node* MainWindow::createModel()
 {
-    osg::ref_ptr<osg::Group> miladmodel = new osg::Group;
     milad = osgDB::readRefNodeFile("/home/client112/Downloads/OBJ/Milad.osgb");
+    james_web = osgDB::readRefNodeFile("/home/client112/Downloads/james-web.osg");
     if (milad)
         {
-        const osg::BoundingSphere& bs = milad->getBound();
-        float size = radius/bs.radius()*0.3f;
                 positioned = new osg::MatrixTransform;
                 positioned->setDataVariance(osg::Object::DYNAMIC);
+
 //                positioned->setMatrix(osg::Matrix::translate(osg::Vec3(center.x(),center.y(),center.z()))*
 //                                             osg::Matrix::scale(size,size,size)*
 //                                             osg::Matrix::rotate(osg::inDegrees(90.0f),0.0f,0.0f,1.0f));
-                positioned->setMatrix(osg::Matrix::scale(size,size,size));
-                positioned->setUpdateCallback(new MyTransformCallback(0,0,0));
+
+                positioned->setMatrix(osg::Matrix::translate(0,0,0));
+                //positioned->setUpdateCallback(new MyTransformCallback(0,0,0));
                 positioned->addChild(milad);
 
     }
-
-
 
     return positioned;
 }
 
 
-
+//delete model on runtime
 void MainWindow::on_pushButton_pressed()
 {
 
-    positioned->setUpdateCallback(new MyTransformCallback(3,6,100));
+    //positioned->setUpdateCallback(new MyTransformCallback(3,6,100));
 
-    positioned->addChild(milad);
+    positioned->setMatrix(osg::Matrix::scale(10,10,10));
+    positioned->removeChild(james_web);
+    positioned->setMatrix(osg::Matrix::translate(10,15,30));
 
 }
 
@@ -223,3 +209,55 @@ void MyTransformCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
         traverse(node,nv);
 }
 }
+//add model on runtime
+void MainWindow::on_pushButton_2_clicked()
+{
+    positioned->setMatrix(osg::Matrix::scale(10,10,10));
+    positioned->addChild(james_web);
+
+}
+
+
+//toggle visibilty of model
+void MainWindow::on_pushButton_3_toggled(bool checked)
+{
+        james_web->setNodeMask(!checked);
+
+        if (!checked){
+            ui->pushButton_3->setText("Hide");
+        }
+        else {
+            ui->pushButton_3->setText("Show");
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

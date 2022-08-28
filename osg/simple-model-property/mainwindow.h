@@ -38,11 +38,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     osg::Node* createBase(const osg::Vec3& center,float radius);
-    osg::Node* createModel(const osg::Vec3& center, float radius);
+    osg::Node* createModel();
     osg::ref_ptr<osg::Group> model_3d ;
     osg::ref_ptr<osg::Node> tower;
     osg::MatrixTransform* positioned;
     osg::ref_ptr<osg::Node> milad;
+    osg::ref_ptr<osg::Node> james_web;
 
 
     ~MainWindow();
@@ -52,14 +53,17 @@ public slots:
 private slots:
     void on_pushButton_pressed();
 
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     osgQOpenGLWidget *widget;
 
 };
 #endif // MAINWINDOW_H
-class moveNodeCallback : public osg::NodeCallback
-{
+class moveNodeCallback : public osg::NodeCallback{
 
 };
 
