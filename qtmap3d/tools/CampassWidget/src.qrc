@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Campass.qml</file>
+        <file>Main.qml</file>
+        <file>image/compress.png</file>
+    </qresource>
+</RCC>
