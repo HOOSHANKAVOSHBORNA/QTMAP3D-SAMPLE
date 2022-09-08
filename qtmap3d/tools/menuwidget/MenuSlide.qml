@@ -3,18 +3,12 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Styles 1.4
 Rectangle{
-    Timer {
-        id: timer
-    }
-    //    function delay(delayTime, cb) {
-    //        timer.interval = delayTime;
-    //        timer.repeat = false;
-    //        timer.triggered.connect(cb);
-    //        timer.start();
-    //    }
+
     property alias getstart: open
     property alias getstart1: close
     property int space: 3
+
+
     id:menu
     x:- width
     color: "transparent"

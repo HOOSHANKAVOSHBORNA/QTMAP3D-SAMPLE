@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
            mQQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
             mQQuickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
             mQQuickWidget->setClearColor(Qt::transparent);
-//           mQQuickWidget->resize(600, 400);
-//            mQQuickWidget->raise();
+            mQQuickWidget->resize(this->width(), this->height());
+            mQQuickWidget->raise();
 
 
    /// horizontalLayout creat in ui

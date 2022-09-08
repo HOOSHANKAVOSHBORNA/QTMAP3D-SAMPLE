@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>MenuSlide.qml</file>
         <file>main.qml</file>
-        <file>ButtonMenu.qml</file>
         <file>res/left-r.png</file>
         <file>res/map3d.ico</file>
         <file>PanelItem.qml</file>
@@ -22,5 +21,6 @@
         <file>res/icons8-chevron-right-96.png</file>
         <file>ItemRec.qml</file>
         <file>res/right-r.png</file>
+        <file>SwitchMenu.qml</file>
     </qresource>
 </RCC>
