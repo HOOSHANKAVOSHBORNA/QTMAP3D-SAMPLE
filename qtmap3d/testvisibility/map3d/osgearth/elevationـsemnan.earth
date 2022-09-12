@@ -1,0 +1,30 @@
+<map name="Plain" type="geocentric" version="2">
+<options>
+        <profile>plate-carre</profile>
+        <terrain morph_imagery="false"
+            lighting = "true"
+            blending = "true"
+            color = "#ffffff00"/>
+
+        <cache driver = "filesystem">
+            <path>./cache</path>
+            <max_size_mb>1000</max_size_mb>
+        </cache>
+    </options>
+	<image name="readymap_imagery" driver="xyz">
+        <url>https://api.gitanegaran.ir/sat/{z}/{x}/{y}.jpg</url>
+		<profile>spherical-mercator</profile>
+    </image>
+
+    <!-- Add some base elevation -->
+   <elevation name="readymap_elevation" driver="gdal" enabled="true">
+        <url>./Tehranelevation/tehran1.tif</url>
+    </elevation> 
+	
+   
+
+	<viewpoints>
+		<viewpoint name="Semnana" heading="50" lat="35.241" long="52.859" height="10" pitch="-5"  range="500"/>
+    </viewpoints>
+
+</map>
