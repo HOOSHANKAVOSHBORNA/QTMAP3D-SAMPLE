@@ -13,9 +13,12 @@
 #include <osgEarthDrivers/gdal/GDALOptions>
 #include <osgEarth/ImageLayer>
 #include <osg/Camera>
+#include <osg/Geometry>
 #include <osg/LineWidth>
 #include <osg/ShapeDrawable>
 #include <osgEarthSymbology/AltitudeSymbol>
+#include <osgEarthSymbology/LineSymbol>
+#include <osgEarthSymbology/RenderSymbol>
 #include <osgEarthSymbology/Style>
 #include <osgEarthAnnotation/ModelNode>
 #include <osgUtil/Tessellator>
@@ -29,6 +32,11 @@
 #include <osgEarth/MapNode>
 #include <osgEarthDrivers/gdal/GDALOptions>
 #include <osgEarthSymbology/Geometry>
+#include <osgEarthFeatures/Feature>
+#include <osgEarthAnnotation/FeatureNode>
+
+
+
 using namespace osgEarth;
 using namespace osgEarth::Drivers;
 const double ZOOM_STEP{0.2};
@@ -41,44 +49,38 @@ const double MIN_DISTANCE{10.0};
 const double MAX_DISTANCE{1000000000.0};
 const double MAX_OFSET{5000.0};
 
-osg::Geode* makepolygan(){
-    // The vertex array shared by both the polygon and the border
-    osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array(4);
-    (*vertices)[0].set( 0.0f, 0.0f, 0.0f );
-    (*vertices)[1].set( 3000.0f, 0.0f, 0.0f );
-    (*vertices)[2].set( 3000.0f, 3000.0f, 0.0f );
-    (*vertices)[3].set( 0.0f, 3000.0f, 0.0f );
+osgEarth::Annotation::FeatureNode* makepolygan(QVector<osg::Vec3d> vertices){
+     //osg::ref_ptr<osg::Vec3dArray> vertices = new osg::Vec3dArray(4);
 
-
-
-    // Construct the polygon geometry
-    osg::ref_ptr<osg::Geometry> polygon = new osg::Geometry;
-    osg::ref_ptr<osg::Vec4Array> colorspolygan = new osg::Vec4Array(1);
-    (*colorspolygan)[0].set( 0.0, 0.0, 1.0, 0.5f );
-    polygon->setVertexArray( vertices.get() );
-    polygon->setColorArray(colorspolygan.get());
-    polygon->setNormalBinding( osg::Geometry::BIND_OVERALL );
-    polygon->addPrimitiveSet( new osg::DrawArrays(GL_QUADS, 0, 4) );
-    polygon->addPrimitiveSet( new osg::DrawArrays(GL_QUADS, 4, 4) );
-
-
-
-
-    osg::ref_ptr<osg::Geode>  geode = new osg::Geode();
-    geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-    geode->getOrCreateStateSet()->setAttribute(new osg::LineWidth(1.0), osg::StateAttribute::ON);
-
-    geode->addDrawable( polygon.get() );
-    return geode.release();
+    osgEarth::Symbology::Geometry* geom =new osgEarth::Symbology::Polygon();
+    for (int i=0; i<vertices.length();i++){
+        geom->push_back(vertices[i]);
+    }
+//    geom->push_back( osg::Vec3d(52.859,   35.800, 0) );
+//    geom->push_back( osg::Vec3d(52.900, 35.800, 0) );
+//    geom->push_back( osg::Vec3d(52.800, 35.600, 0) );
+//    geom->push_back( osg::Vec3d(52.759,   35.500, 0) );
+    osgEarth::Features::Feature* feature = new osgEarth::Features::Feature(geom, osgEarth::SpatialReference::get("wgs84"));
+    feature->geoInterp() = GEOINTERP_RHUMB_LINE;
+    osgEarth::Symbology::Style geomStyle;
+    geomStyle.getOrCreate<osgEarth::Symbology::LineSymbol>()->stroke()->color() = Color::Green;
+    geomStyle.getOrCreate<osgEarth::Symbology::LineSymbol>()->stroke()->width() = 5.0f;
+    geomStyle.getOrCreate<osgEarth::Symbology::PolygonSymbol>()->fill()->color() =Color(osg::Vec4(0.0f,1.0f,0.0f,0.5f));
+    //geomStyle.getOrCreate<osgEarth::Symbology::LineSymbol>()->tessellationSize()->set(75000, Units::METERS);
+    geomStyle.getOrCreate<osgEarth::Symbology::RenderSymbol>()->depthOffset()->enabled() = true;
+    geomStyle.getOrCreate<osgEarth::Symbology::AltitudeSymbol>()->clamping() = osgEarth::Symbology::AltitudeSymbol::CLAMP_RELATIVE_TO_TERRAIN;
+    geomStyle.getOrCreate<osgEarth::Symbology::AltitudeSymbol>()->technique() = osgEarth::Symbology::AltitudeSymbol::TECHNIQUE_DRAPE;
+    osgEarth::Annotation::FeatureNode* gnode = new osgEarth::Annotation::FeatureNode(feature, geomStyle);
+    return  gnode;
 
 }
 
-osg::Geode* makeSape(osg::Vec3 eye)
+osg::Geode* makeSape(osg::Vec3 eye,float radius)
 {
-    osg::ref_ptr<osg::Sphere>         pSphereShape   = new osg::Sphere(eye, 1000.0f);
+    osg::ref_ptr<osg::Sphere>         pSphereShape   = new osg::Sphere(eye, radius);
     osg::ref_ptr<osg::ShapeDrawable>  pShapeDrawable = new osg::ShapeDrawable(pSphereShape.get());
 
-    pShapeDrawable->setColor(osg::Vec4(1.0, 0.0, 0.0, 0.5));
+    pShapeDrawable->setColor(osg::Vec4(1.0, 0.0, 0.0, 0.3f));
 
     osg::ref_ptr<osg::Geode>  geode = new osg::Geode();
     geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
@@ -107,9 +109,9 @@ Map3dWidget::Map3dWidget(bool isGeocentric, QWidget *parent)
         GDALOptions gdal;
         gdal.url() = "../map3dlib/data/earth_files/world.tif";
         osg::ref_ptr<ImageLayer> imlayer = new ImageLayer("base-world", gdal);
-//        GDALOptions ggdal;
-//        ggdal.url() = "/home/client112/Documents/mbr/QTMAP3D-DATA/dataosgearth/Tehranelevation/tehran1.tif";
-//        osg::ref_ptr<ElevationLayer> elv = new ElevationLayer( "SRTM", ggdal );
+        //        GDALOptions ggdal;
+        //        ggdal.url() = "/home/client112/Documents/mbr/QTMAP3D-DATA/dataosgearth/Tehranelevation/tehran1.tif";
+        //        osg::ref_ptr<ElevationLayer> elv = new ElevationLayer( "SRTM", ggdal );
 
         MapOptions mapOptGeo;
         mapOptGeo.coordSysType() = MapOptions::CSTYPE_GEOCENTRIC;
@@ -146,7 +148,7 @@ Map3dWidget::Map3dWidget(bool isGeocentric, QWidget *parent)
 
 
         osg::Vec3 position(0.3f,0.2f,1.0f);
-        mDrownode =makeSape(osg::Vec3(position.x(),position.y(),position.z()));
+        mDrownode =makeSape(osg::Vec3(position.x(),position.y(),position.z()),20000.0f);
         osgEarth::Symbology::Style  style;
 
         style.getOrCreate<osgEarth::Symbology::AltitudeSymbol>()->clamping() = osgEarth::Symbology::AltitudeSymbol::CLAMP_RELATIVE_TO_TERRAIN;
@@ -159,26 +161,47 @@ Map3dWidget::Map3dWidget(bool isGeocentric, QWidget *parent)
         model->setPosition(point);
         mMapNodeGeo->addChild(model);
         ///////////
+        QVector<osg::Vec3d> vertices;
+        vertices.push_back( osg::Vec3d(52.859,35.550, 0) );
+        vertices.push_back( osg::Vec3d(52.859,35.540, 0) );
+        vertices.push_back( osg::Vec3d(52.865,35.540, 0) );
+        vertices.push_back( osg::Vec3d(52.865,35.550, 0) );
+        QVector<osg::Vec3d> vertices1;
+        vertices1.push_back( osg::Vec3d(52.900,35.500, 0) );
+        vertices1.push_back( osg::Vec3d(52.850,35.450, 0) );
+        vertices1.push_back( osg::Vec3d(52.900,35.400, 0) );
+        vertices1.push_back( osg::Vec3d(52.950,35.400, 0) );
+        vertices1.push_back( osg::Vec3d(53.000,35.450, 0) );
+        vertices1.push_back( osg::Vec3d(53.050,35.500, 0) );
+
+        QVector<osg::Vec3d> vertices2;
+        vertices2.push_back( osg::Vec3d(52.800,35.500, 0) );
+        vertices2.push_back( osg::Vec3d(52.770,35.470, 0) );
+        vertices2.push_back( osg::Vec3d(52.830,35.440, 0) );
+        vertices2.push_back( osg::Vec3d(52.860,35.470, 0) );
+        vertices2.push_back( osg::Vec3d(52.860,35.500, 0) );
+
+        QVector<osg::Vec3d> vertices3;
+        vertices3.push_back( osg::Vec3d(52.800,35.430, 0) );
+        vertices3.push_back( osg::Vec3d(52.760,35.390, 0) );
+        vertices3.push_back( osg::Vec3d(52.760,35.350, 0) );
+        vertices3.push_back( osg::Vec3d(52.800,35.310, 0) );
+        vertices3.push_back( osg::Vec3d(52.840,35.310, 0) );
+        vertices3.push_back( osg::Vec3d(52.880,35.350, 0) );
+        vertices3.push_back( osg::Vec3d(52.880,35.390, 0) );
+        vertices3.push_back( osg::Vec3d(52.840,35.430, 0) );
 
 
-
-
+        osgEarth::Annotation::FeatureNode* fNode =makepolygan(vertices);
+        mMapNodeGeo->addChild(fNode);
+        osgEarth::Annotation::FeatureNode* fNode1 =makepolygan(vertices1);
+        mMapNodeGeo->addChild(fNode1);
+        osgEarth::Annotation::FeatureNode* fNode2 =makepolygan(vertices2);
+        mMapNodeGeo->addChild(fNode2);
+        osgEarth::Annotation::FeatureNode* fNode3 =makepolygan(vertices3);
+        mMapNodeGeo->addChild(fNode3);
 
         ///
-        mPolygannode=makepolygan();
-        osgEarth::Symbology::Style  style_polygan;
-        osgEarth::Symbology::PolygonSymbol* fillStyle = style_polygan.getOrCreate<osgEarth::Symbology::PolygonSymbol>();
-        fillStyle->fill()->color() = osgEarth::Symbology::Color::Green;
-        style_polygan.getOrCreate<osgEarth::Symbology::AltitudeSymbol>()->clamping() = osgEarth::Symbology::AltitudeSymbol::CLAMP_RELATIVE_TO_TERRAIN;
-        style_polygan.getOrCreate<osgEarth::Symbology::AltitudeSymbol>()->technique() = osgEarth::Symbology::AltitudeSymbol::TECHNIQUE_DRAPE;
-        style_polygan.getOrCreate<osgEarth::Symbology::ModelSymbol>()->setModel(mPolygannode);
-        osg::ref_ptr<osgEarth::Annotation::ModelNode>  model1;
-        model1 = new osgEarth::Annotation::ModelNode(mMapNodeGeo, style_polygan);
-        osgEarth::GeoPoint  point1(osgEarth::SpatialReference::get("wgs84"), 52.859, 35.800);
-        model1->setPosition(point1);
-        mMapNodeGeo->addChild(model1);
-
-
     });
 }
 
