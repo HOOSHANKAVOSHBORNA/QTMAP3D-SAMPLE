@@ -33,6 +33,8 @@ DISTNAME      = map3d1.0.0
 DISTDIR = /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/.tmp/map3d1.0.0
 SUBTARGETS    =  \
 		sub-demo \
+		sub-libs \
+		sub-plugins \
 		sub-map3dlib
 
 
@@ -61,6 +63,56 @@ sub-demo-install_subtargets: FORCE
 sub-demo-uninstall_subtargets: FORCE
 	@test -d demo/ || mkdir -p demo/
 	cd demo/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/demo/demo.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile uninstall
+sub-libs-qmake_all:  FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
+	cd libs/ && $(MAKE) -f Makefile qmake_all
+sub-libs: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile
+sub-libs-make_first: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile 
+sub-libs-all: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile all
+sub-libs-clean: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile clean
+sub-libs-distclean: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile distclean
+sub-libs-install_subtargets: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile install
+sub-libs-uninstall_subtargets: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile uninstall
+sub-plugins-qmake_all:  FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
+	cd plugins/ && $(MAKE) -f Makefile qmake_all
+sub-plugins: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile
+sub-plugins-make_first: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile 
+sub-plugins-all: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile all
+sub-plugins-clean: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile clean
+sub-plugins-distclean: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile distclean
+sub-plugins-install_subtargets: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile install
+sub-plugins-uninstall_subtargets: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile uninstall
 sub-map3dlib-qmake_all:  FORCE
 	@test -d map3dlib/ || mkdir -p map3dlib/
 	cd map3dlib/ && $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/map3dlib/map3dlib.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -473,32 +525,44 @@ map3d.pro:
 qmake: FORCE
 	@$(QMAKE) -o Makefile map3d.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 
-qmake_all: sub-demo-qmake_all sub-map3dlib-qmake_all FORCE
+qmake_all: sub-demo-qmake_all sub-libs-qmake_all sub-plugins-qmake_all sub-map3dlib-qmake_all FORCE
 
-make_first: sub-demo-make_first sub-map3dlib-make_first  FORCE
-all: sub-demo-all sub-map3dlib-all  FORCE
-clean: sub-demo-clean sub-map3dlib-clean  FORCE
-distclean: sub-demo-distclean sub-map3dlib-distclean  FORCE
+make_first: sub-demo-make_first sub-libs-make_first sub-plugins-make_first sub-map3dlib-make_first  FORCE
+all: sub-demo-all sub-libs-all sub-plugins-all sub-map3dlib-all  FORCE
+clean: sub-demo-clean sub-libs-clean sub-plugins-clean sub-map3dlib-clean  FORCE
+distclean: sub-demo-distclean sub-libs-distclean sub-plugins-distclean sub-map3dlib-distclean  FORCE
 	-$(DEL_FILE) Makefile
 	-$(DEL_FILE) .qmake.stash
-install_subtargets: sub-demo-install_subtargets sub-map3dlib-install_subtargets FORCE
-uninstall_subtargets: sub-demo-uninstall_subtargets sub-map3dlib-uninstall_subtargets FORCE
+install_subtargets: sub-demo-install_subtargets sub-libs-install_subtargets sub-plugins-install_subtargets sub-map3dlib-install_subtargets FORCE
+uninstall_subtargets: sub-demo-uninstall_subtargets sub-libs-uninstall_subtargets sub-plugins-uninstall_subtargets sub-map3dlib-uninstall_subtargets FORCE
 
 sub-demo-check:
 	@test -d demo/ || mkdir -p demo/
 	cd demo/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/demo/demo.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile check
+sub-libs-check:
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile check
+sub-plugins-check:
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile check
 sub-map3dlib-check:
 	@test -d map3dlib/ || mkdir -p map3dlib/
 	cd map3dlib/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/map3dlib/map3dlib.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile check
-check: sub-demo-check sub-map3dlib-check
+check: sub-demo-check sub-libs-check sub-plugins-check sub-map3dlib-check
 
 sub-demo-benchmark:
 	@test -d demo/ || mkdir -p demo/
 	cd demo/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/demo/demo.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile benchmark
+sub-libs-benchmark:
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile benchmark
+sub-plugins-benchmark:
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile benchmark
 sub-map3dlib-benchmark:
 	@test -d map3dlib/ || mkdir -p map3dlib/
 	cd map3dlib/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/map3dlib/map3dlib.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -f Makefile benchmark
-benchmark: sub-demo-benchmark sub-map3dlib-benchmark
+benchmark: sub-demo-benchmark sub-libs-benchmark sub-plugins-benchmark sub-map3dlib-benchmark
 install:install_subtargets  FORCE
 
 uninstall: uninstall_subtargets FORCE
@@ -508,13 +572,21 @@ FORCE:
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)
 
-distdir: sub-demo-distdir sub-map3dlib-distdir FORCE
+distdir: sub-demo-distdir sub-libs-distdir sub-plugins-distdir sub-map3dlib-distdir FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/spec_pre.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/unix.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/linux.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/sanitize.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/gcc-base.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/gcc-base-unix.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/g++-base.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/common/g++-unix.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/qconfig.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3danimation.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3danimation_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dcore.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dcore_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dextras.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dextras_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dinput.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dinput_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dlogic.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dlogic_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquick.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquick_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickanimation.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickanimation_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickextras.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickextras_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickinput.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickinput_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickrender.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickrender_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickscene2d.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3dquickscene2d_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3drender.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_3drender_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_accessibility_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_bluetooth.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_bluetooth_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_bodymovin_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_bootstrap_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_charts.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_charts_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_concurrent.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_concurrent_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_core.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_core_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_datavisualization.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_datavisualization_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_dbus.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_dbus_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_designer.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_designer_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_designercomponents_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_devicediscovery_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_edid_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_egl_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_eglfs_kms_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_eglfsdeviceintegration_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_eventdispatcher_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_fb_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_fontdatabase_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_gamepad.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_gamepad_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_glx_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_gui.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_gui_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_help.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_help_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_input_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_kms_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_linuxaccessibility_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_location.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_location_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_multimedia.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_multimedia_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_multimediagsttools_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_multimediawidgets.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_multimediawidgets_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_network.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_network_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_networkauth.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_networkauth_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_nfc.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_nfc_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_opengl.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_opengl_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_openglextensions.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_openglextensions_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_packetprotocol_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_platformcompositor_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_positioning.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_positioning_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_positioningquick.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_positioningquick_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_printsupport.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_printsupport_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_purchasing.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_purchasing_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qml.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qml_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qmldebug_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qmldevtools_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qmltest.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qmltest_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_qtmultimediaquicktools_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quick.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quick_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quickcontrols2.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quickcontrols2_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quickparticles_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quickshapes_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quicktemplates2.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quicktemplates2_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quickwidgets.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_quickwidgets_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_remoteobjects.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_remoteobjects_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_repparser.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_repparser_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_script.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_script_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_scripttools.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_scripttools_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_scxml.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_scxml_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_sensors.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_sensors_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_serialbus.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_serialbus_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_serialport.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_serialport_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_service_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_sql.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_sql_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_svg.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_svg_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_testlib.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_testlib_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_texttospeech.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_texttospeech_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_theme_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_uiplugin.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_uitools.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_uitools_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_virtualkeyboard.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_virtualkeyboard_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_vulkan_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_waylandclient.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_waylandclient_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_waylandcompositor.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_waylandcompositor_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webchannel.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webchannel_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webengine.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webengine_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webenginecore.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webenginecore_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webenginecoreheaders_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webenginewidgets.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webenginewidgets_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_websockets.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_websockets_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webview.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_webview_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_widgets.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_widgets_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_x11extras.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_x11extras_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_xcb_qpa_lib_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_xkbcommon_support_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_xml.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_xml_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_xmlpatterns.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/modules/qt_lib_xmlpatterns_private.pri /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/qt_functions.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/qt_config.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/linux-g++/qmake.conf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/spec_post.prf .qmake.stash /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/exclusive_builds.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/toolchain.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/default_pre.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/resolve_config.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/default_post.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/qml_debug.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/warn_on.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/qmake_use.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/file_copies.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/testcase_targets.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/exceptions.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/yacc.prf /home/client112/Qt5.13.1/5.13.1/gcc_64/mkspecs/features/lex.prf map3d.pro $(DISTDIR)/
 
 sub-demo-distdir: FORCE
 	@test -d demo/ || mkdir -p demo/
 	cd demo/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/demo/demo.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/demo
+
+sub-libs-distdir: FORCE
+	@test -d libs/ || mkdir -p libs/
+	cd libs/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/libs/libs.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/libs
+
+sub-plugins-distdir: FORCE
+	@test -d plugins/ || mkdir -p plugins/
+	cd plugins/ && ( test -e Makefile || $(QMAKE) -o Makefile /home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/plugins/plugins.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug ) && $(MAKE) -e -f Makefile distdir DISTDIR=$(DISTDIR)/plugins
 
 sub-map3dlib-distdir: FORCE
 	@test -d map3dlib/ || mkdir -p map3dlib/

@@ -24,7 +24,7 @@ void EarthFile::setUpUI()
     auto readAction = new QAction(readIcon, "Import .earth");
     readAction->setToolTip("Import map from earth file.");
     QObject::connect(readAction, &QAction::triggered, [=]{
-        QString fileName = "/home/client112/Documents/mbr/QTMAP3D-SAMPLE/qtmap3d/testvisibility/map3d/osgearth/elevationـsemnan.earth";
+        QString fileName = "../../../../../QTMAP3D/osgearth/source/elevationـsemnan.earth";
         if( !fileName.isNull() )
         {
           //qDebug() << "selected file path : " << fileName.toUtf8();
