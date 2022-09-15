@@ -23,48 +23,49 @@ Rectangle{
         border.width: 1
         anchors.leftMargin:0
         anchors.left: parent.right
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.top:menu.top
+        anchors.topMargin:4
         opacity: 0.5
-    Image {
+        Image {
 
-        source: "qrc:/res/right-r.png"
-        width: 20
-        height: 20
-        rotation: 0
-        anchors.centerIn: parent
-        MouseArea{
-            anchors.fill: parent
-            hoverEnabled: true
-            onEntered: back.opacity=1
-            onExited: back.opacity=0.5
+            source: "qrc:/res/right-r.png"
+            width: 20
+            height: 20
+            rotation: 0
+            anchors.centerIn: parent
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: back.opacity=1
+                onExited: back.opacity=0.5
 
-            onClicked: {
-                if (menu.state==="open"){
-                    close.start()
-                     back.rotation=0
-                    menu.state="close"
-                    back.anchors.top=undefined
-                    back.anchors.verticalCenter=menu.verticalCenter
-                    back.anchors.leftMargin=0
-                }else
-                {
-                    open.start()
-                    back.rotation=180
-                    menu.state="open"
-                    back.anchors.verticalCenter=undefined
-                    back.anchors.top=menu.top
-                    back.anchors.topMargin=4
-                    back.anchors.leftMargin=-25
-                    back.z=1
+                onClicked: {
+                    if (menu.state==="open"){
+                        close.start()
+                        back.rotation=0
+                        menu.state="close"
+                        back.anchors.top=menu.top
+                        back.anchors.topMargin =4
+                        back.anchors.leftMargin=0
+                    }else
+                    {
+                        open.start()
+                        back.rotation=180
+                        menu.state="open"
+                        back.anchors.verticalCenter=undefined
+                        back.anchors.top=menu.top
+                        back.anchors.topMargin=4
+                        back.anchors.leftMargin=-25
+                        back.z=1
+
+                    }
+
 
                 }
 
-
             }
-
         }
     }
-}
     NumberAnimation{
         id:open
         target: menu
@@ -97,103 +98,98 @@ Rectangle{
         clip : true
 
 
-    Column{
-        anchors.fill: parent
+        Column{
+            id:rootlayer
+            anchors.fill: parent
 
-        spacing: 0
+            spacing: 0
 
-        Rectangle{
-            id : backtools
-            width: parent.width
-            height: 110
-            color: "transparent"
-            Column{
-                anchors.fill: parent
-                spacing: 0
-                Rectangle{
-                    id:drowbar
-                    width: parent.width
-                    height: 25
-                    color: "#CC000000"
-                    Text {
-                        id: name
-                        text: qsTr("Drow")
-                        anchors.centerIn: parent
-                        color: "white"
-                        anchors.margins: 10
+            Rectangle{
+                id : backtools
+                width: parent.width
+                height: 110
+                color: "transparent"
+                Column{
+                    anchors.fill: parent
+                    spacing: 0
+                    Rectangle{
+                        id:drowbar
+                        width: parent.width
+                        height: 25
+                        color: "#CC000000"
+                        Text {
+                            id: name
+                            text: qsTr("Drow")
+                            anchors.centerIn: parent
+                            color: "white"
+                            anchors.margins: 10
+                        }
                     }
-                }
-                Rectangle{
-                    width: backtools.width
-                    height: backtools.height -25
-                    color: "#88000000"
-                    Tools{}
-                }
-
-            }
-        }
-        Rectangle{
-            id : backtools1
-            width: parent.width
-            height: 110
-            color: "transparent"
-            Column{
-                anchors.fill: parent
-                spacing: 0
-                Rectangle{
-                    width: parent.width
-                    height: 25
-                    color: "#CC000000"
-                    Text {
-                        text: qsTr("measurement")
-                        anchors.centerIn: parent
-                        color: "white"
-                        anchors.margins: 10
+                    Rectangle{
+                        width: backtools.width
+                        height: backtools.height -25
+                        color: "#88000000"
+                        Tools{}
                     }
-                }
-                Rectangle{
-                    width: backtools.width
-                    height: backtools.height -25
-                    color: "#88000000"
-                    Tools1{}
-                }
 
+                }
             }
+            Rectangle{
+                id : backtools1
+                width: parent.width
+                height: 110
+                color: "transparent"
+                Column{
+                    anchors.fill: parent
+                    spacing: 0
+                    Rectangle{
+                        width: parent.width
+                        height: 25
+                        color: "#CC000000"
+                        Text {
+                            text: qsTr("measurement")
+                            anchors.centerIn: parent
+                            color: "white"
+                            anchors.margins: 10
+                        }
+                    }
+                    Rectangle{
+                        width: backtools.width
+                        height: backtools.height -25
+                        color: "#88000000"
+                        Tools1{}
+                    }
+
+                }
+            }
+
+            PanelItem {
+                title: "Image"
+                width: laout_back.width
+                content:Panelimage{}
+            }
+            PanelItem {
+                title: "Terrain"
+                width: laout_back.width
+                content:Panelterrain{}
+            }
+            PanelItem {
+                title: "Meature"
+                width: laout_back.width
+                content:Panelmeature{}
+            }
+            PanelItem {
+                title: "Model"
+                width: laout_back.width
+                content:Panelmodel{}
+            }
+
         }
 
-//        PanelItem{
-//            width: parent.width
-//            title :"Drow"
-//            content: Tools{}
-//        }
 
-        PanelItem {
-            title: "Image"
-            width: laout_back.width
-            content:Panel1{}
-        }
-        PanelItem {
-            title: "Terrain"
-            width: laout_back.width
-            content:Panel1{}
-        }
-        PanelItem {
-            title: "Meature"
-            width: laout_back.width
-            content:Panel1{}
-        }
-        PanelItem {
-            title: "Model"
-            width: laout_back.width
-            content:Panel1{}
-        }
+
 
     }
-
-
-
-
-}
 }
 
 

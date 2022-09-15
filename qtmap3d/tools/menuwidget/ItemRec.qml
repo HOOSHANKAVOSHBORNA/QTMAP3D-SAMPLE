@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.12
 
 Rectangle {
     id: rectangle
+    property var category
     property var name:"item"
     property string icon :"qrc:/res/icons8-puzzle-96.png"
    width: 220
@@ -26,6 +27,9 @@ Rectangle {
    }
    MouseArea{
        anchors.fill : parent
-       onClicked: console.log(name);
+
+       onClicked: {
+           NamePlugin.onGetClicked(name,category)
+       }
    }
 }

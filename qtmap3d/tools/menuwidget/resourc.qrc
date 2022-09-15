@@ -7,7 +7,7 @@
         <file>PanelItem.qml</file>
         <file>res/down-r.png</file>
         <file>Tools.qml</file>
-        <file>Panel1.qml</file>
+        <file>Panelimage.qml</file>
         <file>res/icons8-pencil-96.png</file>
         <file>res/icons8-location-96.png</file>
         <file>res/icons8-polygon-96.png</file>
@@ -22,5 +22,8 @@
         <file>ItemRec.qml</file>
         <file>res/right-r.png</file>
         <file>SwitchMenu.qml</file>
+        <file>Panelterrain.qml</file>
+        <file>Panelmeature.qml</file>
+        <file>Panelmodel.qml</file>
     </qresource>
 </RCC>
