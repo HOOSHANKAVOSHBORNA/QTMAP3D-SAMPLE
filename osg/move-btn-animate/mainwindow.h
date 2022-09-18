@@ -5,6 +5,7 @@
 #include <osgQOpenGL/osgQOpenGLWidget>
 #include <osgSim/OverlayNode>
 #include <osg/AnimationPath>
+#include <osg/PositionAttitudeTransform>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,8 +20,21 @@ public:
     osg::ref_ptr<osg::Group> model_3d ;
     osg::Node* createBase(const osg::Vec3& center,float radius);
     osg::MatrixTransform* locationTree;
-    osg::MatrixTransform* locationCar;
+    osg::PositionAttitudeTransform* locationCar;
+    osg::MatrixTransform* mt;
     osg::AnimationPath* carAnimationPath();
+    osg::PositionAttitudeTransform* cowPos;
+    osg::PositionAttitudeTransform* wheelPosR;
+    osg::PositionAttitudeTransform* wheelPosL;
+    osg::AnimationPathCallback* carAnim;
+    osg::AnimationPathCallback* cowAnim;
+    osg::AnimationPathCallback* wheelAnimR;
+    osg::AnimationPath* wheelAnimationPathR();
+    osg::AnimationPath* wheelPathR;
+    osg::AnimationPathCallback* wheelAnimL;
+    osg::AnimationPath* wheelAnimationPathL();
+    osg::AnimationPath* wheelPathL;
+    osg::AnimationPath* rotate;
     ~MainWindow();
 
 public slots:
