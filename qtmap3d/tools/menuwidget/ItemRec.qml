@@ -3,7 +3,8 @@ import QtQuick.Layouts 1.12
 
 Rectangle {
     id: rectangle
-    property string name:"item"
+    property var category
+    property var name:"item"
     property string icon :"qrc:/res/icons8-puzzle-96.png"
    width: 220
    height: 30
@@ -18,12 +19,17 @@ Rectangle {
    }
    Text {
        anchors.left: image.right
-       text : name
+       text : String(name)
        anchors.verticalCenter: parent.verticalCenter
        width: parent.width - image.width
        horizontalAlignment: Text.AlignHCenter
        color: "white"
+   }
+   MouseArea{
+       anchors.fill : parent
 
-
+       onClicked: {
+           NamePlugin.onGetClicked(name,category)
+       }
    }
 }
