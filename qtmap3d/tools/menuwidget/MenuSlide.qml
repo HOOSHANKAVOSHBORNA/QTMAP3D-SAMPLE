@@ -2,192 +2,167 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Styles 1.4
-Rectangle{
 
+Rectangle{
+    property bool valuePin: false
     property alias getstart: open
     property alias getstart1: close
     property int space: 3
 
 
     id:menu
-    x:- width
+    x:0
     color: "transparent"
-    state: "close"
+    //state: "open"
     Rectangle{
         id: back
-        width: 23
         height: 23
-        radius: 100
-        color: "#88000000"
-        border.color: "white"
-        border.width: 1
-        anchors.leftMargin:0
-        anchors.left: parent.right
+        color: "transparent"
         anchors.top:menu.top
-        anchors.topMargin:4
-        opacity: 0.5
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 3
+        anchors.rightMargin: 1
+        state: "close"
         Image {
-
-            source: "qrc:/res/right-r.png"
+            id: iconname
+            source: "qrc:/res/icons8-circled-menu-96.png"
+            anchors.left: parent.left
+            anchors.leftMargin: 5
             width: 20
             height: 20
-            rotation: 0
-            anchors.centerIn: parent
+            anchors.verticalCenter: parent.verticalCenter
             MouseArea{
                 anchors.fill: parent
-                hoverEnabled: true
-                onEntered: back.opacity=1
-                onExited: back.opacity=0.5
 
                 onClicked: {
-                    if (menu.state==="open"){
+                    if (back.state==="open"){
                         close.start()
                         back.rotation=0
-                        menu.state="close"
-                        back.anchors.top=menu.top
-                        back.anchors.topMargin =4
-                        back.anchors.leftMargin=0
+                        back.state="close"
+                        pin.visible =false
+                        back.color = "transparent"
+
                     }else
                     {
                         open.start()
-                        back.rotation=180
-                        menu.state="open"
-                        back.anchors.verticalCenter=undefined
-                        back.anchors.top=menu.top
-                        back.anchors.topMargin=4
-                        back.anchors.leftMargin=-25
-                        back.z=1
+                        back.state="open"
+                        pin.visible =true
+                        back.color = "#282A31"
 
                     }
-
+                }
+            }
+        }
+        Image {
+            id: pin
+            visible: false
+            source: "qrc:/res/icons8-unpin-96.png"
+            width: 15
+            height: 15
+            anchors.right: parent.right
+            anchors.rightMargin: 3
+            anchors.verticalCenter: parent.verticalCenter
+            state: "setpin"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    if (pin.state ==="setpin"){
+                        pin.source = "qrc:/res/icons8-pin-96.png"
+                        pin.state = "setunpin"
+                        valuePin = true
+                        iconname.enabled =false
+                        NamePlugin.onPin(valuePin)
+                    }else{
+                        pin.source = "qrc:/res/icons8-unpin-96.png"
+                        pin.state = "setpin"
+                        valuePin = false
+                        iconname.enabled =true
+                        NamePlugin.onPin(valuePin)
+                    }
 
                 }
-
             }
         }
     }
     NumberAnimation{
         id:open
-        target: menu
-        property: "x"
-        from:- width
-        to:0
+        target: toolbar
+        property: "height"
+        from:0
+        to:400
         duration: 200
 
     }
 
     NumberAnimation{
         id:close
-        target: menu
-        property: "x"
-        from:0
-        to:-width
+        target: toolbar
+        property: "height"
+        from:400
+        to:0
         duration: 200
 
     }
-    ScrollView {
-        id :laout_back
+    Rectangle{
+        id:toolbar
         anchors.right: parent.right
         anchors.rightMargin: 1
         anchors.left: parent.left
         anchors.leftMargin: 3
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 2
-        anchors.top: parent.top
-        anchors.topMargin: 3
+        anchors.top: back.bottom
+        anchors.topMargin: 0
         clip : true
+        color: "transparent"
+        height: 0
 
-
-        Column{
-            id:rootlayer
+        ScrollView {
+            id :laout_back
             anchors.fill: parent
 
-            spacing: 0
 
-            Rectangle{
-                id : backtools
-                width: parent.width
-                height: 110
-                color: "transparent"
-                Column{
-                    anchors.fill: parent
-                    spacing: 0
-                    Rectangle{
-                        id:drowbar
-                        width: parent.width
-                        height: 25
-                        color: "#CC000000"
-                        Text {
-                            id: name
-                            text: qsTr("Drow")
-                            anchors.centerIn: parent
-                            color: "white"
-                            anchors.margins: 10
-                        }
-                    }
-                    Rectangle{
-                        width: backtools.width
-                        height: backtools.height -25
-                        color: "#88000000"
-                        Tools{}
-                    }
+            Column{
+                id:rootlayer
+                anchors.fill: parent
 
+                spacing: 0
+
+
+                PanelItem {
+                    title: "Designing"
+                    width: laout_back.width
+                    content:Paneldrow{}
                 }
-            }
-            Rectangle{
-                id : backtools1
-                width: parent.width
-                height: 110
-                color: "transparent"
-                Column{
-                    anchors.fill: parent
-                    spacing: 0
-                    Rectangle{
-                        width: parent.width
-                        height: 25
-                        color: "#CC000000"
-                        Text {
-                            text: qsTr("measurement")
-                            anchors.centerIn: parent
-                            color: "white"
-                            anchors.margins: 10
-                        }
-                    }
-                    Rectangle{
-                        width: backtools.width
-                        height: backtools.height -25
-                        color: "#88000000"
-                        Tools1{}
-                    }
-
+                PanelItem {
+                    title: "Measurement"
+                    width: laout_back.width
+                    content:Panelmesurement{}
                 }
+                PanelItem {
+                    title: "Image"
+                    width: laout_back.width
+                    content:Panelimage{}
+                }
+                PanelItem {
+                    title: "Terrain"
+                    width: laout_back.width
+                    content:Panelterrain{}
+                }
+                PanelItem {
+                    title: "Meature"
+                    width: laout_back.width
+                    content:Panelmeature{}
+                }
+                PanelItem {
+                    title: "Model"
+                    width: laout_back.width
+                    content:Panelmodel{}
+                }
+
             }
 
-            PanelItem {
-                title: "Image"
-                width: laout_back.width
-                content:Panelimage{}
-            }
-            PanelItem {
-                title: "Terrain"
-                width: laout_back.width
-                content:Panelterrain{}
-            }
-            PanelItem {
-                title: "Meature"
-                width: laout_back.width
-                content:Panelmeature{}
-            }
-            PanelItem {
-                title: "Model"
-                width: laout_back.width
-                content:Panelmodel{}
-            }
 
         }
-
-
-
 
     }
 }

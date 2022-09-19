@@ -5,8 +5,6 @@
         <file>res/left-r.png</file>
         <file>res/map3d.ico</file>
         <file>PanelItem.qml</file>
-        <file>res/down-r.png</file>
-        <file>Tools.qml</file>
         <file>Panelimage.qml</file>
         <file>res/icons8-pencil-96.png</file>
         <file>res/icons8-location-96.png</file>
@@ -17,13 +15,17 @@
         <file>res/icons8-ruler-96.png</file>
         <file>res/icons8-orthogonal-view-96.png</file>
         <file>res/icons8-height-96.png</file>
-        <file>Tools1.qml</file>
         <file>res/icons8-chevron-right-96.png</file>
         <file>ItemRec.qml</file>
         <file>res/right-r.png</file>
-        <file>SwitchMenu.qml</file>
         <file>Panelterrain.qml</file>
         <file>Panelmeature.qml</file>
         <file>Panelmodel.qml</file>
+        <file>Paneldrow.qml</file>
+        <file>Panelmesurement.qml</file>
+        <file>res/icons8-circled-menu-96.png</file>
+        <file>res/icons8-sort-down-96.png</file>
+        <file>res/icons8-unpin-96.png</file>
+        <file>res/icons8-pin-96.png</file>
     </qresource>
 </RCC>

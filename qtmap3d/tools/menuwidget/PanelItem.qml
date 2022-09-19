@@ -17,7 +17,7 @@ Item {
         }
 
         height: 30
-        color:  root.current ? "#55000000" : "#CC000000"
+        color:  "#282A31"
         Text {
             anchors.fill: parent
             anchors.margins: 10
@@ -25,10 +25,10 @@ Item {
             verticalAlignment: Text.AlignVCenter
             text: root.title
             color: "white"
-        }
 
+        }
         Image {
-            source: "qrc:/res/down-r.png"
+            source: "qrc:/res/icons8-sort-down-96.png"
             width: 16
             height: 16
             anchors.right: parent.right
@@ -45,7 +45,7 @@ Item {
     }
     Rectangle {
         id: container
-        color: "#AA000000"
+        color: "#006eff"
         anchors.top: bar.bottom
         anchors.left: parent.left
         anchors.right: parent.right

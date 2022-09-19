@@ -33,12 +33,14 @@ public slots:
     void onGetClicked(QString category ,QString name);
 signals:
     void onClickedPlugin(QString category ,QString name);
+    Q_INVOKABLE void onPin (bool t);
 private:
     Ui::MainWindow *ui;
     QQuickWidget *mQQuickWidget;
-    QVariantList mListNamePlugin = {"image","Line","model","meature"};
-    QVariantList mIconPlugin = {"qrc:/res/down-r.png","qrc:/res/icons8-chevron-right-96.png","qrc:/res/icons8-ruler-96.png","qrc:/res/icons8-pencil-96.png"};
-    QVariantList mCategoryPlugin = {"Image","Trrain","Model","Meature"};
+    QDockWidget *mDock;
+    QVariantList mListNamePlugin ;
+    QVariantList mIconPlugin ;
+    QVariantList mCategoryPlugin;
 
 
 };
