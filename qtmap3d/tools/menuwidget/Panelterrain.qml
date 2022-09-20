@@ -2,18 +2,19 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.12
 
 Item {
-    property variant varList: NamePlugin.getListNamePlugin()
+    Connections {
+        target: NamePlugin
+        onTaggel: {
+            var component = Qt.createComponent("ItemRec.qml");
+
+                if (NamePlugin.getCategortPlugin() === "Terrain"){
+                    var object = component.createObject(column);
+                    object.name =String(NamePlugin.getNamePlugin());
+                    object.icon = String(NamePlugin.getIconPlugin())
+                    object.category = "Terrain"
 
 
-    onVarListChanged: {
-        var component = Qt.createComponent("ItemRec.qml");
-        for (var i = 0; i < varList.length; i++){
-            if (NamePlugin.getLisCategortPlugin()[i] === "Trrain"){
-                var object = component.createObject(column);
-                object.name =varList[i];
-                object.icon = NamePlugin.getListiconPlugin()[i]
-                object.category = "Trrain"
-            }
+                }
         }
     }
 

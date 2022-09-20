@@ -7,17 +7,16 @@ Item {
         onTaggel: {
             var component = Qt.createComponent("ItemRec.qml");
 
-                if (NamePlugin.getCategortPlugin() === "Model"){
+                if (NamePlugin.getCategortPlugin() === "Draw"){
                     var object = component.createObject(column);
                     object.name =String(NamePlugin.getNamePlugin());
                     object.icon = String(NamePlugin.getIconPlugin())
-                    object.category = "Model"
+                    object.category = "Draw"
 
 
                 }
         }
     }
-
     property string title: "teste"
     height:column.implicitHeight +6
     width: column.implicitWidth
@@ -27,8 +26,6 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 3
         width: laout_back.width
-
-
 
     }
 }

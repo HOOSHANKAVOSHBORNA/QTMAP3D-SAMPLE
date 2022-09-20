@@ -21,26 +21,28 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public:
 
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow( QWidget *parent = nullptr);
     ~MainWindow();
 
-    void setListPlugin(const QVariantList & v);
-    Q_INVOKABLE  QVariantList getListNamePlugin() ;
-    Q_INVOKABLE  QVariantList getListiconPlugin() ;
-    Q_INVOKABLE  QVariantList getLisCategortPlugin() ;
+    void setPlugin(QString name , QString icon , QString category);
+    Q_INVOKABLE  QVariant getNamePlugin() ;
+    Q_INVOKABLE  QVariant getIconPlugin() ;
+    Q_INVOKABLE  QVariant getCategortPlugin() ;
 
 public slots:
     void onGetClicked(QString category ,QString name);
 signals:
     void onClickedPlugin(QString category ,QString name);
     Q_INVOKABLE void onPin (bool t);
+    Q_INVOKABLE void taggel ();
+
 private:
     Ui::MainWindow *ui;
     QQuickWidget *mQQuickWidget;
     QDockWidget *mDock;
-    QVariantList mListNamePlugin ;
-    QVariantList mIconPlugin ;
-    QVariantList mCategoryPlugin;
+    QVariant mNamePlugin ;
+    QVariant mIconPlugin ;
+    QVariant mCategoryPlugin;
 
 
 };

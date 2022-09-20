@@ -127,16 +127,21 @@ Rectangle{
 
                 spacing: 0
 
+                PanelItem{
+                    title: "File"
+                    width: laout_back.width
+                    content:Panelfile{}
+                }
 
                 PanelItem {
-                    title: "Designing"
+                    title: "Draw"
                     width: laout_back.width
-                    content:Paneldrow{}
+                    content:Paneldraw{}
                 }
                 PanelItem {
-                    title: "Measurement"
+                    title: "Measures"
                     width: laout_back.width
-                    content:Panelmesurement{}
+                    content:Panelmeasure{}
                 }
                 PanelItem {
                     title: "Image"
@@ -148,15 +153,26 @@ Rectangle{
                     width: laout_back.width
                     content:Panelterrain{}
                 }
-                PanelItem {
-                    title: "Meature"
-                    width: laout_back.width
-                    content:Panelmeature{}
-                }
+
                 PanelItem {
                     title: "Model"
                     width: laout_back.width
                     content:Panelmodel{}
+                }
+                PanelItem {
+                    title: "Feature"
+                    width: laout_back.width
+                    content:Panelfeature{}
+                }
+                PanelItem{
+                    title: "Analyze"
+                    width: laout_back.width
+                    content:Panelanalyze{}
+                }
+                PanelItem{
+                    title: "Effect"
+                    width: laout_back.width
+                    content:Paneleffect{}
                 }
 
             }
@@ -167,9 +183,3 @@ Rectangle{
     }
 }
 
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
