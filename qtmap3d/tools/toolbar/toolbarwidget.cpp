@@ -1,5 +1,4 @@
 #include "toolbarwidget.h"
-#include "ui_toolbarwidget.h"
 #include <QDockWidget>
 #include <QQmlEngine>
 #include <QQuickWidget>

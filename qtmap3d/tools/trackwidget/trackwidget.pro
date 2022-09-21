@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui quick quickcontrols2 quickwidgets webengine
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,13 +17,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    mainwindow.cpp \
     trackwidget.cpp
 
 HEADERS += \
+    mainwindow.h \
     trackwidget.h
 
 FORMS += \
-    trackwidget.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

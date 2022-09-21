@@ -3,9 +3,8 @@
 
 #include <QWidget>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class TrackWidget; }
-QT_END_NAMESPACE
+
+class QQuickWidget;
 
 class TrackWidget : public QWidget
 {
@@ -13,9 +12,9 @@ class TrackWidget : public QWidget
 
 public:
     TrackWidget(QWidget *parent = nullptr);
-    ~TrackWidget();
 
 private:
-    Ui::TrackWidget *ui;
+    QQuickWidget *mQQuickWidget;
+
 };
 #endif // TRACKWIDGET_H

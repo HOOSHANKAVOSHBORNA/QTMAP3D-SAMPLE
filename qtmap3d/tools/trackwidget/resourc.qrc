@@ -1,3 +1,11 @@
 <RCC>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file>res/menu.png</file>
+        <file>res/pin.png</file>
+        <file>res/unpin.png</file>
+        <file>trackwidget/trackwidget.qml</file>
+        <file>trackwidget/PanelItem.qml</file>
+        <file>trackwidget/Panel.qml</file>
+        <file>res/sort-down.png</file>
+    </qresource>
 </RCC>
