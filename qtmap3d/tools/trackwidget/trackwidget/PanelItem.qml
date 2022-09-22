@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.12
 Item {
     id:root
     property string title: "panel"
+    property string name
+    property string coordinates: "value"
     property bool isSelected: false
     height: container.height + bar.height
 
@@ -19,8 +21,12 @@ Item {
         height: 22
         color:  "#404142"
         radius: 2
+        state: "notselect"
         Text {
             anchors.fill: parent
+            font.family: "Times New Roman"
+            font.weight: Font.Normal
+            style: Text.Normal
             anchors.margins: 10
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
@@ -36,13 +42,29 @@ Item {
             anchors.rightMargin:  10
             anchors.verticalCenter: parent.verticalCenter
             rotation: root.isSelected ? "180" :0
-        }
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: isSelected=!isSelected
+            z:1;
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: isSelected=!isSelected
 
+            }
         }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                if (bar.state === "notselect"){
+                    bar.color = "#006eff"
+                    bar.state = "select"
+
+                }else{
+                    bar.color = "#404142"
+                    bar.state = "notselect"
+                }
+
+            }
+        }
+
     }
     Rectangle {
         id: container
@@ -55,8 +77,9 @@ Item {
         Loader{
             id:loader
             visible: isSelected
-            sourceComponent: Panel{}
+            sourceComponent: Panel{title:title}
             anchors.top: container.top
+
         }
 
         Behavior on height {

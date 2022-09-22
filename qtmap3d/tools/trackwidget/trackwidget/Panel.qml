@@ -2,14 +2,19 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 Rectangle {
+    property string title
 
-
-    property string title: "teste"
     height:120
     width: 200
-    color: "transparent"
-    radius: 10
-
+    color: "#22000000"
+    Connections {
+        target: DetaliObject
+        onChengeCoordinates:{
+            if (name === mname){
+            element.text = String(latitude + " , " + longitude + " , " + height)
+            }
+        }
+    }
     Rectangle {
         id: long_info
         color: "transparent"
@@ -25,7 +30,8 @@ Rectangle {
             id: element
             color: "#fdfdfd"
             padding:4
-            text: qsTr("Text")
+
+            text: coordinates
             font.family: "Times New Roman"
             font.weight: Font.Normal
             style: Text.Normal
@@ -40,34 +46,20 @@ Rectangle {
 
     Rectangle {
         id: info
-        border.color: "#404142"
-        color: "#404142"
-        border.width: 0.5
+        //color: "#006efa"
+        color: "#FFFFFF"
         layer.smooth: true
-        layer.enabled: true
-        opacity: 0.2
-        width: parent.width - 5
+        width: parent.width -10
         height: parent.height -30
-
         anchors.top: long_info.bottom
         anchors.topMargin: 3
         anchors.left: parent.left
-        anchors.leftMargin: 2
-        radius: 3
-        layer.effect: ShaderEffect {
-            id: effectSource
-            anchors.fill: info
+        anchors.leftMargin: 5
+        radius: 5
 
-            FastBlur{
-                id: blur
-                anchors.fill: effectSource
-                source: effectSource
-                radius: 32
-            }
-        }
         Text {
             id: element3
-            color: "#FFFFFF"
+            color: "#000000"
             padding:4
             text: "gkjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhfhmngklhhhhhhhhhhhhhhhhhhhhhhjbfyufjgghhjftyyyyyyyyyyyyyyyyyyyyyyyfjhf"
             wrapMode: Text.WrapAnywhere
@@ -76,9 +68,7 @@ Rectangle {
             anchors.fill: parent
             font.pixelSize: 10
         }
-
     }
-
 }
 
 /*##^##
