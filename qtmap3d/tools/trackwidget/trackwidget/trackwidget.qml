@@ -3,52 +3,74 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Styles 1.4
 
-
 Rectangle{
+    readonly property int iconzie: 20
+    readonly property int textsize: 10
+    readonly property int iconsize2: 10
     property bool valuepin: false
 
     id:root
     width: 200
     color: "transparent"
     Connections{
-       target: DetaliObject
-       onCloseMenu:{
-           if (!valuepin && widgetrack.state === "open"){
-           close.start()
-           widgetrack.state = "close"
-           }
-       }
-    }
-
-    Connections {
-        property  var valueJson
         target: DetaliObject
-        onObjectAdded:{
-            valueJson =DetaliObject.getInfo()
+        onClose:{
+            if (!valuepin && widgetrack.state === "open"){
+                close.start()
+                widgetrack.state = "close"
+            }
+
+        }
+        onModelAdded:{
             var component = Qt.createComponent("PanelItem.qml");
             var object = component.createObject(rootlayer);
-            object.title= DetaliObject.getName() + "("+DetaliObject.getType()+")"
-            object.name = DetaliObject.getName()
+            object.title= type+ " : "+ name
+            object.name = name
+            object.type = type
             object.width= laout_back.width
-            object.coordinates =String(DetaliObject.getLatitude()+" , "+DetaliObject.getLongitude()+" , "+DetaliObject.getHeight())
         }
+        onMinimize:{
+            if (isMax){
+                open.start()
+                widgetrack.state = "open"
+                bar.color = "#282A31"
+                iconpin.visible = true
+                backmenu.color = "transparent"
+                backmenu.anchors.topMargin =-4
+                backmenu.anchors.rightMargin =-5
+                DetaliObject.setChangeSize(isMax)
+                backmenu.radius= 100
+                widgetrack.height= parent.height - bar.height
+
+            }else{
+                //close.start()
+                widgetrack.state = "close"
+                bar.color = "transparent"
+                iconpin.visible = false
+                backmenu.color = "#88000000"
+                backmenu.anchors.topMargin =1
+                backmenu.anchors.rightMargin = 3
+                DetaliObject.setChangeSize(isMax)
+                widgetrack.height=0
+                backmenu.radius =100
+            }
+        }
+
     }
+
     Rectangle{
         id:bar
         height: 23
         width: parent.width
         anchors.top: root.top
-        color: "transparent"//
+        color: "#282A31"//
         Rectangle{
             id : backmenu
-            width:40
-            height: 40
+            width:30
+            height: 30
             anchors.right: parent.right
-            anchors.rightMargin:3
             anchors.top: parent.top
-            anchors.topMargin: 8
-            color: "#88000000"
-            radius: 10
+
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
@@ -59,13 +81,14 @@ Rectangle{
 
                         iconpin.visible = true
                         backmenu.color = "transparent"
-                        backmenu.anchors.topMargin =-8
+                        backmenu.anchors.topMargin =-4
                         backmenu.anchors.rightMargin =-5
-
+                        DetaliObject.setChangeSize(true)
 
                     }else{
                         close.start()
                         widgetrack.state = "close"
+                        DetaliObject.setChangeSize(false)
 
 
                     }
@@ -75,16 +98,16 @@ Rectangle{
                 id: iconmenu
                 source: "qrc:/res/toolbarmenu.png"
                 anchors.centerIn: parent
-                width:20
-                height: 20
+                width:iconzie
+                height: iconzie
 
             }
         }
         Image {
             id: iconpin
             source: "qrc:/res/unpin.png"
-            width:15
-            height: 15
+            width:iconsize2
+            height: iconsize2
             visible: false
             anchors.left: parent.left
             anchors.leftMargin: 3
@@ -99,12 +122,14 @@ Rectangle{
                         valuepin = true
                         backmenu.enabled = false
                         DetaliObject.onPin(valuepin)
+
                     }else{
                         iconpin.source = "qrc:/res/unpin.png"
                         iconpin.state = "setpin"
                         valuepin = false
                         backmenu.enabled =true
                         DetaliObject.onPin(valuepin)
+
                     }
 
                 }
@@ -134,17 +159,17 @@ Rectangle{
             bar.color = "transparent"
             iconpin.visible = false
             backmenu.color = "#88000000"
-            backmenu.anchors.topMargin =8
+            backmenu.anchors.topMargin =3
             backmenu.anchors.rightMargin = 3
         }
 
     }
     Rectangle{
         id :widgetrack
-        state: "close"
+
         width: parent.width
         clip: true
-        height:0//parent.height - bar.height
+
         anchors.top: bar.bottom
         color: "#282A31"
         border.color: "#282A31"

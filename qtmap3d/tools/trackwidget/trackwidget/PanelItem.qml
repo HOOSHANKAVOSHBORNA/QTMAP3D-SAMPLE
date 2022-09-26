@@ -5,7 +5,7 @@ Item {
     id:root
     property string title: "panel"
     property string name
-    property string coordinates: "value"
+    property string type
     property bool isSelected: false
     height: container.height + bar.height
 
@@ -16,6 +16,8 @@ Item {
             top: parent.top
             left: parent.left
             right: parent.right
+            leftMargin: 2
+            rightMargin: 2
         }
 
         height: 22
@@ -32,12 +34,13 @@ Item {
             verticalAlignment: Text.AlignVCenter
             text: root.title
             color: "white"
+            font.pointSize: textsize
 
         }
         Image {
             source: "qrc:/res/sort-down.png"
-            width: 16
-            height: 16
+            width: iconsize2
+            height: iconsize2
             anchors.right: parent.right
             anchors.rightMargin:  10
             anchors.verticalCenter: parent.verticalCenter
@@ -56,7 +59,7 @@ Item {
                 if (bar.state === "notselect"){
                     bar.color = "#006eff"
                     bar.state = "select"
-
+                    DetaliObject.getIsClicked(type,name)
                 }else{
                     bar.color = "#404142"
                     bar.state = "notselect"

@@ -18,11 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    trackwidget.cpp
+    trackmodelwidget.cpp
 
 HEADERS += \
     mainwindow.h \
-    trackwidget.h
+    trackmodelwidget.h
 
 FORMS += \
     mainwindow.ui

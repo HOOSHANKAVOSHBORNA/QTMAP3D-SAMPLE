@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "trackwidget.h"
+#include "trackmodelwidget.h"
 namespace Ui {
 class MainWindow;
 }
@@ -14,15 +14,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void mousePressEvent ( QMouseEvent * event ) override;
 
 private slots:
     void on_pushButton_clicked();
-    void mouseMoveEvent(QMouseEvent *e);
     void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::MainWindow *ui;
-    TrackWidget *mTrackWidget;
+    TrackModelWidget *mTrackWidget;
     QDockWidget *mDock;
 };
 

@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 Rectangle {
@@ -9,10 +10,14 @@ Rectangle {
     color: "#22000000"
     Connections {
         target: DetaliObject
-        onChengeCoordinates:{
-            if (name === mname){
-            element.text = String(latitude + " , " + longitude + " , " + height)
+        onModelPosition:{
+            if (name === n && type === t){
+            element.text = String(latitude + " , " + longitude + " , " + altitude)
             }
+        }
+        onModelInfo:{
+            if(name === n && type === t)
+            textarea.text = str
         }
     }
     Rectangle {
@@ -31,14 +36,14 @@ Rectangle {
             color: "#fdfdfd"
             padding:4
 
-            text: coordinates
+            text: ""
             font.family: "Times New Roman"
             font.weight: Font.Normal
             style: Text.Normal
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
             anchors.fill: parent
-            font.pixelSize: 10
+            font.pixelSize: textsize
 
         }
 
@@ -56,18 +61,22 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 5
         radius: 5
+        Flickable {
+             id: flickable
+             anchors.fill: parent
 
-        Text {
-            id: element3
-            color: "#000000"
-            padding:4
-            text: "gkjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhfhmngklhhhhhhhhhhhhhhhhhhhhhhjbfyufjgghhjftyyyyyyyyyyyyyyyyyyyyyyyfjhf"
-            wrapMode: Text.WrapAnywhere
-            font.family: "Tahoma"
-            horizontalAlignment: Text.AlignLeft
-            anchors.fill: parent
-            font.pixelSize: 10
-        }
+             TextArea.flickable: TextArea {
+                 id:textarea
+                 font.family: "Times New Roman"
+                 font.weight: Font.Normal
+                 font.pixelSize: textsize
+                 text:""
+                 wrapMode: TextArea.Wrap
+             }
+
+             ScrollBar.vertical: ScrollBar { }
+         }
+
     }
 }
 

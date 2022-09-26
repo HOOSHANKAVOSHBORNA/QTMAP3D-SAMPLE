@@ -13,23 +13,40 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    mTrackWidget = new TrackWidget(this);
+    mTrackWidget = new TrackModelWidget(this);
     QJsonObject o1
          {
-             { "key", 1 },
-             { "colorborder", "#234324" },
-            {"colorlink","green"},
-             { "color", "red" },
-            {"type","1"},
-            {"name","سبزوار"},
+             { "key", "1" },
+             { "area1", "234324" },
+            {"type","green"},
+             { "sate", "red" },
+            {"name","mersad"},
+            {"n","سبزوار"},
             {"title","CEO"},
+         };
+    QJsonObject o2
+         {
+             { "key", "3" },
+             { "area1", "434324" },
+            {"type","blue"},
+             { "sate", "red" },
+            {"name","1"},
+            {"n","Tehran"},
+            {"title","GEO"},
          };
     mTrackWidget->hide();
     mTrackWidget->move(this->width() -200 ,0);
-    mTrackWidget->addObject(12.3,123.5444,23.0,"krar","air",o1);
-    mTrackWidget->addObject(12.445543,12.5444,23.0,"mbr","machine",o1);
-    connect(ui->pushButton_3,&QPushButton::clicked,mTrackWidget,&TrackWidget::onClickedCloseMenu);
-    connect(mTrackWidget,&TrackWidget::onPin,[=](bool t){
+    mTrackWidget->setMinimaizeWidget(true);
+    mTrackWidget->addModel("air","karar");
+    mTrackWidget->addModel("mbr","machine");
+    mTrackWidget->setModelInfo("air","karar",o1);
+    mTrackWidget->setModelInfo("mbr","machine",o2);
+    mTrackWidget->setModelPosition("air","karar",53.2334,24.56777,100.88);
+    mTrackWidget->setModelPosition("mbr","machine",53.2334,24.33333,1000.888);
+    connect(mTrackWidget,&TrackModelWidget::onModelClicked,[=](QString type , QString name){
+       qDebug()<<type << name ;
+    });
+    connect(mTrackWidget,&TrackModelWidget::onPin,[=](bool t){
 
         if(t){
             mDock = new QDockWidget(this);
@@ -58,9 +75,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    mTrackWidget->setClose();
+    QMainWindow::mousePressEvent(event);
+}
+
 void MainWindow::on_pushButton_clicked()
 {
-    mTrackWidget->show();
+    if (mTrackWidget->isHidden())
+         mTrackWidget->show();
+    else
+        mTrackWidget->hide();
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -68,12 +94,10 @@ void MainWindow::on_pushButton_2_clicked()
     double t =rand();
     double a =rand();
     double b =rand();
-    mTrackWidget->getChangeCoordinates("krar",a,b,t);
+    mTrackWidget->setModelPosition("air","karar",a,b,t);
 }
-void MainWindow::mouseMoveEvent(QMouseEvent *e)
+
+void MainWindow::on_pushButton_3_clicked()
 {
-    if(e->button() == Qt::RightButton)
-    {
-        qDebug() << "Right mouse click!" << endl;
-    }
+    qDebug()<<"fdgjkfg";
 }
