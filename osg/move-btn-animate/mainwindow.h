@@ -6,6 +6,7 @@
 #include <osgSim/OverlayNode>
 #include <osg/AnimationPath>
 #include <osg/PositionAttitudeTransform>
+#include "vehicle.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,30 +18,13 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    osg::ref_ptr<osg::Group> model_3d ;
-    osg::Node* createBase(const osg::Vec3& center,float radius);
-    osg::MatrixTransform* locationTree;
-    osg::PositionAttitudeTransform* locationCar;
-    osg::MatrixTransform* mt;
-    osg::AnimationPath* carAnimationPath();
-    osg::PositionAttitudeTransform* cowPos;
-    osg::PositionAttitudeTransform* wheelPosR;
-    osg::PositionAttitudeTransform* wheelPosL;
-    osg::AnimationPathCallback* carAnim;
-    osg::AnimationPathCallback* cowAnim;
-    osg::AnimationPathCallback* wheelAnimR;
-    osg::AnimationPath* wheelAnimationPathR();
-    osg::AnimationPath* wheelPathR;
-    osg::AnimationPathCallback* wheelAnimL;
-    osg::AnimationPath* wheelAnimationPathL();
-    osg::AnimationPath* wheelPathL;
-    osg::AnimationPath* rotate;
+    osg::ref_ptr<vehicle> model_3d ;
     ~MainWindow();
 
 public slots:
     void initOpenglWidget();
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButton_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

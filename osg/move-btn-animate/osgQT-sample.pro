@@ -39,7 +39,9 @@ unix:!macx: LIBS += -losg -losgUtil -losgViewer -losgGA -losgDB -losgSim
 
 
 
-unix:!macx: LIBS += -L$$PWD/../../osgQt/lib/ -losgQOpenGL
 
-INCLUDEPATH += $$PWD/../../osgQt/include
-DEPENDPATH += $$PWD/../../osgQt/include
+
+unix:!macx: LIBS += -L$$PWD/../../../project/osgQt/lib/ -losgQOpenGL
+
+INCLUDEPATH += $$PWD/../../../project/osgQt/include
+DEPENDPATH += $$PWD/../../../project/osgQt/include
