@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Qml/loactionWidget.qml</file>
+        <file>res/sortdown.png</file>
+        <file>Qml/Addlocation.qml</file>
+        <file>Qml/RecSavePosition.qml</file>
+    </qresource>
+</RCC>
