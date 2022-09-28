@@ -20,17 +20,13 @@ public:
     void setMinimaizeWidget(bool isMax);
 
 public slots:
-Q_INVOKABLE void getIsClicked(QString type ,QString name);
-Q_INVOKABLE void setChangeSize(bool t);
+
 signals :
     void onModelClicked(QString type, QString name);
-    Q_INVOKABLE void changeSize(bool t);
 
 
 private:
     QString stringListToString(QStringList key,QStringList value);
-
-
 
 private slots:
 
@@ -41,15 +37,7 @@ signals:
     Q_INVOKABLE void close();
     Q_INVOKABLE void minimize(bool isMax);
     Q_INVOKABLE void modelPosition(QString t,QString n, double latitude , double longitude , double altitude);
-
-
-
-
-
-
-
-
-
+    Q_INVOKABLE void changeSize(bool t);
 
 private:
     QQuickWidget *mQQuickWidget;

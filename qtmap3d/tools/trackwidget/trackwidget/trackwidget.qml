@@ -38,12 +38,11 @@ Rectangle{
                 backmenu.color = "transparent"
                 backmenu.anchors.topMargin =-4
                 backmenu.anchors.rightMargin =-5
-                DetaliObject.setChangeSize(isMax)
+                DetaliObject.changeSize(isMax)
                 backmenu.radius= 100
                 widgetrack.height= parent.height - bar.height
 
             }else{
-                //close.start()
                 widgetrack.state = "close"
                 bar.color = "transparent"
                 iconpin.visible = false
@@ -83,12 +82,11 @@ Rectangle{
                         backmenu.color = "transparent"
                         backmenu.anchors.topMargin =-4
                         backmenu.anchors.rightMargin =-5
-                        DetaliObject.setChangeSize(true)
+                        DetaliObject.changeSize(true)
 
                     }else{
                         close.start()
                         widgetrack.state = "close"
-                        DetaliObject.setChangeSize(false)
 
 
                     }
@@ -161,6 +159,8 @@ Rectangle{
             backmenu.color = "#88000000"
             backmenu.anchors.topMargin =3
             backmenu.anchors.rightMargin = 3
+            DetaliObject.changeSize(false)
+
         }
 
     }

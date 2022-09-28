@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QDebug>
 TrackModelWidget::TrackModelWidget(QWidget *parent)
     : QWidget(parent)
 
@@ -72,15 +73,6 @@ QString TrackModelWidget::stringListToString(QStringList key, QStringList value)
     return  string;
 }
 
-void TrackModelWidget::getIsClicked(QString type, QString name)
-{
-    emit onModelClicked(type,name);
-}
-
-void TrackModelWidget::setChangeSize(bool t)
-{
-    emit changeSize(t);
-}
 
 
 

@@ -97,7 +97,3 @@ void MainWindow::on_pushButton_2_clicked()
     mTrackWidget->setModelPosition("air","karar",a,b,t);
 }
 
-void MainWindow::on_pushButton_3_clicked()
-{
-    qDebug()<<"fdgjkfg";
-}
