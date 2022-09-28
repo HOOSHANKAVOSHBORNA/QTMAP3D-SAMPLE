@@ -59,7 +59,7 @@ Item {
                 if (bar.state === "notselect"){
                     bar.color = "#006eff"
                     bar.state = "select"
-                    DetaliObject.getIsClicked(type,name)
+                    DetaliObject.onModelClicked(type,name)
                 }else{
                     bar.color = "#404142"
                     bar.state = "notselect"
