@@ -24,6 +24,7 @@ private slots:
 
 signals :
    void itemPositionAdd(double latitude ,double longitude ,double altitude);
+   void onOpenWidget(bool t , bool c);
 };
 
 #endif // LOCATIONWIDGET_H

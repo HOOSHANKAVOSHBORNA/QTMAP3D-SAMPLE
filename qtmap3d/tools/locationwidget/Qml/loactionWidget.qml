@@ -14,7 +14,7 @@ Item{
             object.lat= latitude
             object.lon = longitude
             object.alitude = altitude
-            object.width= laout_back.width
+            object.width= laout_back.width - 3
         }
     }
 
@@ -33,10 +33,14 @@ Item{
 
             Column{
                 id:rootlayer
-                anchors.fill: parent
-
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.leftMargin: 2
+                anchors.rightMargin: 5
+                anchors.topMargin: 2
                 spacing: 3
-
             }
         }
     }
@@ -111,10 +115,14 @@ Item{
             onClicked: {
                 if(!isshowcurrnt){
                     opensave.start()
-                    isshowcurrnt = true}
+                    isshowcurrnt = true
+                    Location.onOpenWidget(isshow, isshowcurrnt)
+                }
                 else{
                     closesave.start()
-                    isshowcurrnt = false}
+                    isshowcurrnt = false
+                    Location.onOpenWidget(isshow , isshowcurrnt)
+                }
             }
             Text {
                 anchors.verticalCenter: parent.verticalCenter
@@ -142,9 +150,11 @@ Item{
                     if(!isshow){
                         open.start()
                         isshow = true
+                        Location.onOpenWidget(isshow , isshowcurrnt)
                     }else{
                         close.start()
                         isshow = false
+                        Location.onOpenWidget(isshow , isshowcurrnt)
                     }
 
                 }

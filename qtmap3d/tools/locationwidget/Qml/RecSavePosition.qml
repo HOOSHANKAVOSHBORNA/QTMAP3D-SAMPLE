@@ -6,16 +6,21 @@ Rectangle {
     property real  lon
     property real alitude
     height: 20
-    color: "#88000000"
+    color: "white"
     radius: 5
 
     Text {
-
         text: lat + " , " + lon + " , " + alitude
         font.pixelSize: 10
         anchors.left: parent.left
         anchors.leftMargin: 2
         anchors.verticalCenter: parent.verticalCenter
-        color: "white"
+        color: "black"
+    }
+    MouseArea{
+        anchors.fill: parenrt
+        onClicked: {
+            Location.goPosition(lat , lon);
+        }
     }
 }

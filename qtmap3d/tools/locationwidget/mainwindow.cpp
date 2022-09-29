@@ -9,10 +9,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     mLocationWidget = new LocationWidget(this);
-    mLocationWidget->move(0,this->height()-300);
+
+
     mLocationWidget->addItemPositio(123.546,21.342,411.13331);
     mLocationWidget->addItemPositio(123.546,21.342,411.13331);
     mLocationWidget->addItemPositio(123.546,21.342,411.13331);
+
     connect(mLocationWidget,&LocationWidget::goPosition,[=](float lat ,float lan){
        qDebug()<<lat << lan;
 
@@ -22,5 +24,12 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    mLocationWidget->move(0,this->height()- mLocationWidget->height());
 }
 
