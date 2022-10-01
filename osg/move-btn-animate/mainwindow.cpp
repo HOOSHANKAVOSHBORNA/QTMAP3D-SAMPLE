@@ -35,12 +35,14 @@ void MainWindow::initOpenglWidget()
     osgGA::NodeTrackerManipulator* g_ntm = new osgGA::NodeTrackerManipulator;
 
     model_3d = new vehicle;
-    model_3d->movePack(osg::Vec3(0,1000,0),100);
+    model_3d->movePack(osg::Vec3(5,0,0),10);
+    model_3d->spinHolder(osg::Vec3(0,10,0));
+
 
     widget->getOsgViewer()->setCameraManipulator(g_ntm);
-    g_ntm->setTrackNode(model_3d);
+    //g_ntm->setTrackNode(model_3d);
     widget->getOsgViewer()->setSceneData(model_3d);
-    g_ntm->setDistance(50.0);
+    //g_ntm->setDistance(50.0);
 }
 
 void MainWindow::on_pushButton_toggled(bool checked)

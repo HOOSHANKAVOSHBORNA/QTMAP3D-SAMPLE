@@ -15,9 +15,11 @@ class vehicle : public osg::Group
 
 public:
     void movePack(osg::Vec3d desti, float speedd);
+    void spinHolder(osg::Vec3d desti);
     void wheelRot();
-    osg::AnimationPath* run(osg::Vec3d dest, float speed);
+    osg::AnimationPath* run(osg::Vec3d& dest, float speed);
     osg::AnimationPath* wheelAnimationPath(osg::Vec3d wheelLoc, float RotDeg);
+    osg::AnimationPath* spiner(osg::Vec3d& dest);
     void setPause(bool pause);
 
 
@@ -38,10 +40,14 @@ private:
     float stop;
     float time;
     osg::ref_ptr<osg::Node> car;
-    osg::ref_ptr<osg::Node> wheel ;
-    osg::ref_ptr<osg::Node> dualWheel ;
+    osg::ref_ptr<osg::Node> wheel;
+    osg::ref_ptr<osg::Node> dualWheel;
+    osg::ref_ptr<osg::Node> spinerr;
+    osg::ref_ptr<osg::Node> holder;
     osg::MatrixTransform* QuantomMt;
     osg::PositionAttitudeTransform* carPos;
+    osg::PositionAttitudeTransform* spinerPos;
+    osg::PositionAttitudeTransform* holderPos;
     osg::PositionAttitudeTransform* wheelPosFr;
     osg::PositionAttitudeTransform* wheelPosFl;
     osg::PositionAttitudeTransform* wheelPosRr1;
@@ -62,6 +68,8 @@ private:
     osg::AnimationPathCallback* wheelAnimPcRl1;
     osg::AnimationPathCallback* wheelAnimPcRr2;
     osg::AnimationPathCallback* wheelAnimPcRl2;
+
+    osg::AnimationPathCallback* spinAnimPC;
 
 signals:
 

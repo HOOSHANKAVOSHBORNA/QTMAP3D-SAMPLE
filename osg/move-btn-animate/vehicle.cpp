@@ -12,7 +12,14 @@ void vehicle::movePack(osg::Vec3d desti, float speedd)
     QuantomMt->setUpdateCallback(carAnimPC);
     wheelRot();
 
+}
 
+void vehicle::spinHolder(osg::Vec3d desti)
+{
+    spinAnimPC = new osg::AnimationPathCallback;
+    spinAnimPC->setPivotPoint(osg::Vec3d(-5,0,0));
+    spinAnimPC->setAnimationPath(spiner(desti));
+    spinerPos->setUpdateCallback(spinAnimPC);
 }
 
 void vehicle::wheelRot()
@@ -25,18 +32,17 @@ void vehicle::wheelRot()
     wheelAnimPcRl2 = new osg::AnimationPathCallback;
 
 
-    wheelAnimPcFr->setAnimationPath(wheelAnimationPath(wheelPosFr->getPosition(),0));
+    wheelAnimPcFr->setAnimationPath(wheelAnimationPath(wheelPosFr->getPosition(),180));
 
     wheelAnimPcFl->setAnimationPath(wheelAnimationPath(wheelPosFl->getPosition(),0));
 
-    wheelAnimPcRr1->setAnimationPath(wheelAnimationPath(wheelPosRr1->getPosition(),0));
+    wheelAnimPcRr1->setAnimationPath(wheelAnimationPath(wheelPosRr1->getPosition(),180));
 
     wheelAnimPcRl1->setAnimationPath(wheelAnimationPath(wheelPosRl1->getPosition(),0));
 
-    wheelAnimPcRr2->setAnimationPath(wheelAnimationPath(wheelPosRr2->getPosition(),0));
+    wheelAnimPcRr2->setAnimationPath(wheelAnimationPath(wheelPosRr2->getPosition(),180));
 
     wheelAnimPcRl2->setAnimationPath(wheelAnimationPath(wheelPosRl2->getPosition(),0));
-
 
     wheelPosFr->setUpdateCallback(wheelAnimPcFr);
     wheelPosFl->setUpdateCallback(wheelAnimPcFl);
@@ -51,6 +57,8 @@ vehicle::vehicle()
     car = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/truck-body.osgt");
     wheel = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/wheel.osgt");
     dualWheel = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/wheel-dual.osgt");
+    spinerr = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/truck-spin.osgt");
+    holder = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/truck-hold.osgt");
     QuantomMt = new osg::MatrixTransform;
 
     carPath = new osg::AnimationPath;
@@ -59,6 +67,17 @@ vehicle::vehicle()
     carPos->setScale(osg::Vec3(1,1,1));
     carPos->setPosition(osg::Vec3(0,0,0));
     carPos->addChild(car);
+
+    holderPos = new osg::PositionAttitudeTransform();
+    holderPos->setScale(osg::Vec3(1,1,1));
+    //holderPos->setPosition(osg::Vec3(carPos->getPosition().x(),carPos->getPosition().y(),carPos->getPosition().z()));
+    holderPos->addChild(holder);
+
+    spinerPos = new osg::PositionAttitudeTransform();
+    spinerPos->setScale(osg::Vec3(1,1,1));
+    spinerPos->setPosition(osg::Vec3(carPos->getPosition().x()-5,carPos->getPosition().y(),carPos->getPosition().z()));
+    spinerPos->addChild(spinerr);
+    spinerPos->addChild(holderPos);
 
     wheelPosFr = new osg::PositionAttitudeTransform();
     wheelPosFr->addChild(wheel);
@@ -98,6 +117,7 @@ vehicle::vehicle()
 
 
     QuantomMt->addChild(carPos);
+    QuantomMt->addChild(spinerPos);
     QuantomMt->addChild(wheelPosFr);
     QuantomMt->addChild(wheelPosFl);
     QuantomMt->addChild(wheelPosRl1);
@@ -109,8 +129,13 @@ vehicle::vehicle()
 
 }
 
-osg::AnimationPath *vehicle::run(osg::Vec3d dest, float speed)
+osg::AnimationPath *vehicle::run(osg::Vec3d& dest, float speed)
 {
+
+    osg::Vec3d currentPos = carPos->getPosition();
+    osg::Quat rotate;
+    osg::Vec3f angle = dest - currentPos;
+    rotate.makeRotate(osg::X_AXIS, angle);
     time = (dest-carPos->getPosition()).length()/speed;
     osg::AnimationPath::ControlPoint cp0;
     osg::AnimationPath::ControlPoint cp1;
@@ -119,9 +144,10 @@ osg::AnimationPath *vehicle::run(osg::Vec3d dest, float speed)
     cp1.setPosition(dest);
 
     cp0.setScale(carPos->getScale());
-    cp0.setRotation(carPos->getAttitude());
     cp1.setScale(carPos->getScale());
-    cp1.setRotation(carPos->getAttitude());
+
+    cp0.setRotation(carPos->getAttitude());
+    cp1.setRotation(rotate);
 
     carPath->insert(0.0,cp0);
     carPath->insert(time,cp1);
@@ -159,12 +185,44 @@ return wheelPath;
 
 }
 
+osg::AnimationPath *vehicle::spiner(osg::Vec3d &dest)
+{
+    osg::AnimationPath* spinPath = new osg::AnimationPath;
+
+    osg::Vec3d currentPos = spinerPos->getPosition();
+    osg::Quat rotate;
+    osg::Vec3f angle = dest - currentPos;
+    rotate.makeRotate(osg::X_AXIS, angle);
+
+    osg::AnimationPath::ControlPoint cp0;
+    osg::AnimationPath::ControlPoint cp1;
+
+    cp0.setPosition(spinerPos->getPosition());
+    cp1.setPosition(spinerPos->getPosition());
+
+    cp0.setScale(spinerPos->getScale());
+    cp1.setScale(spinerPos->getScale());
+
+    cp0.setRotation(spinerPos->getAttitude());
+    cp1.setRotation(rotate);
+    //cp1.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(0.0),osg::Y_AXIS,osg::inDegrees(90.0),osg::Z_AXIS));
+
+    spinPath->insert(0,cp0);
+    spinPath->insert(1,cp1);
+
+    spinPath->setLoopMode(osg::AnimationPath::NO_LOOPING);
+    return spinPath;
+}
+
 void vehicle::setPause(bool pause)
 {
     wheelAnimPcFr->setPause(pause);
     wheelAnimPcFl->setPause(pause);
     wheelAnimPcRl1->setPause(pause);
     wheelAnimPcRr1->setPause(pause);
+    wheelAnimPcRr2->setPause(pause);
+    wheelAnimPcRl2->setPause(pause);
+
     carAnimPC->setPause(pause);
 }
 
