@@ -17,6 +17,9 @@ public:
     ~MainWindow();
 protected:
     void resizeEvent(QResizeEvent* event) override;
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     LocationWidget *mLocationWidget;

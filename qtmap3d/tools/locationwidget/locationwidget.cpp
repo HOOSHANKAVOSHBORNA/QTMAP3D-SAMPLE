@@ -2,6 +2,7 @@
 #include <QQmlEngine>
 #include <QQuickWidget>
 #include <QQmlContext>
+#include <osgEarth/optional>
 
 LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
 {
@@ -9,38 +10,48 @@ LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
     mQQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     mQQuickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     mQQuickWidget->setClearColor(Qt::transparent);
-    mQQuickWidget->resize(300, 60);
+    mQQuickWidget->resize(400, 60);
     mQQuickWidget->raise();
-    setMinimumSize(300,60);
-    setMaximumSize(300,300);
+    setMinimumSize(400,60);
+    setMaximumSize(400,300);
     mQQuickWidget->engine()->rootContext()->setContextProperty("Location",this);
+    connect(this,&LocationWidget::onCurrentClicked,[=](QString name){
+        foreach (osgEarth::Viewpoint i, mListViewpoint) {
+            osgEarth::optional<std::string> str = i.name();
+            QString tempNamp = QString::fromStdString(str.get());
+            if (tempNamp == name){
+                onClickedPosition(i);
+                break;
+            }
+        }
+    });
 
-    connect(this,&LocationWidget::onOpenWidget,[=](bool t ,bool c ){
-        if (t && c){
-            mQQuickWidget->resize(300, 300);
+
+    connect(this,&LocationWidget::onOpenWidget,[=](bool a ,bool b , bool c ){
+        if (b ){
+            mQQuickWidget->resize(400, 300);
             mQQuickWidget->raise();
-            resize(300,300);
+            resize(400,300);
             raise();
             this->move(0,parent->height() - this->height());
 
-        }else if (t && !c) {
-            mQQuickWidget->resize(300, 100);
+        }else if (a) {
+            mQQuickWidget->resize(400, 120);
             mQQuickWidget->raise();
-            resize(300,100);
+            resize(400,120);
             raise();
             this->move(0,parent->height() - this->height());
-        } else if (!t && c){
-            mQQuickWidget->resize(300, 300);
+        }else if (c){
+            mQQuickWidget->resize(400, 80);
             mQQuickWidget->raise();
-            resize(300,300);
+            resize(400,80);
             raise();
             this->move(0,parent->height() - this->height());
         }
-
         else{
-            mQQuickWidget->resize(300, 60);
+            mQQuickWidget->resize(400, 60);
             mQQuickWidget->raise();
-            resize(300,60);
+            resize(400,60);
             raise();
             this->move(0,parent->height() - this->height());
         }
@@ -50,7 +61,17 @@ LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
     });
 }
 
-void LocationWidget::addItemPositio(double latitude, double longitude, double altitude)
+void LocationWidget::addViewPoint(osgEarth::Viewpoint point)
 {
-    emit itemPositionAdd(latitude,longitude ,altitude);
+     osgEarth::optional<std::string> str = point.name();
+     QString name = QString::fromStdString(str.get());
+     mListViewpoint.append(point);
+     double x = point.focalPoint()->x();
+     double y = point.focalPoint()->y();
+     emit savePosition(name , x ,y);
+}
+
+void LocationWidget::setMousePosition(double latitude, double longitude, double altitude)
+{
+    emit changePosition(latitude , longitude ,altitude);
 }

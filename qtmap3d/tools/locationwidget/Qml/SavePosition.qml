@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 Rectangle{
     id: rectangle
     width: 100
-    height: 80
+    height: 40
     radius: 5
     border.width: 1
     border.color: "black"
@@ -21,13 +21,13 @@ Rectangle{
         anchors.topMargin: 4
         spacing: 2
         TextField{
-            id:lat
+            id:name
             anchors.left:parent.left
             anchors.leftMargin: 3
             anchors.right: parent.right
             anchors.rightMargin: 3
             height: 18
-            placeholderText: "latitude"
+            placeholderText: "name"
             color: "black"
             rightPadding: 0
             bottomPadding: 0
@@ -43,54 +43,16 @@ Rectangle{
         }
 
 
-        TextField{
-            id:lon
-            placeholderText: "longitude"
-            anchors.left:parent.left
-            anchors.leftMargin: 3
-            anchors.right: parent.right
-            anchors.rightMargin: 3
-            height: 18
-            leftPadding: 5
-            color: "black"
-            rightPadding: 0
-            bottomPadding: 0
-            topPadding: 0
-            font.pointSize: 10
-            background: Rectangle{
-                color: "white"
-                radius: 5
-            }
-        }
 
-        TextField{
-            id:rang
-            placeholderText: "range"
-            anchors.left:parent.left
-            anchors.leftMargin: 3
-            anchors.right: parent.right
-            anchors.rightMargin: 3
-            height: 18
-            leftPadding: 5
-            color: "black"
-            rightPadding: 0
-            bottomPadding: 0
-            topPadding: 0
-            font.pointSize: 10
-            background: Rectangle{
-                color: "white"
-                radius: 5
-            }
-        }
         Rectangle{
-            width: 30
+            width: 40
             height: 15
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#88000000"
             radius: 10
             Text {
                 anchors.centerIn: parent
-                text: qsTr("GO")
+                text: qsTr("Save")
                 font.pixelSize: 10
                 color: "white"
 
@@ -98,7 +60,7 @@ Rectangle{
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    Location.goPosition(parseFloat(lat.text),parseFloat(lon.text), parseFloat(rang.text))
+                    Location.sendNamePosition(name.text)
                 }
             }
         }

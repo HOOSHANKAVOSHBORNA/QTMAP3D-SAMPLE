@@ -4,5 +4,6 @@
         <file>res/sortdown.png</file>
         <file>Qml/Addlocation.qml</file>
         <file>Qml/RecSavePosition.qml</file>
+        <file>Qml/SavePosition.qml</file>
     </qresource>
 </RCC>
