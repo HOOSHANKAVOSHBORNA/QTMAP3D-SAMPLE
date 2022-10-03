@@ -8,29 +8,32 @@ Rectangle {
 
     id : recsaved
     height: 20
-    color: "white"
+    color: "#88000000"
     radius: 5
 
     Text {
+        id :txt
         text:  location + " (" + lat + "," + lon + ")"
         font.pixelSize: 10
         anchors.left: parent.left
         anchors.leftMargin: 2
         anchors.verticalCenter: parent.verticalCenter
-        color: "black"
+        color: "white"
     }
     MouseArea{
         anchors.fill: recsaved
+        hoverEnabled: true
         onClicked: {
             Location.onCurrentClicked(location)
         }
-        onPressed: {
-            recsaved.width +=1
-            recsaved.height +=1
+
+        onEntered : {
+            txt.font.bold =true
+            recsaved.color = "#88006eff"
         }
-        onReleased: {
-            recsaved.width -=1
-            recsaved.height -=1
+        onExited: {
+           txt.font.bold =false
+            recsaved.color = "#88000000"
         }
     }
 }

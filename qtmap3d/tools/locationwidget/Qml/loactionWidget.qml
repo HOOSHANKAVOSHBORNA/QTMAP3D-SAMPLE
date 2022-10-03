@@ -28,7 +28,7 @@ Item{
         width: currentlocation.width + 25
         clip: true
         anchors.bottom: root.top
-        anchors.left: save.right
+        anchors.left: save.left
         anchors.leftMargin: 0
         color: "#282A31"
         border.color: "black"
@@ -76,8 +76,8 @@ Item{
         id:add
         width: 100
         height: 0
-        anchors.left: locationSave.right
-        anchors.leftMargin: 0
+        anchors.left: root.right
+        anchors.leftMargin: -110
         anchors.bottom: root.top
 
         anchors.bottomMargin: 0
@@ -149,7 +149,17 @@ Item{
                 onClicked: {
                     if(!isshowsave){
                         opensavelocation.start()
+                        if (isshow){
+                            close.start()
+                            isshow =false
+                        }
+                        if (isshowcurrnt){
+                            closesave.start()
+                            isshowcurrnt = false
+                        }
+
                         isshowsave = true
+
                         Location.onOpenWidget(isshow , isshowcurrnt  , isshowsave)
                     }else{
                         closesavelocation.start()
@@ -199,6 +209,14 @@ Item{
                 onClicked: {
                     if(!isshowcurrnt){
                         opensave.start()
+                        if (isshow){
+                            close.start()
+                            isshow =false
+                        }
+                        if (isshowsave){
+                            closesavelocation.start()
+                            isshowsave = false
+                        }
                         isshowcurrnt = true
                         Location.onOpenWidget(isshow, isshowcurrnt, isshowsave)
                     }
@@ -234,6 +252,16 @@ Item{
                 onClicked: {
                     if(!isshow){
                         open.start()
+                        if (isshowcurrnt){
+
+                            closesave.start()
+                            isshowcurrnt =false
+                        }
+                        if (isshowsave){
+
+                            closesavelocation.start()
+                            isshowsave = false
+                        }
                         isshow = true
                         Location.onOpenWidget(isshow , isshowcurrnt , isshowsave)
                     }else{

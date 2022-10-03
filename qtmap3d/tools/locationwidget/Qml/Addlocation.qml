@@ -83,6 +83,7 @@ Rectangle{
             }
         }
         Rectangle{
+            id :rec
             width: 30
             height: 15
             anchors.horizontalCenter: parent.horizontalCenter
@@ -97,8 +98,15 @@ Rectangle{
             }
             MouseArea{
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
                     Location.goPosition(parseFloat(lat.text),parseFloat(lon.text), parseFloat(rang.text))
+                }
+                onEntered : {
+                    rec.color = "#88006eff"
+                }
+                onExited: {
+                    rec.color = "#88000000"
                 }
             }
         }

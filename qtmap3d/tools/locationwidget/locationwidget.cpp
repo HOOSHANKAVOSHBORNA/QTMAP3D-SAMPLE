@@ -10,10 +10,10 @@ LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
     mQQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     mQQuickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     mQQuickWidget->setClearColor(Qt::transparent);
-    mQQuickWidget->resize(400, 60);
+    mQQuickWidget->resize(230, 60);
     mQQuickWidget->raise();
-    setMinimumSize(400,60);
-    setMaximumSize(400,300);
+    setMinimumSize(230,60);
+    setMaximumSize(230,300);
     mQQuickWidget->engine()->rootContext()->setContextProperty("Location",this);
     connect(this,&LocationWidget::onCurrentClicked,[=](QString name){
         foreach (osgEarth::Viewpoint i, mListViewpoint) {
@@ -29,29 +29,29 @@ LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
 
     connect(this,&LocationWidget::onOpenWidget,[=](bool a ,bool b , bool c ){
         if (b ){
-            mQQuickWidget->resize(400, 300);
+            mQQuickWidget->resize(230, 300);
             mQQuickWidget->raise();
-            resize(400,300);
+            resize(230,300);
             raise();
             this->move(0,parent->height() - this->height());
 
         }else if (a) {
-            mQQuickWidget->resize(400, 120);
+            mQQuickWidget->resize(230, 120);
             mQQuickWidget->raise();
-            resize(400,120);
+            resize(230,120);
             raise();
             this->move(0,parent->height() - this->height());
         }else if (c){
-            mQQuickWidget->resize(400, 80);
+            mQQuickWidget->resize(230, 80);
             mQQuickWidget->raise();
-            resize(400,80);
+            resize(230,80);
             raise();
             this->move(0,parent->height() - this->height());
         }
         else{
-            mQQuickWidget->resize(400, 60);
+            mQQuickWidget->resize(230, 60);
             mQQuickWidget->raise();
-            resize(400,60);
+            resize(230,60);
             raise();
             this->move(0,parent->height() - this->height());
         }
