@@ -14,18 +14,36 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>480</y>
-      <width>84</width>
-      <height>28</height>
+      <x>320</x>
+      <y>200</y>
+      <width>86</width>
+      <height>64</height>
      </rect>
     </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>mouse</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="font">
+        <font>
+         <family>Cantarell</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>current</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

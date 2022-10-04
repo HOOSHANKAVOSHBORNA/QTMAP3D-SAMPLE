@@ -42,9 +42,9 @@ LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
             raise();
             this->move(0,parent->height() - this->height());
         }else if (c){
-            mQQuickWidget->resize(230, 80);
+            mQQuickWidget->resize(230, 120);
             mQQuickWidget->raise();
-            resize(230,80);
+            resize(230,120);
             raise();
             this->move(0,parent->height() - this->height());
         }

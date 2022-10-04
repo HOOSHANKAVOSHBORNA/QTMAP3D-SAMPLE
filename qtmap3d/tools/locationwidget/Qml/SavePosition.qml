@@ -3,13 +3,21 @@ import QtQuick.Controls 2.12
 
 Rectangle{
     id: rectangle
-    width: 100
+    width: 150
     height: 40
     radius: 5
     border.width: 1
     border.color: "black"
     color: "#282A31"
     clip: true
+    Connections{
+        target: Location
+        onCurrentLocation:{
+            lat.text = latitude
+            lon.text = longitude
+        }
+    }
+
     Column{
         anchors.right: parent.right
         anchors.rightMargin: 3
@@ -41,9 +49,36 @@ Rectangle{
                 radius: 5
             }
         }
-
-
-
+        Rectangle{
+            anchors.left:parent.left
+            anchors.leftMargin: 3
+            anchors.right: parent.right
+            anchors.rightMargin: 3
+            height: 18
+            radius: 5
+            Text {
+                id: lat
+                text: ""
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 10
+                leftPadding: 2
+            }
+        }
+        Rectangle{
+            anchors.left:parent.left
+            anchors.leftMargin: 3
+            anchors.right: parent.right
+            anchors.rightMargin: 3
+            height: 18
+            radius: 5
+            Text {
+                id: lon
+                text: ""
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 10
+                leftPadding: 2
+            }
+        }
         Rectangle{
             id :rec
             width: 40
@@ -58,10 +93,16 @@ Rectangle{
                 color: "white"
 
             }
+
             MouseArea{
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
+                    opensave.start();
+                    isshowcurrnt = true
+                    closesavelocation.start()
+                    isshowsave  = false
+                    Location.onOpenWidget(isshow, isshowcurrnt, isshowsave)
                     Location.sendNamePosition(name.text)
                 }
                 onEntered : {

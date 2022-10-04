@@ -8,6 +8,8 @@ Rectangle{
     readonly property int textsize: 10
     readonly property int iconsize2: 10
     property bool valuepin: false
+    property var object:[]
+    property int i: 0
 
     id:root
     width: 200
@@ -23,11 +25,12 @@ Rectangle{
         }
         onModelAdded:{
             var component = Qt.createComponent("PanelItem.qml");
-            var object = component.createObject(rootlayer);
-            object.title= type+ " : "+ name
-            object.name = name
-            object.type = type
-            object.width= laout_back.width
+            object[i] = component.createObject(rootlayer);
+            object[i].title= type+ " : "+ name
+            object[i].name = name
+            object[i].type = type
+            object[i].width= laout_back.width
+            i+=1
         }
         onMinimize:{
             if (isMax){

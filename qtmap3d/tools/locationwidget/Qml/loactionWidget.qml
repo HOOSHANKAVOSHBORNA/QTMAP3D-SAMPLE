@@ -7,16 +7,19 @@ Item{
     property bool isshow :false
     property bool isshowcurrnt :false
     property bool isshowsave: false
+    property var object: []
+    property int i:0
     Connections{
         target: Location
         onSavePosition:{
             var component = Qt.createComponent("RecSavePosition.qml");
-            var object = component.createObject(rootlayer);
-            object.location = str
-            object.lat = x
-            object.lon = y
+            object[i] = component.createObject(rootlayer);
+            object[i].location = str
+            object[i].lat = x
+            object[i].lon = y
 
-            object.width= laout_back.width - 3
+            object[i].width= laout_back.width - 3
+            i+=1
         }
         onChangePosition:{
             currentlocation.text = latitude + " , " + longitude + " , " + altitude
@@ -25,7 +28,7 @@ Item{
 
     Rectangle{
         id :locationSave
-        width: currentlocation.width + 25
+        width: currentlocation.width + 60
         clip: true
         anchors.bottom: root.top
         anchors.left: save.left
@@ -74,10 +77,10 @@ Item{
     }
     Addlocation{
         id:add
-        width: 100
+        width: 115
         height: 0
         anchors.left: root.right
-        anchors.leftMargin: -110
+        anchors.leftMargin: -120
         anchors.bottom: root.top
 
         anchors.bottomMargin: 0
@@ -85,7 +88,7 @@ Item{
     }
     SavePosition{
         id:save
-        width: 100
+        width: 115
         height: 0
         anchors.left: parent.left
         anchors.rightMargin: 0
@@ -97,7 +100,7 @@ Item{
         id: opensavelocation
         target: save
         from: 0
-        to:40
+        to:80
         property: "height"
         duration: 200
         easing.type: Easing.InOutQuad
@@ -105,7 +108,7 @@ Item{
     NumberAnimation {
         id: closesavelocation
         target: save
-        from: 40
+        from: 80
         to:0
         property: "height"
         duration: 200
@@ -204,7 +207,7 @@ Item{
             MouseArea{
                 anchors.fill: parent
                 hoverEnabled: true
-                onEntered: parent.color = "#88000000"
+                onEntered: parent.color = "#66006eff"
                 onExited: parent.color =  "transparent"
                 onClicked: {
                     if(!isshowcurrnt){

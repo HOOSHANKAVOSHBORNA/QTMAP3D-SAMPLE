@@ -7,7 +7,9 @@ Item {
     property string name
     property string type
     property bool isSelected: false
+    property bool selected: false
     height: container.height + bar.height
+
 
     Rectangle {
 
@@ -23,7 +25,6 @@ Item {
         height: 22
         color:  "#404142"
         radius: 2
-        state: "notselect"
         Text {
             anchors.fill: parent
             font.family: "Times New Roman"
@@ -55,16 +56,32 @@ Item {
         }
         MouseArea{
             anchors.fill: parent
+            hoverEnabled: true
             onClicked: {
-                if (bar.state === "notselect"){
-                    bar.color = "#006eff"
-                    bar.state = "select"
-                    DetaliObject.onModelClicked(type,name)
-                }else{
-                    bar.color = "#404142"
-                    bar.state = "notselect"
-                }
+                for (var i in object){
+                    if (object[i].name === name){
+                        if (!selected){
+                            bar.color = "#006eff"
+                            selected = true
 
+                            DetaliObject.onModelClicked(type,name)
+                        }else{
+                            bar.color = "#404142"
+                            selected = false
+                        }
+                    }else{
+
+                        object[0].children[0].color = "#404142"
+                        object[i].selected = false
+                    }
+                }
+            }
+            onEntered: bar.color = "#33006eff"
+            onExited:{
+                bar.color = "#404142"
+                if(selected){
+                    bar.color = "#006eff"
+                }
             }
         }
 

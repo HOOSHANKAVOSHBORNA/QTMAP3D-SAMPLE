@@ -25,6 +25,7 @@ signals:
     void goPosition(float latitude ,float longitude ,float range);
     void onClickedPosition(osgEarth::Viewpoint point);
     void sendNamePosition(QString name);
+    void currentLocation(double latitude ,double longitude );
 
 private:
     QQuickWidget *mQQuickWidget;

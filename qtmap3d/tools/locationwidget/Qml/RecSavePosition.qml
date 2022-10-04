@@ -5,9 +5,10 @@ Rectangle {
     property string location
     property real lat
     property real lon
-
+    property bool isselected: false
     id : recsaved
     height: 20
+    width: 100
     color: "#88000000"
     radius: 5
 
@@ -24,7 +25,22 @@ Rectangle {
         anchors.fill: recsaved
         hoverEnabled: true
         onClicked: {
-            Location.onCurrentClicked(location)
+            for (var i in object){
+                if (object[i].location === location){
+                    if (!isselected){
+                        recsaved.color = "#006eff"
+                        isselected = true
+                        Location.onCurrentClicked(location)
+                    }else{
+                        recsaved.color = "#88000000"
+                        isselected = false
+                    }
+                }
+                else {
+                    object[i].color = "#88000000"
+                    object[i].isselected =false
+                }
+            }
         }
 
         onEntered : {
@@ -32,8 +48,10 @@ Rectangle {
             recsaved.color = "#88006eff"
         }
         onExited: {
-           txt.font.bold =false
-            recsaved.color = "#88000000"
+            if (!isselected){
+                txt.font.bold =false
+                recsaved.color = "#88000000"
+            }
         }
     }
 }

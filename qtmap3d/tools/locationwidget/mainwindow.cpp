@@ -49,3 +49,10 @@ void MainWindow::on_pushButton_clicked()
     double c = rand();
     mLocationWidget->setMousePosition(a,b,c);
 }
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    double a =rand();
+    double b = rand();
+    emit mLocationWidget->currentLocation(a,b);
+}
