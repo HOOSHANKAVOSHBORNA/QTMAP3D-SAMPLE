@@ -43,7 +43,7 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
             anchors.fill: parent
-            font.pixelSize: textsize
+            font.pointSize: textsize
 
         }
 
@@ -52,7 +52,7 @@ Rectangle {
     Rectangle {
         id: info
         //color: "#006efa"
-        color: "#FFFFFF"
+        color: "lightgray"
         layer.smooth: true
         width: parent.width -10
         height: parent.height -30
@@ -69,9 +69,11 @@ Rectangle {
                  id:textarea
                  font.family: "Times New Roman"
                  font.weight: Font.Normal
-                 font.pixelSize: textsize
+                 font.pointSize: textsize
                  text:""
+                 color: "black"
                  wrapMode: TextArea.Wrap
+
              }
 
              ScrollBar.vertical: ScrollBar { }
