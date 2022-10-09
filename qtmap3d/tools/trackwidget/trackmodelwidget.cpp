@@ -9,14 +9,16 @@ TrackModelWidget::TrackModelWidget(QWidget *parent)
     : QWidget(parent)
 
 {
-    mQQuickWidget = new QQuickWidget(QUrl(QStringLiteral("qrc:/trackwidget/trackwidget.qml")),this);
+    mQQuickWidget = new QQuickWidget(this);
+    QQmlContext  *context = mQQuickWidget->rootContext();
+    context->setContextProperty("DetaliObject", this);
+    mQQuickWidget->setSource(QUrl("qrc:/trackwidget/trackwidget.qml"));
     mQQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     mQQuickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     mQQuickWidget->setClearColor(Qt::transparent);
     mQQuickWidget->resize(200, 420);
     mQQuickWidget->raise();
-    //
-    mQQuickWidget->engine()->rootContext()->setContextProperty("DetaliObject",this);
+
     connect(this,&TrackModelWidget::changeSize,[=](bool t){
         if(t){
             resize(200,420);
