@@ -11,6 +11,8 @@
 #include <osgGA/NodeTrackerManipulator>
 #include <vehicle.h>
 
+#include "truck.h"
+
 #include<QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -34,27 +36,32 @@ void MainWindow::initOpenglWidget()
 
     osgGA::NodeTrackerManipulator* g_ntm = new osgGA::NodeTrackerManipulator;
 
-    model_3d = new vehicle;
+
+    //model_3d = new vehicle;
     //model_3d->movePack(osg::Vec3(5,5,0),10);
     //model_3d->spinHolder(osg::Vec3(-20,20,0));
 
-    animCall = new AnimtkUpdateCallback;
-    animCall->setVehicle(model_3d);
-    animCall->moveTruck(osg::Vec3(10, 10, 0), 10);
-    animCall->spinHolder(osg::Vec3(20, 20, 5));
-    animCall->setupAnimtkNode();
+
+
+    truck = new Truck;
+
+
+    truck->moveTo(osg::Vec3d(-20, 0, 0), 5);
+    truck->aimTarget(osg::Vec3(5,5,6));
 
     widget->getOsgViewer()->setCameraManipulator(g_ntm);
-   // g_ntm->setTrackNode(model_3d);
-    widget->getOsgViewer()->setSceneData(model_3d);
-  //  g_ntm->setDistance(50.0);
+    //g_ntm->setTrackNode(model_3d);
+    //g_ntm->setTrackNode(truck);
+    //widget->getOsgViewer()->setSceneData(model_3d);
+    widget->getOsgViewer()->setSceneData(truck);
+    //g_ntm->setDistance(50.0);
 }
 
 void MainWindow::on_pushButton_toggled(bool checked)
 {
     //model_3d->setPause(checked);
-    animCall->start();
-    animCall->spinHolder(osg::Vec3(40, 50, 50));
-    animCall->moveTruck(osg::Vec3(-10, -10, 0), 2);
+
+    truck->moveTo(osg::Vec3d(20, 0, 0), 5);
+    truck->aimTarget(osg::Vec3(-5,-5,1));
 
 }

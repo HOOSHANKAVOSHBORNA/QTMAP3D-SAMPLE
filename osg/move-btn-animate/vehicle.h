@@ -56,8 +56,14 @@ public:
     /** Callback method called by the NodeVisitor when visiting a node.*/
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
-    void start() { _startTime = osg::Timer::instance()->tick(); _currentTime = _startTime; _playing = true;}
-    void stop() { _currentTime = _startTime; _playing = false;}
+    void start() {
+        _startTime = osg::Timer::instance()->tick();
+        _currentTime = _startTime; _playing = true;
+    }
+    void stop() {
+        _currentTime = _startTime;
+        _playing = false;
+    }
 
     osg::ref_ptr<osgAnimation::Vec3LinearSampler> _truckPositionSampler;
     osg::ref_ptr<osgAnimation::FloatLinearSampler> _wheelRotationSampler;

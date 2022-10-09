@@ -7,7 +7,7 @@
 #include <osg/AnimationPath>
 #include <osg/PositionAttitudeTransform>
 #include "vehicle.h"
-
+#include "truck.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     osg::ref_ptr<vehicle> model_3d ;
+    Truck *truck;
     AnimtkUpdateCallback* animCall = new AnimtkUpdateCallback;
     ~MainWindow();
 

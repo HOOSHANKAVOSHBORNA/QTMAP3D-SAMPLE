@@ -14,13 +14,13 @@
 
 //}
 
-void vehicle::spinHolder(osg::Vec3d desti)
-{
-    spinAnimPC = new osg::AnimationPathCallback;
-    spinAnimPC->setPivotPoint(osg::Vec3d(-5,0,0));
-    spinAnimPC->setAnimationPath(spiner(desti));
-    spinerPos->setUpdateCallback(spinAnimPC);
-}
+//void vehicle::spinHolder(osg::Vec3d desti)
+//{
+//    spinAnimPC = new osg::AnimationPathCallback;
+//    spinAnimPC->setPivotPoint(osg::Vec3d(-5,0,0));
+//    spinAnimPC->setAnimationPath(spiner(desti));
+//    spinerPos->setUpdateCallback(spinAnimPC);
+//}
 
 //void vehicle::wheelRot()
 //{
@@ -32,7 +32,7 @@ void vehicle::spinHolder(osg::Vec3d desti)
 //    wheelAnimPcRl2 = new osg::AnimationPathCallback;
 
 
-    //    wheelAnimPcFr->setAnimationPath(wheelAnimationPath(wheelPosFr->getPosition(),180));
+//        wheelAnimPcFr->setAnimationPath(wheelAnimationPath(wheelPosFr->getPosition(),180));
 
     //    wheelAnimPcFl->setAnimationPath(wheelAnimationPath(wheelPosFl->getPosition(),0));
 
@@ -167,8 +167,8 @@ vehicle::vehicle()
 
 }
 
-osg::AnimationPath *vehicle::run(osg::Vec3d& dest, float speed)
-{
+//osg::AnimationPath *vehicle::run(osg::Vec3d& dest, float speed)
+//{
 
     //    osg::Vec3d currentPos = carPos->getPosition();
     //    osg::Quat rotate;
@@ -191,49 +191,49 @@ osg::AnimationPath *vehicle::run(osg::Vec3d& dest, float speed)
     //    carPath->insert(time,cp1);
     //
     //   qDebug() <<carPath->getPeriod();
-    return carPath;
+//    return carPath;
 
-}
+//}
 
-osg::AnimationPath *vehicle::wheelAnimationPath(osg::Vec3d wheelLoc, float RotDeg)
-{
-    osg::AnimationPath* wheelPath = new osg::AnimationPath;
-    wheelPath->setLoopMode(osg::AnimationPath::LOOP);
+//osg::AnimationPath *vehicle::wheelAnimationPath(osg::Vec3d wheelLoc, float RotDeg)
+//{
+//    osg::AnimationPath* wheelPath = new osg::AnimationPath;
+//    wheelPath->setLoopMode(osg::AnimationPath::LOOP);
 
-    osg::AnimationPath::ControlPoint cp0;
-    osg::AnimationPath::ControlPoint cp1;
-    osg::AnimationPath::ControlPoint cp2;
+//    osg::AnimationPath::ControlPoint cp0;
+//    osg::AnimationPath::ControlPoint cp1;
+//    osg::AnimationPath::ControlPoint cp2;
 
-    if (RotDeg==180){
-        cp0.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(0.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
-        cp1.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(-180.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
-        cp2.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(-359.9),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
-    }
-    else {
-        cp0.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(0.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
-        cp1.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(180.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
-        cp2.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(359.9),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
-    }
+//    if (RotDeg==180){
+//        cp0.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(0.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
+//        cp1.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(-180.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
+//        cp2.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(-359.9),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
+//    }
+//    else {
+//        cp0.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(0.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
+//        cp1.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(180.0),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
+//        cp2.setRotation(osg::Quat(osg::inDegrees(0.0),osg::X_AXIS,osg::inDegrees(359.9),osg::Y_AXIS,osg::inDegrees(RotDeg),osg::Z_AXIS));
+//    }
 
 
-    cp0.setScale(osg::Vec3(2.f,2.f,2.f));
-    cp0.setPosition(wheelLoc);
-    cp1.setScale(osg::Vec3(2.f,2.f,2.f));
-    cp1.setPosition(wheelLoc);
-    cp2.setScale(osg::Vec3(2.f,2.f,2.f));
-    cp2.setPosition(wheelLoc);
+//    cp0.setScale(osg::Vec3(2.f,2.f,2.f));
+//    cp0.setPosition(wheelLoc);
+//    cp1.setScale(osg::Vec3(2.f,2.f,2.f));
+//    cp1.setPosition(wheelLoc);
+//    cp2.setScale(osg::Vec3(2.f,2.f,2.f));
+//    cp2.setPosition(wheelLoc);
 
-    wheelPath->insert(0,cp0);
-    wheelPath->insert(0.5,cp1);
-    wheelPath->insert(1,cp2);
+//    wheelPath->insert(0,cp0);
+//    wheelPath->insert(0.5,cp1);
+//    wheelPath->insert(1,cp2);
 
-    return wheelPath;
+//    return wheelPath;
 
-}
+//}
 
-osg::AnimationPath *vehicle::spiner(osg::Vec3d &dest)
-{
-    osg::AnimationPath* spinPath = new osg::AnimationPath;
+//osg::AnimationPath *vehicle::spiner(osg::Vec3d &dest)
+//{
+//    osg::AnimationPath* spinPath = new osg::AnimationPath;
 
     //    osg::Vec3d currentPos = spinerPos->getPosition();
     //    osg::Quat rotate;
@@ -257,12 +257,12 @@ osg::AnimationPath *vehicle::spiner(osg::Vec3d &dest)
     //    spinPath->insert(1,cp1);
 
     //    spinPath->setLoopMode(osg::AnimationPath::NO_LOOPING);
-    return spinPath;
-}
+//    return spinPath;
+//}
 
-osg::AnimationPath *vehicle::holderRot(osg::Vec3d &dest)
-{
-    osg::AnimationPath* holderPath = new osg::AnimationPath;
+//osg::AnimationPath *vehicle::holderRot(osg::Vec3d &dest)
+//{
+//    osg::AnimationPath* holderPath = new osg::AnimationPath;
 
     //    osg::Vec3d currentPos = holderPos->getPosition();
     //    osg::Quat rotate;
@@ -286,20 +286,20 @@ osg::AnimationPath *vehicle::holderRot(osg::Vec3d &dest)
     //    holderPath->insert(1,cp1);
 
     //    holderPath->setLoopMode(osg::AnimationPath::NO_LOOPING);
-    return holderPath;
-}
+//    return holderPath;
+//}
 
-void vehicle::setPause(bool pause)
-{
-    wheelAnimPcFr->setPause(pause);
-    wheelAnimPcFl->setPause(pause);
-    wheelAnimPcRl1->setPause(pause);
-    wheelAnimPcRr1->setPause(pause);
-    wheelAnimPcRr2->setPause(pause);
-    wheelAnimPcRl2->setPause(pause);
+//void vehicle::setPause(bool pause)
+//{
+//    wheelAnimPcFr->setPause(pause);
+//    wheelAnimPcFl->setPause(pause);
+//    wheelAnimPcRl1->setPause(pause);
+//    wheelAnimPcRr1->setPause(pause);
+//    wheelAnimPcRr2->setPause(pause);
+//    wheelAnimPcRl2->setPause(pause);
 
-    carAnimPC->setPause(pause);
-}
+//    carAnimPC->setPause(pause);
+//}
 
 
 void AnimtkUpdateCallback::moveTruck(osg::Vec3d desti, float speedd)
