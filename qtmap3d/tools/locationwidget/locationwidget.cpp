@@ -6,7 +6,11 @@
 
 LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
 {
-    mQQuickWidget = new QQuickWidget(QUrl(QStringLiteral("qrc:/Qml/loactionWidget.qml")),this);
+    //mQQuickWidget = new QQuickWidget(QUrl(QStringLiteral("qrc:/Qml/loactionWidget.qml")),this);
+    mQQuickWidget = new QQuickWidget(this);
+    QQmlContext  *context = mQQuickWidget->rootContext();
+    context->setContextProperty("Location", this);
+    mQQuickWidget->setSource(QUrl("qrc:/Qml/loactionWidget.qml"));
     mQQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     mQQuickWidget->setAttribute(Qt::WA_AlwaysStackOnTop);
     mQQuickWidget->setClearColor(Qt::transparent);
@@ -14,7 +18,7 @@ LocationWidget::LocationWidget(QWidget *parent) : QWidget(parent)
     mQQuickWidget->raise();
     setMinimumSize(230,60);
     setMaximumSize(230,300);
-    mQQuickWidget->engine()->rootContext()->setContextProperty("Location",this);
+    //mQQuickWidget->engine()->rootContext()->setContextProperty("Location",this);
     connect(this,&LocationWidget::onCurrentClicked,[=](QString name){
         foreach (osgEarth::Viewpoint i, mListViewpoint) {
             osgEarth::optional<std::string> str = i.name();

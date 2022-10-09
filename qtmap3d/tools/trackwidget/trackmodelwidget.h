@@ -35,7 +35,7 @@ signals:
     Q_INVOKABLE void onPin (bool t);
     Q_INVOKABLE void modelInfo (QString t ,QString n,QString str);
     Q_INVOKABLE void close();
-    Q_INVOKABLE void minimize(bool isMax);
+    Q_INVOKABLE void minimize( bool isMax);
     Q_INVOKABLE void modelPosition(QString t,QString n, double latitude , double longitude , double altitude);
     Q_INVOKABLE void changeSize(bool t);
 
