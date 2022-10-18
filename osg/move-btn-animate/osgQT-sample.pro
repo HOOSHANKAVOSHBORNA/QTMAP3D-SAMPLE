@@ -16,12 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    fly.cpp \
     main.cpp \
     mainwindow.cpp \
     truck.cpp \
     vehicle.cpp
 
 HEADERS += \
+    fly.h \
     mainwindow.h \
     truck.h \
     vehicle.h
@@ -36,7 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
-unix:!macx: LIBS += -losg -losgUtil -losgViewer -losgGA -losgDB -losgSim
+unix:!macx: LIBS += -losg -losgUtil -losgViewer -losgGA -losgDB -losgSim -losgParticle
 
 
 

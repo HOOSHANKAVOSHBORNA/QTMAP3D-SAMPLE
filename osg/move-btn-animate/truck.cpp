@@ -1,7 +1,9 @@
 #include "truck.h"
+#include <osgParticle/ExplosionEffect>
+#include <osgParticle/ExplosionDebrisEffect>
+#include <osgParticle/FireEffect>
 
-
-Truck::Truck()
+Truck::Truck(osg::Group *parent) : _parent(parent)
 {
 
     _truck     = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/truck-body.osgt");
@@ -9,9 +11,28 @@ Truck::Truck()
     _dualWheel = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/wheel-dual.osgt");
     _spiner    = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/truck-spiner.osgt");
     _holder    = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/truck-holder.osgt");
-
+    _rocket    = osgDB::readRefNodeFile("../../../QTMAP3D-DATA/dataosgearth/model/truck/rocket.osgt");
 
     _wholeTruckTransform = new osg::MatrixTransform();
+
+    _rocketTransform_0 = new osg::MatrixTransform();
+    _rocketTransform_0->setMatrix(osg::Matrix::translate(osg::Vec3(6.8, -1.3, 0)));
+    _rocketTransform_0->addChild(_rocket);
+
+
+    _rocketTransform_1 = new osg::MatrixTransform();
+    _rocketTransform_1->setMatrix(osg::Matrix::translate(osg::Vec3(6.8, 0.0, 0)));
+    _rocketTransform_1->addChild(_rocket);
+
+
+    _rocketTransform_2 = new osg::MatrixTransform();
+    _rocketTransform_2->setMatrix(osg::Matrix::translate(osg::Vec3(6.8, 1.3, 0)));
+    _rocketTransform_2->addChild(_rocket);
+
+//    _rocketsPackTransform = new osg::MatrixTransform();
+//    _rocketsPackTransform->addChild(_rocketTransform_0);
+//    _rocketsPackTransform->addChild(_rocketTransform_1);
+//    _rocketsPackTransform->addChild(_rocketTransform_2);
 
     _truckTransform = new osg::MatrixTransform();
     _truckTransform->addChild(_truck);
@@ -19,6 +40,13 @@ Truck::Truck()
     _holderTransform = new osg::MatrixTransform();
     _holderTransform->setMatrix(osg::Matrix::translate(osg::Vec3(-2, 0, 1.3)));
     _holderTransform->addChild(_holder);
+    _holderTransform->addChild(_rocketTransform_0);
+    _holderTransform->addChild(_rocketTransform_1);
+    _holderTransform->addChild(_rocketTransform_2);
+
+    _rocketsExis[0] = true;
+    _rocketsExis[1] = true;
+    _rocketsExis[2] = true;
 
     _spinerTransform = new osg::MatrixTransform();
     _spinerTransform->setMatrix(osg::Matrix::translate(osg::Vec3(-5, 0, 2.6)));
@@ -79,15 +107,14 @@ Truck::Truck()
     _wholeTruckTransform->addChild(_wheelTransformRl2);
     _wholeTruckTransform->addChild(_wheelTransformRr2);
 
-
     this->addChild(_wholeTruckTransform);
 
-
     _wholeTruckUpdateCallback = new TruckUpdateCallback;
-    _leftWheelUpdateCallback      = new TruckUpdateCallback;
-    _rightWheelUpdateCallback      = new TruckUpdateCallback;
+    _leftWheelUpdateCallback  = new TruckUpdateCallback;
+    _rightWheelUpdateCallback = new TruckUpdateCallback;
     _spinerUpdateCallback     = new TruckUpdateCallback;
     _holderUpdateCallback     = new TruckUpdateCallback;
+    //_rocketLaunchUpdateCallback = new TruckUpdateCallback;
 
 
     _wholeTruckAnimPath = new osg::AnimationPath;
@@ -95,18 +122,21 @@ Truck::Truck()
     _rightWheelAnimPath = new osg::AnimationPath;
     _spinerAnimPath     = new osg::AnimationPath;
     _holderAnimPath     = new osg::AnimationPath;
+    //_rocketLaunch       = new osg::AnimationPath;
 
     _wholeTruckUpdateCallback->setAnimationPath(_wholeTruckAnimPath);
     _leftWheelUpdateCallback->setAnimationPath(_leftWheelAnimPath);
     _rightWheelUpdateCallback->setAnimationPath(_rightWheelAnimPath);
     _spinerUpdateCallback->setAnimationPath(_spinerAnimPath);
     _holderUpdateCallback->setAnimationPath(_holderAnimPath);
+    //_rocketLaunchUpdateCallback->setAnimationPath(_rocketLaunch);
 
     _wholeTruckAnimPath->setLoopMode(osg::AnimationPath::LoopMode::NO_LOOPING);
     _leftWheelAnimPath->setLoopMode(osg::AnimationPath::LoopMode::LOOP);
     _rightWheelAnimPath->setLoopMode(osg::AnimationPath::LoopMode::LOOP);
     _spinerAnimPath->setLoopMode(osg::AnimationPath::LoopMode::NO_LOOPING);
     _holderAnimPath->setLoopMode(osg::AnimationPath::LoopMode::NO_LOOPING);
+    //_rocketLaunch->setLoopMode(osg::AnimationPath::LoopMode::NO_LOOPING);
 
     _wholeTruckTransform->setUpdateCallback(_wholeTruckUpdateCallback);
     _rightWheelRotation->setUpdateCallback(_rightWheelUpdateCallback);
@@ -115,9 +145,9 @@ Truck::Truck()
     _leftDualWheelRotation->setUpdateCallback(_leftWheelUpdateCallback);
     _spinerTransform->setUpdateCallback(_spinerUpdateCallback);
     _holderTransform->setUpdateCallback(_holderUpdateCallback);
+    //_rocketsPackTransform->setUpdateCallback(_rocketLaunchUpdateCallback);
 
 }
-
 void Truck::moveTo(osg::Vec3d desti, float speed)
 {
     _wholeTruckUpdateCallback->stop();
@@ -140,11 +170,14 @@ void Truck::moveTo(osg::Vec3d desti, float speed)
     osg::AnimationPath::ControlPoint l_wheel_cp2;
 
     osg::Vec3d currentTruckPos = _wholeTruckTransform->getMatrix().getTrans();
-    osg::Vec3d axis = desti - currentTruckPos;
+    osg::Vec3d axisf = desti - currentTruckPos;
 
     osg::Quat rotate;
-    rotate.makeRotate(osg::Vec3d(osg::X_AXIS), axis);
-    const float time = static_cast<float>(axis.length())/speed;
+    currentTruckPos.z() = 0;
+    desti.z() = 0;
+    axisf.z() = 0;
+    rotate.makeRotate(osg::Vec3d(osg::X_AXIS), axisf);
+    const float time = static_cast<float>(axisf.length())/speed;
 
 
     truck_cp0.setPosition(currentTruckPos);
@@ -198,17 +231,27 @@ void Truck::moveTo(osg::Vec3d desti, float speed)
 
 void Truck::aimTarget(osg::Vec3d target)
 {
-
     _spinerUpdateCallback->stop();
     _holderUpdateCallback->stop();
+    //_rocketLaunchUpdateCallback->stop();
 
     _spinerAnimPath->clear();
     _holderAnimPath->clear();
+    //_rocketLaunch->clear();
 
+    osg::AnimationPath::ControlPoint rocket_cp0;
+    osg::AnimationPath::ControlPoint rocket_cp1;
     osg::AnimationPath::ControlPoint spiner_cp0;
     osg::AnimationPath::ControlPoint spiner_cp1;
     osg::AnimationPath::ControlPoint holder_cp0;
     osg::AnimationPath::ControlPoint holder_cp1;
+
+
+//    rocket_cp0.setPosition(_rocketsPackTransform->getMatrix().getTrans());
+//    rocket_cp1.setPosition(target);
+
+    //_rocketLaunch->insert(0,rocket_cp0);
+    //_rocketLaunch->insert(3,rocket_cp1);
 
     osg::Vec3d currentSpinPos = _spinerTransform->getMatrix().getTrans();
     osg::Vec3d axis = target - currentSpinPos;
@@ -251,15 +294,68 @@ void Truck::aimTarget(osg::Vec3d target)
 
     _spinerUpdateCallback->start();
     _holderUpdateCallback->start();
+    //_rocketLaunchUpdateCallback->start();
+//    QObject::connect(_holderUpdateCallback,
+//                     &TruckUpdateCallback::finished,
+//                     _rocketLaunchUpdateCallback,
+    //                     &TruckUpdateCallback::start);
 }
 
+void Truck::shoot(int index)
+{
+
+    if (index < 0  || index > 2)
+        return;
+
+    osg::Vec3 offset;
+    bool doFire = false;
+
+    switch(index) {
+    case 0:
+
+        if (_rocketsExis[0] == true) {
+            offset = osg::Vec3(0.0,-1.0, 0.0);
+            _holderTransform->removeChild(_rocketTransform_0);
+
+            _rocketsExis[0] = false;
+            doFire = true;
+        }
+
+        break;
+
+    case 1:
+        if (_rocketsExis[1] == true) {
+
+            offset = osg::Vec3(0.0, 0.0, 0.0);
+            _holderTransform->removeChild(_rocketTransform_1);
+
+            _rocketsExis[1] = false;
+            doFire = true;
+        }
+        break;
+
+    case 2:
+        if (_rocketsExis[2] == true) {
+            offset = osg::Vec3(0.0, 1.0, 0.0);
+            _holderTransform->removeChild(_rocketTransform_2);
+            _rocketsExis[2] = false;
+            doFire = true;
+        }
+        break;
+    }
 
 
+    if (doFire) {
+        osgParticle::ExplosionEffect *explode = new osgParticle::ExplosionEffect(offset, 1.0f, 20.0f);
+        explode->setUseLocalParticleSystem(false);
+        explode->setTextureFileName("/home/client111/Downloads/fire.png");
+        _holderTransform->addChild(explode);
 
+        if (_parent)
+            _parent->addChild(explode->getParticleSystem());
 
-
-
-
+    }
+}
 
 
 
@@ -309,7 +405,6 @@ void TruckUpdateCallback::start()
         _currentTime = _startTime;
         _playing = true;
         AnimationPathCallback::reset();
-
 
         emit started();
     }

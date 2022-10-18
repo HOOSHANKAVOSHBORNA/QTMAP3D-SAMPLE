@@ -8,6 +8,7 @@
 #include <osg/PositionAttitudeTransform>
 #include "vehicle.h"
 #include "truck.h"
+#include "fly.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,16 +22,20 @@ public:
     MainWindow(QWidget *parent = nullptr);
     osg::ref_ptr<vehicle> model_3d ;
     Truck *truck;
+    FlyModel *rocket;
     AnimtkUpdateCallback* animCall = new AnimtkUpdateCallback;
     ~MainWindow();
 
+
 public slots:
     void initOpenglWidget();
+
 private slots:
     void on_pushButton_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
     osgQOpenGLWidget *widget;
+
 };
 #endif // MAINWINDOW_H

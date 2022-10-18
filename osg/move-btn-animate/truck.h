@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <osgAnimation/Sampler>
 #include <QTextStream>
+#include <array>
 
 
 class TruckUpdateCallback;
@@ -21,9 +22,11 @@ class TruckUpdateCallback;
 class Truck: public osg::Group
 {
 public:
-    Truck();
+    Truck(osg::Group *parent);
     void moveTo(osg::Vec3d desti, float speed);
     void aimTarget(osg::Vec3d target);
+    void shoot(int index);
+
 private:
     osg::MatrixTransform* _wholeTruckTransform;
     osg::MatrixTransform* _truckTransform;
@@ -35,6 +38,11 @@ private:
     osg::MatrixTransform* _wheelTransformRl1;
     osg::MatrixTransform* _wheelTransformRr2;
     osg::MatrixTransform* _wheelTransformRl2;
+    osg::MatrixTransform* _rocketTransform_0;
+    osg::MatrixTransform* _rocketTransform_1;
+    osg::MatrixTransform* _rocketTransform_2;
+//    osg::MatrixTransform* _rocketsPackTransform;
+
 
 
     osg::ref_ptr<osg::MatrixTransform> _leftWheelRotation;
@@ -47,13 +55,17 @@ private:
     osg::ref_ptr<osg::Node> _dualWheel;
     osg::ref_ptr<osg::Node> _spiner;
     osg::ref_ptr<osg::Node> _holder;
+    osg::ref_ptr<osg::Node> _rocket;
+    osg::ref_ptr<osg::Node> _target;
 
     TruckUpdateCallback *_wholeTruckUpdateCallback = nullptr;
     TruckUpdateCallback *_leftWheelUpdateCallback      = nullptr;
     TruckUpdateCallback *_rightWheelUpdateCallback      = nullptr;
     TruckUpdateCallback *_spinerUpdateCallback     = nullptr;
     TruckUpdateCallback *_holderUpdateCallback     = nullptr;
+    //TruckUpdateCallback *_rocketLaunchUpdateCallback = nullptr;
 
+    //osg::AnimationPath *_rocketLaunch = nullptr;
     osg::AnimationPath *_wholeTruckAnimPath = nullptr;
     osg::AnimationPath *_rightWheelAnimPath      = nullptr;
     osg::AnimationPath *_leftWheelAnimPath      = nullptr;
@@ -63,6 +75,8 @@ private:
     osg::Quat curSpinRotate {osg::Quat()};
     osg::Quat curHoldRotate {osg::Quat()};
 
+    osg::Group *_parent = nullptr;
+    std::array<bool, 3> _rocketsExis;
 };
 
 class TruckUpdateCallback : public QObject, public osg::AnimationPathCallback{
