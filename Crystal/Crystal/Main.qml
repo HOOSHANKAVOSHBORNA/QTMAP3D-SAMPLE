@@ -72,20 +72,24 @@ CrystalWindow {
             id: hideAnimation
             target: sideRect
             property: "x"
-            duration: 250.0 * Math.abs(-320 - sideRect.x) / 340.0
+            duration: 300.0 * Math.abs(-320 - sideRect.x) / 340.0
             from: sideRect.x
             to: -320
             loops: 1
+
+            easing.type: Easing.OutQuint
         }
 
         PropertyAnimation {
             id: showAnimation
             target: sideRect
             property: "x"
-            duration: 250.0 * Math.abs(20 - sideRect.x) / 340.0
+            duration: 300.0 * Math.abs(20 - sideRect.x) / 340.0
             from: sideRect.x
             to: 20
             loops: 1
+
+            easing.type: Easing.OutQuint
         }
 
 

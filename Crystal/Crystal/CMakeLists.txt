@@ -17,10 +17,11 @@ set(CMAKE_CXX_EXTENSIONS ON)
 find_package(Qt5 COMPONENTS Core Quick Gui Widgets REQUIRED)
 
 add_executable(Crystal
-        main.cpp
-        osgrenderer.cpp
-        crystalwindow.cpp
-        qml.qrc)
+        Main.cpp
+        OsgRenderer.cpp
+        OsgQuickWindow.cpp
+        CrystalWindow.cpp
+        Qml.qrc)
 
 
 target_include_directories(Crystal PUBLIC "/usr/local/include")

@@ -1,6 +1,7 @@
-#ifndef CRYSTALWINDOW_H
-#define CRYSTALWINDOW_H
+#ifndef OSGQUICKWINDOW_H
+#define OSGQUICKWINDOW_H
 
+#include <QWindow>
 #include <QQuickWindow>
 #include <QOpenGLFunctions_2_0>
 #include <OpenThreads/ReadWriteMutex>
@@ -12,21 +13,22 @@
 #include <osgEarth/MapNode>
 #include <osgEarthDrivers/gdal/GDALOptions>
 
-#include "osgrenderer.h"
+#include "OsgRenderer.h"
 
-class CrystalWindow : public QQuickWindow
+class OsgQuickWindow : public QQuickWindow
 {
     Q_OBJECT
 
 public:
-    CrystalWindow(QWindow *parent = nullptr);
-    ~CrystalWindow();
+    OsgQuickWindow(QWindow *parent = nullptr);
+    ~OsgQuickWindow();
+
+
+    osgViewer::Viewer *getViewer() const;
 
 public slots:
-    void sync();
     void cleanup();
     void frame();
-    void onAfterRendering();
 
 private:
     void initializeGL();
@@ -54,19 +56,13 @@ private:
     QOpenGLFunctions_2_0 *m_pOGLF = nullptr;
     OSGRenderer *m_pRenderer = nullptr;
 
-    bool m_bSynced      = false;
-    bool m_bInitialized = false;
     bool m_bResized     = false;
 
     int m_viewportWidth = 0;
     int m_viewportHeight = 0;
 
-    OpenThreads::ReadWriteMutex m_osgMutex;
-
     bool m_isFirstFrame = true;
 
-    osg::ref_ptr<osgEarth::MapNode> mMapNodeGeo;
-    osg::ref_ptr<osg::Group> mMapRoot;
 };
 
-#endif // CRYSTALWINDOW_H
+#endif // OSGQUICKWINDOW_H
