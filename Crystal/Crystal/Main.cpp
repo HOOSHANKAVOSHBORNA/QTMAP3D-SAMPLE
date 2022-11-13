@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     QSurfaceFormat fmt;
     fmt.setVersion(2, 0);
     fmt.setProfile(QSurfaceFormat::OpenGLContextProfile::CompatibilityProfile);
-    fmt.setSamples(2);
+    fmt.setSamples(4);
     QSurfaceFormat::setDefaultFormat(fmt);
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

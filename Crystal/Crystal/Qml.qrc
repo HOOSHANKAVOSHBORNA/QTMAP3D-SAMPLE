@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Main.qml</file>
+        <file>MenuWidget.qml</file>
     </qresource>
 </RCC>

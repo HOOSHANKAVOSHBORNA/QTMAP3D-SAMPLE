@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/Toolbox.png</file>
+        <file>Resources/Settings.png</file>
+        <file>Resources/Layers.png</file>
+    </qresource>
+</RCC>

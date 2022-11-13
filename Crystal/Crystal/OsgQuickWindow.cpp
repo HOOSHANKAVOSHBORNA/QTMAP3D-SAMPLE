@@ -146,6 +146,9 @@ void OsgQuickWindow::mousePressEvent(QMouseEvent *event)
     if (m_pRenderer)
         m_pRenderer->mousePressEvent(event);
 
+
+    m_lastMousePressTime = QTime::currentTime();
+    m_lastPressPoint = event->pos();
 }
 
 void OsgQuickWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -159,6 +162,12 @@ void OsgQuickWindow::mouseReleaseEvent(QMouseEvent *event)
         m_pRenderer->mouseReleaseEvent(event);
 
 
+    if (m_lastMousePressTime.msecsTo(QTime::currentTime()) < 400) {
+        const QPoint diff = event->pos() - m_lastPressPoint;
+        if (std::abs(diff.x()) < 10 && std::abs(diff.y()) < 10) {
+            emit clicked();
+        }
+    }
 }
 
 void OsgQuickWindow::mouseDoubleClickEvent(QMouseEvent *event)
@@ -209,6 +218,6 @@ void OsgQuickWindow::createOsgRenderer()
     const float pixelRatio = static_cast<float>(screen()->devicePixelRatio());
     m_pRenderer->setupOSG(0 , 0, width(), height(), pixelRatio);
 
-    m_pRenderer->getCamera()->setClearColor(osg::Vec4(0.3f, 0.3f, 0.3f, 1.0f));
+    m_pRenderer->getCamera()->setClearColor(osg::Vec4(0.15f, 0.15f, 0.15f, 1.0f));
 }
 

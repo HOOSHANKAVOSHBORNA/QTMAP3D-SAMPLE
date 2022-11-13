@@ -15,6 +15,8 @@
 
 #include "OsgRenderer.h"
 
+#include <QTime>
+
 class OsgQuickWindow : public QQuickWindow
 {
     Q_OBJECT
@@ -50,6 +52,7 @@ protected:
 
 
 signals:
+    void clicked();
     void initialized();
 
 private:
@@ -63,6 +66,9 @@ private:
 
     bool m_isFirstFrame = true;
 
+
+    QTime m_lastMousePressTime = QTime::currentTime();
+    QPoint m_lastPressPoint = QPoint();
 };
 
 #endif // OSGQUICKWINDOW_H

@@ -21,7 +21,8 @@ add_executable(Crystal
         OsgRenderer.cpp
         OsgQuickWindow.cpp
         CrystalWindow.cpp
-        Qml.qrc)
+        Qml.qrc
+        Crystal.qrc)
 
 
 target_include_directories(Crystal PUBLIC "/usr/local/include")
