@@ -21,6 +21,10 @@ add_executable(Crystal
         OsgRenderer.cpp
         OsgQuickWindow.cpp
         CrystalWindow.cpp
+        CrystalPluginInterface.cpp
+        CrystalApplication.cpp
+        CrystalMapController.cpp
+        CrystalPluginManager.cpp
         Qml.qrc
         Crystal.qrc)
 

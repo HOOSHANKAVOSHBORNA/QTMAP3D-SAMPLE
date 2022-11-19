@@ -91,6 +91,10 @@ protected:
 
     void setKeyboardModifiers(QInputEvent* event);
 
+
+signals:
+    void needsUpdate();
+
 };
 
 #endif // OSGRENDERER_H

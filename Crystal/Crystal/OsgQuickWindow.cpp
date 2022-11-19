@@ -1,5 +1,4 @@
 
-#include "OsgQuickWindow.h"
 #include <QResizeEvent>
 #include <iostream>
 #include <QScreen>
@@ -9,9 +8,14 @@
 #include <osg/Shape>
 #include <QThread>
 #include <QtOpenGL/QtOpenGL>
+#include <iostream>
+
+#include "OsgQuickWindow.h"
+#include "CrystalMapController.h"
 
 OsgQuickWindow::OsgQuickWindow(QWindow *parent) :
-    QQuickWindow(parent)
+    QQuickWindow(parent),
+    m_pMapController(new CrystalMapController(this))
 {
     m_pOGLF = new QOpenGLFunctions_2_0;
 
@@ -31,20 +35,18 @@ OsgQuickWindow::OsgQuickWindow(QWindow *parent) :
 OsgQuickWindow::~OsgQuickWindow()
 {
     cleanup();
+    m_pMapController->deleteLater();
 }
 
-osgViewer::Viewer *OsgQuickWindow::getViewer() const
+CrystalMapController *OsgQuickWindow::mapController() const
 {
-    return static_cast<osgViewer::Viewer*>(m_pRenderer);
+    return m_pMapController;
 }
+
 
 void OsgQuickWindow::cleanup()
 {
-    if (m_pRenderer) {
-        m_pRenderer->deleteLater();
-        m_pRenderer = nullptr;
-    }
-
+    m_pMapController->cleanup();
 }
 
 void OsgQuickWindow::frame()
@@ -57,21 +59,32 @@ void OsgQuickWindow::frame()
     paintGL();
 }
 
+void OsgQuickWindow::restoreContext()
+{
+    if (m_pContext && m_pSurface) {
+        m_pContext->makeCurrent(m_pSurface);
+    }
+}
+
 
 void OsgQuickWindow::initializeGL()
 {
+    //std::cout << "initializeGL" << std::endl;
+
     m_pOGLF->initializeOpenGLFunctions();
 
-    QOpenGLContext * const ctx = QOpenGLContext::currentContext();
-    QSurface * const surface = ctx->surface();
+    m_pContext = QOpenGLContext::currentContext();
+    m_pSurface = m_pContext->surface();
 
 
-    createOsgRenderer();
-    ctx->makeCurrent(surface);
+    m_pMapController->initializeGL(width(), height(), screen(), renderTargetId());
 
-    emit initialized();
+    restoreContext();
+    m_pMapController->initializeOsgEarth();
+    restoreContext();
+    emit osgInitialized();
+    restoreContext();
 
-    ctx->makeCurrent(surface);
     resetOpenGLState();
 
     QObject::connect(this, &OsgQuickWindow::beforeRendering,
@@ -81,22 +94,15 @@ void OsgQuickWindow::initializeGL()
 
 void OsgQuickWindow::resizeGL()
 {
-
-    const float pixelRatio = static_cast<float>(screen()->devicePixelRatio());
-    m_pRenderer->resize(0, 0, width(), height(), pixelRatio);
-
+    m_pMapController->resizeGL(m_viewportWidth, m_viewportHeight, screen());
 }
 
 void OsgQuickWindow::paintGL()
 {
     resetOpenGLState();
 
-    if (m_isFirstFrame) {
-        m_isFirstFrame = false;
-        m_pRenderer->getCamera()->getGraphicsContext()->setDefaultFboId(renderTargetId());
-    }
+    m_pMapController->paintGL();
 
-    m_pRenderer->frame();
     m_pOGLF->glClear(GL_DEPTH_BUFFER_BIT);
 
     resetOpenGLState();
@@ -120,8 +126,10 @@ void OsgQuickWindow::keyPressEvent(QKeyEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->keyPressEvent(event);
+
+    m_pMapController->keyPressEvent(event);
+
+
 }
 
 void OsgQuickWindow::keyReleaseEvent(QKeyEvent *event)
@@ -131,9 +139,8 @@ void OsgQuickWindow::keyReleaseEvent(QKeyEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->keyReleaseEvent(event);
 
+    m_pMapController->keyReleaseEvent(event);
 }
 
 void OsgQuickWindow::mousePressEvent(QMouseEvent *event)
@@ -143,12 +150,13 @@ void OsgQuickWindow::mousePressEvent(QMouseEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->mousePressEvent(event);
+    m_pMapController->mousePressEvent(event);
 
 
-    m_lastMousePressTime = QTime::currentTime();
-    m_lastPressPoint = event->pos();
+    if (event->button() == Qt::LeftButton) {
+        m_lastMousePressTime = QTime::currentTime();
+        m_lastPressPoint = event->pos();
+    }
 }
 
 void OsgQuickWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -158,14 +166,15 @@ void OsgQuickWindow::mouseReleaseEvent(QMouseEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->mouseReleaseEvent(event);
+    m_pMapController->mouseReleaseEvent(event);
 
 
-    if (m_lastMousePressTime.msecsTo(QTime::currentTime()) < 400) {
-        const QPoint diff = event->pos() - m_lastPressPoint;
-        if (std::abs(diff.x()) < 10 && std::abs(diff.y()) < 10) {
-            emit clicked();
+    if (event->button() == Qt::LeftButton) {
+        if (m_lastMousePressTime.msecsTo(QTime::currentTime()) < 400) {
+            const QPoint diff = event->pos() - m_lastPressPoint;
+            if (std::abs(diff.x()) < 10 && std::abs(diff.y()) < 10) {
+                emit clicked();
+            }
         }
     }
 }
@@ -177,8 +186,7 @@ void OsgQuickWindow::mouseDoubleClickEvent(QMouseEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->mouseDoubleClickEvent(event);
+    m_pMapController->mouseDoubleClickEvent(event);
 
 
 }
@@ -190,8 +198,7 @@ void OsgQuickWindow::mouseMoveEvent(QMouseEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->mouseMoveEvent(event);
+    m_pMapController->mouseMoveEvent(event);
 
 }
 
@@ -202,22 +209,8 @@ void OsgQuickWindow::wheelEvent(QWheelEvent *event)
     if (event->isAccepted())
         return;
 
-    if (m_pRenderer)
-        m_pRenderer->wheelEvent(event);
 
-}
+    m_pMapController->wheelEvent(event);
 
-void OsgQuickWindow::createOsgRenderer()
-{
-    osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
-    ds->setNvOptimusEnablement(1);
-    ds->setStereo(false);
-
-
-    m_pRenderer = new OSGRenderer(this);
-    const float pixelRatio = static_cast<float>(screen()->devicePixelRatio());
-    m_pRenderer->setupOSG(0 , 0, width(), height(), pixelRatio);
-
-    m_pRenderer->getCamera()->setClearColor(osg::Vec4(0.15f, 0.15f, 0.15f, 1.0f));
 }
 

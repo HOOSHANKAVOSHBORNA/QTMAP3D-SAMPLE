@@ -2,6 +2,7 @@
 #define CRYSTALWINDOW_H
 
 #include "OsgQuickWindow.h"
+#include <QQmlComponent>
 
 class CrystalWindow : public OsgQuickWindow
 {
@@ -12,11 +13,15 @@ public:
     ~CrystalWindow();
 
 public slots:
-    void initializeOsgEarth();
+
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     osg::ref_ptr<osgEarth::MapNode> mMapNodeGeo;
     osg::ref_ptr<osg::Group> mMapRoot;
+
 };
 
 #endif // CRYSTALWINDOW_H

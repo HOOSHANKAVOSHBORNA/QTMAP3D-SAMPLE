@@ -10,56 +10,43 @@ Item {
     implicitHeight: rect.implicitHeight
 
 
-    property ListModel buttonsModel: ListModel {
-        ListElement {
-            iconSource: "qrc:///Resources/Settings.png"
-            labelText: "Settings"
-            clickCallback: function() {
-                console.log("Settings clicked!");
-            }
-        }
-        ListElement {
-            iconSource: "qrc:///Resources/Toolbox.png"
-            labelText: "Toolbox"
-            clickCallback: function() {
-                console.log("Toolbox clicked!");
-            }
-        }
-        ListElement {
-            iconSource: "qrc:///Resources/Layers.png"
-            labelText: "Layers"
-            clickCallback: function() {
-                console.log("Layers clicked!");
-            }
-        }
-    }
+    property ListModel itemsModel
+    property var clickCallback
+
 
     Rectangle {
         id: rect
         anchors.fill: parent
-        implicitWidth:  rowLayout.implicitWidth + 40
+        implicitWidth:  rowLayout.implicitWidth + 20
         implicitHeight: rowLayout.implicitHeight + 15
 
         color: "#404040"
-        radius: height * 0.25
+        radius: 10
+
+        MouseArea {
+            anchors.fill: parent
+        }
+
 
         RowLayout {
             id: rowLayout
             anchors.fill: parent
             anchors.margins: 5
-            anchors.leftMargin: 20
-            anchors.rightMargin: 20
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
             anchors.topMargin: 10
             spacing: 20
 
             Repeater {
-                model: rootItem.buttonsModel
+                model: rootItem.itemsModel
                 delegate: Item {
-                    implicitWidth: col.implicitWidth
-                    implicitHeight: col.implicitHeight
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: 64
+                    Layout.preferredHeight: 64
 
                     ColumnLayout {
                         id: col
+                        anchors.centerIn: parent
                         Image {
                             id: img
                             Layout.alignment: Qt.AlignCenter
@@ -68,7 +55,6 @@ Item {
                             source: iconSource
                             width: 24
                             height: 24
-
                         }
 
                         Label {
@@ -98,7 +84,7 @@ Item {
                         }
 
                         onClicked: function() {
-                            clickCallback();
+                            rootItem.clickCallback(index);
                         }
                     }
 

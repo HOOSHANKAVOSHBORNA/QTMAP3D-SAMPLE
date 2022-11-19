@@ -12,10 +12,11 @@
 #include <osgEarth/Map>
 #include <osgEarth/MapNode>
 #include <osgEarthDrivers/gdal/GDALOptions>
+#include <QTime>
 
 #include "OsgRenderer.h"
+#include "CrystalMapController.h"
 
-#include <QTime>
 
 class OsgQuickWindow : public QQuickWindow
 {
@@ -25,12 +26,14 @@ public:
     OsgQuickWindow(QWindow *parent = nullptr);
     ~OsgQuickWindow();
 
+    CrystalMapController* mapController() const;
 
-    osgViewer::Viewer *getViewer() const;
 
 public slots:
     void cleanup();
     void frame();
+
+    void restoreContext();
 
 private:
     void initializeGL();
@@ -48,16 +51,13 @@ protected:
     void wheelEvent(QWheelEvent* event) override;
 
 
-    void createOsgRenderer();
-
 
 signals:
     void clicked();
-    void initialized();
+    void osgInitialized();
 
 private:
     QOpenGLFunctions_2_0 *m_pOGLF = nullptr;
-    OSGRenderer *m_pRenderer = nullptr;
 
     bool m_bResized     = false;
 
@@ -69,6 +69,12 @@ private:
 
     QTime m_lastMousePressTime = QTime::currentTime();
     QPoint m_lastPressPoint = QPoint();
+
+    QOpenGLContext *m_pContext = nullptr;
+    QSurface       *m_pSurface = nullptr;
+
+protected:
+    CrystalMapController *m_pMapController = nullptr;
 };
 
 #endif // OSGQUICKWINDOW_H

@@ -167,11 +167,7 @@ void OSGRenderer::update()
 //    }
 
 
-    QQuickWindow *window = dynamic_cast<QQuickWindow*>(parent());
-    if (window) {
-        window->update();
-    }
-
+    emit needsUpdate();
 
 }
 
