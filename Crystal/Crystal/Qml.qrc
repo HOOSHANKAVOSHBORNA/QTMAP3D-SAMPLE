@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Main.qml</file>
+        <file>MenuWidget.qml</file>
+        <file>Toolbox.qml</file>
+        <file>NavigationWidget.qml</file>
+        <file>File.qml</file>
+        <file>Settings.qml</file>
+        <file>Layers.qml</file>
+    </qresource>
+</RCC>
