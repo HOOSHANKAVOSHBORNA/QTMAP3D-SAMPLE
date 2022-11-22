@@ -21,6 +21,8 @@
 #include <osgEarthAnnotation/LocalGeometryNode>
 #include <osgEarthAnnotation/FeatureNode>
 #include <osgEarthAnnotation/ModelNode>
+#include <osgViewer/Viewer>
+#include <osgEarth/GLUtils>
 
 #include <osgEarthAnnotation/AnnotationEditing>
 #include <osgEarthAnnotation/ImageOverlayEditor>
@@ -85,6 +87,8 @@ void Visibility::makeSphere(QMouseEvent *event, osgEarth::GeoPoint geoPos)
 {
     if(event->button() == Qt::MouseButton::RightButton && event->type() == QEvent::Type::MouseButtonPress)
     {
+        GLUtils::setGlobalDefaults(mMap3dWidget->getOsgViewer()->getCamera()->getOrCreateStateSet());
+
             auto node = mSphere(20000.0f);
 
             osg::ClipNode* clipnode = new osg::ClipNode;
@@ -106,29 +110,128 @@ void Visibility::drawLine(QMouseEvent *event, GeoPoint geoPos)
 {
     if(event->button() == Qt::MouseButton::RightButton && event->type() == QEvent::Type::MouseButtonPress)
     {
+        GLUtils::setGlobalDefaults(mMap3dWidget->getOsgViewer()->getCamera()->getOrCreateStateSet());
+        Geometry* geom = new Polygon();
+                geom->push_back(osg::Vec3d(0, 40, 0));
+                geom->push_back(osg::Vec3d(-60, 40, 0));
+                geom->push_back(osg::Vec3d(-60, 60, 0));
+                geom->push_back(osg::Vec3d(0, 60, 0));
+
+                Feature* feature = new Feature(geom, osgEarth::SpatialReference::get("wgs84"));
+                feature->geoInterp() = GEOINTERP_RHUMB_LINE;
+
+                Style geomStyle;
+                geomStyle.getOrCreate<LineSymbol>()->stroke()->color() = Color::White;
+                geomStyle.getOrCreate<LineSymbol>()->stroke()->width() = 5.0f;
+                geomStyle.getOrCreate<LineSymbol>()->tessellationSize() = 75000;
+                geomStyle.getOrCreate<AltitudeSymbol>()->clamping() = AltitudeSymbol::CLAMP_TO_TERRAIN;
+                geomStyle.getOrCreate<AltitudeSymbol>()->technique() = AltitudeSymbol::TECHNIQUE_GPU;
+
+                FeatureNode* fnode = new FeatureNode( feature, geomStyle);
         FeatureNode* pathNode = nullptr;
             {
                 Geometry* path = new LineString();
                 path->push_back(geoPos.vec3d());
-                path->push_back(geoPos.vec3d()+osg::Vec3d(5,6,7));
+                path->push_back(geoPos.vec3d()+osg::Vec3d(5,6,10000));
 
                 Feature* pathFeature = new Feature(path, osgEarth::SpatialReference::get("wgs84"));
-                pathFeature->geoInterp() = GEOINTERP_GREAT_CIRCLE;
+                pathFeature->geoInterp() = GEOINTERP_RHUMB_LINE;
 
 
                 Style pathStyle;
-                pathStyle.getOrCreate<LineSymbol>()->stroke()->color() = Color::White;
-                pathStyle.getOrCreate<LineSymbol>()->stroke()->width() = 1.0f;
+                pathStyle.getOrCreate<LineSymbol>()->stroke()->color() = Color::Red;
+                pathStyle.getOrCreate<LineSymbol>()->stroke()->width() = 4.0f;
                 pathStyle.getOrCreate<LineSymbol>()->tessellationSize() = 75000;
                 pathStyle.getOrCreate<PointSymbol>()->size() = 5;
                 pathStyle.getOrCreate<PointSymbol>()->fill()->color() = Color::Red;
-                pathStyle.getOrCreate<AltitudeSymbol>()->clamping() = AltitudeSymbol::CLAMP_TO_TERRAIN;
-                pathStyle.getOrCreate<AltitudeSymbol>()->technique() = AltitudeSymbol::TECHNIQUE_GPU;
+                pathStyle.getOrCreate<AltitudeSymbol>()->clamping() = AltitudeSymbol::CLAMP_ABSOLUTE;
+                pathStyle.getOrCreate<AltitudeSymbol>()->technique() = AltitudeSymbol::TECHNIQUE_DRAPE;
 
                 //OE_INFO << "Path extent = " << pathFeature->getExtent().toString() << std::endl;
 
                 pathNode = new FeatureNode(pathFeature, pathStyle);
-                mMap3dWidget->addNode(pathNode);
+                
+                //const SpatialReference* geoSRS = mMap3dWidget->getMapSRS()->getGeographicSRS();
+                
+                Style ellipseStyle;
+                        ellipseStyle.getOrCreate<PolygonSymbol>()->fill()->color() = Color(Color::Orange, 0.75);
+                        ellipseStyle.getOrCreate<ExtrusionSymbol>()->height() = 250000.0; // meters MSL
+                        EllipseNode* ellipse = new EllipseNode;
+                        ellipse->set(
+                            GeoPoint(osgEarth::SpatialReference::get("wgs84"),-80.28, 25.82, 0.0, ALTMODE_RELATIVE),
+                            Distance(250, Units::MILES),
+                            Distance(250, Units::MILES),
+                            Angle(0, Units::DEGREES),
+                            ellipseStyle,
+                            Angle(360.0, Units::DEGREES),
+                            //Angle(360.0 - 45.0, Units::DEGREES),
+                            true);
+
+                        Style rectStyle;
+                                rectStyle.getOrCreate<PolygonSymbol>()->fill()->color() = Color(Color::Red, 0.5);
+                                rectStyle.getOrCreate<AltitudeSymbol>()->clamping() = AltitudeSymbol::CLAMP_TO_TERRAIN;
+                                rectStyle.getOrCreate<AltitudeSymbol>()->technique() = AltitudeSymbol::TECHNIQUE_DRAPE;
+                                RectangleNode* rect = new RectangleNode(
+                                    GeoPoint(osgEarth::SpatialReference::get("wgs84"), -117.172, 32.721),
+                                    Distance(300, Units::KILOMETERS),
+                                    Distance(600, Units::KILOMETERS),
+                                    rectStyle);
+
+
+                                Geometry* utah = new Polygon();
+                                        utah->push_back(-114.052, 37.0);
+                                        utah->push_back(-109.054, 37.0);
+                                        utah->push_back(-109.054, 41.0);
+                                        utah->push_back(-111.040, 41.0);
+                                        //utah->push_back(-111.080, 42.059);
+                                        //utah->push_back(-114.080, 42.024);
+
+                                        Style utahStyle;
+                                        utahStyle.getOrCreate<ExtrusionSymbol>()->height() = 250000.0; // meters MSL
+                                        utahStyle.getOrCreate<PolygonSymbol>()->fill()->color() = Color(Color::White, 0.8);
+
+                                        Feature*     utahFeature = new Feature(utah, osgEarth::SpatialReference::get("wgs84"));
+                                        FeatureNode* featureNode = new FeatureNode(utahFeature, utahStyle);
+
+
+
+
+                                        ImageOverlay* imageOverlay = nullptr;
+                                                osg::Image* image = osgDB::readImageFile("/home/client111/Downloads/icons8-usa-32.png");
+                                                //osg::Image* image = osgDB::readImageFile("../data/USFLAG.TGA");
+
+                                                if (image)
+                                                {
+                                                    imageOverlay = new ImageOverlay(mMap3dWidget->getMapNode(), image);
+                                                    imageOverlay->setBounds(Bounds(-100.0, 35.0, -90.0, 40.0));
+                                                    mMap3dWidget->addNode(imageOverlay);
+                                                }
+
+
+
+                                                Style circleStyle;
+                                                       circleStyle.getOrCreate<PolygonSymbol>()->fill()->color() = Color(Color::Cyan, 0.5);
+                                                       circleStyle.getOrCreate<AltitudeSymbol>()->clamping() = AltitudeSymbol::CLAMP_TO_TERRAIN;
+                                                       circleStyle.getOrCreate<AltitudeSymbol>()->technique() = AltitudeSymbol::TECHNIQUE_DRAPE;
+
+                                                       CircleNode* circle = new CircleNode;
+                                                               circle->set(
+
+                                                           GeoPoint(osgEarth::SpatialReference::get("wgs84"), -90.25, 29.98, 1000., ALTMODE_RELATIVE),
+                                                           Distance(300, Units::KILOMETERS),
+                                                           circleStyle, Angle(-45.0, Units::DEGREES), Angle(45.0, Units::DEGREES), true);
+                                                       mMap3dWidget->addNode(circle);
+
+
+                                        mMap3dWidget->addNode(featureNode);
+
+                                        mMap3dWidget->addNode(rect);
+
+                                        mMap3dWidget->addNode(ellipse);
+                                                                                               
+                                        mMap3dWidget->addNode(pathNode);
+                                        mMap3dWidget->addNode(fnode);
+
 }
     }
 //                //labelGroup->addChild(new LabelNode(mapNode, GeoPoint(geoSRS, -170, 61.2), "Great circle path", labelStyle));
