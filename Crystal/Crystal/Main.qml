@@ -52,7 +52,7 @@ CrystalWindow {
         }
     }
 
-    property var toolBoxModel: ListModel {
+    property var toolboxModel: ListModel {
 
     }
 
@@ -166,7 +166,7 @@ CrystalWindow {
                         wnd.sideItemCreated(index, item);
 
                         if (index == 2) {
-                            item.toolboxModel = toolBoxModel;
+                            item.toolboxModel = toolboxModel;
                         }
                     }
                 }
@@ -177,14 +177,55 @@ CrystalWindow {
     function addSideItem(_title_text, _icon_url, _side_item_url) {
         var new_index = sideItemsModel.count;
         sideItemsModel.append({"title_text": _title_text,
-                                "icon_url": _icon_url,
-                                "side_item_url": _side_item_url});
+                          "icon_url": _icon_url,
+                          "side_item_url": _side_item_url});
         return new_index;
     }
 
 
-    function addToolboxItem(_name, _category)
-    {
+    function addToolboxItem(_name, _category) {
+        const toolboxModelCount = toolboxModel.count;
+        var category_found = false;
+        var category_index = -1;
+        for (var i = 0; i < toolboxModelCount; i++) {
+            if (toolboxModel.get(i).categoryName === _category) {
+                category_found = true;
+                category_index = i;
+                break;
+            }
+        }
+        if (category_found === true) {
+            const categoryModelCount = toolboxModel.get(category_index).categoryModel.count;
+            var item_found = false;
+            for (var j = 0; j < categoryModelCount; j++) {
+                if (toolboxModel.get(category_index).categoryModel.get(j).itemName === _name) {
+                    item_found = true;
+                    break;
+                }
+            }
+            if (item_found === false) {
+                toolboxModel.get(category_index).categoryModel.append({'itemName': _name});
+            } else {
+                return false;
+            }
+        } else {
+            toolboxModel.append({'categoryName': _category,
+                 'categoryModel': listModelComponent.createObject(null, {})});
+            toolboxModel.get(toolboxModelCount).categoryModel.append({'itemName': _name});
+        }
 
+        return true;
+    }
+
+    Component {
+        id: listModelComponent
+        ListModel {
+        }
+    }
+
+    Component.onCompleted: function() {
+        addToolboxItem("Amir", "Jafari");
+        addToolboxItem("Bagher", "Roodsarabi");
+        addToolboxItem("Hasan", "Roodsarabi");
     }
 }

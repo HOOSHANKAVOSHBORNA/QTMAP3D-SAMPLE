@@ -16,6 +16,7 @@ public:
 public:
     virtual bool initializeQMLDesc(QQmlEngine *engine, CrystalPluginQMLDesc *pDesc) override;
     virtual void onSideItemCreated(int index, QObject *pSideItem) override;
+    virtual void onToolboxItemClicked(QString name, QString category) override;
 
     virtual bool initialize3D(CrystalMapController *pMapController) override;
 };
