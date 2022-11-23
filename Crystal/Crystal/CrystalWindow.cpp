@@ -37,7 +37,7 @@ void CrystalWindow::initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfo
             bool bOk = false;
             const int idx = ret.toInt(&bOk);
             if (bOk) {
-                item.index = idx;
+                item.sideItemIndex = idx;
             }
         }
     }

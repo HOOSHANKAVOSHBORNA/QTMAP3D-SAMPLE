@@ -40,7 +40,7 @@ void CrystalPluginManager::loadPlugins()
                 CrystalPluginInfo cpi;
                 cpi.pInterface = pluginInterface;
                 cpi.qmlDesc    = new CrystalPluginQMLDesc;
-                cpi.index      = -1;
+                cpi.sideItemIndex = -1;
                 m_pluginsInfoList.push_back(std::move(cpi));
             }
         }
@@ -73,7 +73,7 @@ void CrystalPluginManager::onSideItemCreated(int index, QObject *pSideItem)
     const auto it = std::find_if(m_pluginsInfoList.begin(),
                  m_pluginsInfoList.end(),
                  [index](const CrystalPluginInfo& item){
-        return (item.index == index);
+        return (item.sideItemIndex == index);
     });
 
     if (it != m_pluginsInfoList.end()) {

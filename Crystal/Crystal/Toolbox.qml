@@ -1,13 +1,11 @@
 
 import QtQuick 2.13
+import Qt.labs.platform 1.1
 
 Item {
     id: rootItem
 
-    Text {
-        anchors.centerIn: parent
-        font.pointSize: 40
-        text: "Toolbox"
-        color: "yellow"
-    }
+
+
+
 }
