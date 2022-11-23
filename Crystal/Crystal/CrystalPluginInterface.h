@@ -14,12 +14,20 @@ namespace osgViewer {
     class Viewer;
 };
 
+struct ToolboxItem
+{
+    QString name;
+    QString category;
+};
+
 struct CrystalPluginQMLDesc
 {
     bool           bPluginHasSideItem = false;
     QString        strSideItemMenuBarTitle;
     QString        strSideItemMenuBarIconUrl;
     QString        strSideItemUrl;
+
+    QList<ToolboxItem> toolboxItemsList;
 };
 
 class CrystalPluginInterface
@@ -29,6 +37,7 @@ public:
 
     virtual bool initializeQMLDesc(QQmlEngine *engine, CrystalPluginQMLDesc *pDesc) = 0;
     virtual void onSideItemCreated(int index, QObject *pSideItem) = 0;
+    virtual void onToolboxItemClicked(QString name, QString category) = 0;
 
     virtual bool initialize3D(CrystalMapController *pMapController) = 0;
 

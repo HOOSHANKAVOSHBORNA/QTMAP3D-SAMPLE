@@ -29,7 +29,7 @@ CrystalWindow {
         }
     }
 
-    property var uiItemsModel: ListModel {
+    property var sideItemsModel: ListModel {
 
         property int currentVisibleIndex: -1
 
@@ -50,6 +50,9 @@ CrystalWindow {
             icon_url: "qrc:///Resources/Toolbox.png"
             side_item_url: "qrc:///Toolbox.qml"
         }
+    }
+
+    property var toolBoxModel: ListModel {
 
     }
 
@@ -78,25 +81,25 @@ CrystalWindow {
         sideItemHideAnimation.stop();
         sideItemShowAnimation.stop();
 
-        for (var i = 0; i < uiItemsModel.count; i++) {
+        for (var i = 0; i < sideItemsModel.count; i++) {
             if(i !== index) {
                 sideItemsRepeater.itemAt(i).x = 0;
             }
         }
 
-        if (index == uiItemsModel.currentVisibleIndex) {
+        if (index == sideItemsModel.currentVisibleIndex) {
             sideItemHideAnimation.target = sideItemsRepeater.itemAt(index);
             sideItemHideAnimation.from = 300 + (widgetsMargis * 2.0);
             sideItemHideAnimation.to = 0;
             sideItemHideAnimation.duration = 200;
-            uiItemsModel.currentVisibleIndex = -1;
+            sideItemsModel.currentVisibleIndex = -1;
             sideItemHideAnimation.start();
         } else {
             sideItemShowAnimation.target = sideItemsRepeater.itemAt(index);
             sideItemShowAnimation.from = 0;
             sideItemShowAnimation.to = 300 + (widgetsMargis * 2.0);
             sideItemShowAnimation.duration = 200;
-            uiItemsModel.currentVisibleIndex = index;
+            sideItemsModel.currentVisibleIndex = index;
             sideItemShowAnimation.start();
         }
 
@@ -111,7 +114,7 @@ CrystalWindow {
         width: implicitWidth
         height: implicitHeight
 
-        itemsModel: uiItemsModel
+        itemsModel: sideItemsModel
         clickCallback: function(index) {
             wnd.menuWidgetClickCallback(index);
         }
@@ -141,7 +144,7 @@ CrystalWindow {
 
         Repeater {
             id: sideItemsRepeater
-            model: uiItemsModel
+            model: sideItemsModel
             delegate: Item {
                 anchors.top:parent.top
                 anchors.bottom: parent.bottom
@@ -161,6 +164,10 @@ CrystalWindow {
                     source: side_item_url
                     onLoaded: function() {
                         wnd.sideItemCreated(index, item);
+
+                        if (index == 2) {
+                            item.toolboxModel = toolBoxModel;
+                        }
                     }
                 }
             }
@@ -168,11 +175,16 @@ CrystalWindow {
     }
 
     function addSideItem(_title_text, _icon_url, _side_item_url) {
-        var new_index = uiItemsModel.count;
-        uiItemsModel.append({"title_text": _title_text,
+        var new_index = sideItemsModel.count;
+        sideItemsModel.append({"title_text": _title_text,
                                 "icon_url": _icon_url,
                                 "side_item_url": _side_item_url});
         return new_index;
     }
 
+
+    function addToolboxItem(_name, _category)
+    {
+
+    }
 }

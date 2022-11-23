@@ -17,7 +17,8 @@ struct CrystalPluginInfo
 {
     CrystalPluginInterface *pInterface = nullptr;
     CrystalPluginQMLDesc   *qmlDesc    = nullptr;
-    int                     index      = -1;
+    int                     sideItemIndex      = -1;
+
 };
 
 class CrystalPluginManager : public QObject
