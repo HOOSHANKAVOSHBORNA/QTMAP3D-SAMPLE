@@ -86,12 +86,17 @@ void CrystalApplication::onQmlObjectCreated(QObject *obj, const QUrl &objUrl)
 
 void CrystalApplication::onMainWindowCreated()
 {
-    m_pPluginManager->beginPluginsInitQML(m_pQmlEngine);
-
-    m_pPluginManager->endPluginsInitQML();
+    QObject::connect(m_pMainWindow, &CrystalWindow::sideItemCreated,
+                     m_pPluginManager, &CrystalPluginManager::onSideItemCreated,
+                     Qt::QueuedConnection);
     QObject::connect(m_pMainWindow, &CrystalWindow::osgInitialized,
                      this, &CrystalApplication::initialize3D,
                      Qt::DirectConnection);
+
+    m_pPluginManager->performPluginsInitQMLDesc(m_pQmlEngine);
+
+
+    m_pMainWindow->initializePluginsUI(m_pPluginManager->pluginsInfoList());
 }
 
 void CrystalApplication::initialize3D()

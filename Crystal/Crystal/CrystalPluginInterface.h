@@ -14,32 +14,30 @@ namespace osgViewer {
     class Viewer;
 };
 
-struct CRYSTAL_PLUGIN_QML_INPUT_DESC
+struct CrystalPluginQMLDesc
 {
-    bool           bPluginHasSideWidget = false;
-    QQmlComponent *pSideWidgetComponent = nullptr;
-    QString        strSideWidgetMenuBarTitle;
-    QString        strSideWidgetMenuBarIconUrl;
-};
-
-struct CRYSTAL_PLUGIN_QML_OUTPUT_DESC
-{
-    QObject *pSideWidgetItem = nullptr;
+    bool           bPluginHasSideItem = false;
+    QString        strSideItemMenuBarTitle;
+    QString        strSideItemMenuBarIconUrl;
+    QString        strSideItemUrl;
 };
 
 class CrystalPluginInterface
 {
 public:
-    CrystalPluginInterface();
     virtual ~CrystalPluginInterface() { }
 
-public:
-    virtual bool beginInitializeQML(QQmlEngine *engine, CRYSTAL_PLUGIN_QML_INPUT_DESC *pDesc) = 0;
-    virtual bool endInitializeQML(CRYSTAL_PLUGIN_QML_OUTPUT_DESC *pDesc) = 0;
+    virtual bool initializeQMLDesc(QQmlEngine *engine, CrystalPluginQMLDesc *pDesc) = 0;
+    virtual void onSideItemCreated(int index, QObject *pSideItem) = 0;
+
     virtual bool initialize3D(CrystalMapController *pMapController) = 0;
 
-protected:
-
 };
+
+
+QT_BEGIN_NAMESPACE
+#define CrystalPluginInterface_iid "ali.askari.crystal"
+Q_DECLARE_INTERFACE(CrystalPluginInterface, CrystalPluginInterface_iid)
+QT_END_NAMESPACE
 
 #endif // CRYSTALPLUGININTERFACE_H

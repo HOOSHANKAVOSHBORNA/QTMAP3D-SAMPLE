@@ -3,16 +3,15 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 import QtGraphicalEffects 1.13
+import Crystal 1.0
 
 Item {
     id: rootItem
     implicitWidth:  rect.implicitWidth
     implicitHeight: rect.implicitHeight
 
-
     property ListModel itemsModel
     property var clickCallback
-
 
     Rectangle {
         id: rect
@@ -20,13 +19,19 @@ Item {
         implicitWidth:  rowLayout.implicitWidth + 20
         implicitHeight: rowLayout.implicitHeight + 15
 
-        color: "#404040"
+        color: "transparent"
         radius: 10
+
+        Rectangle {
+            anchors.fill: parent
+            color: "#404040"
+            opacity: 0.8
+            radius: 10
+        }
 
         MouseArea {
             anchors.fill: parent
         }
-
 
         RowLayout {
             id: rowLayout
@@ -52,7 +57,7 @@ Item {
                             Layout.alignment: Qt.AlignCenter
                             Layout.preferredWidth: 24
                             Layout.preferredHeight: 24
-                            source: iconSource
+                            source: icon_url
                             width: 24
                             height: 24
                         }
@@ -61,7 +66,7 @@ Item {
                             Layout.alignment: Qt.AlignCenter
                             Layout.preferredWidth: implicitWidth
                             Layout.preferredHeight: implicitHeight
-                            text: labelText
+                            text: title_text
                             color: "white"
                             font.family: "Srouce Sans Pro"
                             font.pointSize: 11

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/CPTestPlugin">
+        <file>Resources/Layers.png</file>
+        <file>Layers.qml</file>
+    </qresource>
+</RCC>

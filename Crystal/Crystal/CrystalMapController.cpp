@@ -16,8 +16,8 @@ osgViewer::Viewer *CrystalMapController::getViewer()
 CrystalMapController::CrystalMapController(QQuickWindow *window) :
     m_pWindow(window)
 {
-}
 
+}
 
 CrystalMapController::~CrystalMapController()
 {

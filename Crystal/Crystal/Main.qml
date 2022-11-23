@@ -15,6 +15,8 @@ CrystalWindow {
     property real widgetsPositionFactor: 1.0
     property bool widgetsVisible: true
 
+    readonly property real widgetsMargis: 10
+
     onClicked: function() {
         if (wnd.widgetsVisible === true) {
             widgetsShowAnimation.stop();
@@ -27,30 +29,28 @@ CrystalWindow {
         }
     }
 
-    ListModel {
-        id: uiItemsModel
+    property var uiItemsModel: ListModel {
+
         property int currentVisibleIndex: -1
 
         ListElement {
-            iconSource: "qrc:///Resources/File.png"
-            labelText: "File"
-            innerItemUrl: "qrc:///File.qml"
+            title_text: "File"
+            icon_url: "qrc:///Resources/File.png"
+            side_item_url: "qrc:///File.qml"
         }
+
         ListElement {
-            iconSource: "qrc:///Resources/Settings.png"
-            labelText: "Settings"
-            innerItemUrl: "qrc:///Settings.qml"
+            title_text: "Settings"
+            icon_url: "qrc:///Resources/Settings.png"
+            side_item_url: "qrc:///Settings.qml"
         }
+
         ListElement {
-            iconSource: "qrc:///Resources/Toolbox.png"
-            labelText: "Toolbox"
-            innerItemUrl: "qrc:///Toolbox.qml"
+            title_text: "Toolbox"
+            icon_url: "qrc:///Resources/Toolbox.png"
+            side_item_url: "qrc:///Toolbox.qml"
         }
-        ListElement {
-            iconSource: "qrc:///Resources/Layers.png"
-            labelText: "Layers"
-            innerItemUrl: "qrc:///Layers.qml"
-        }
+
     }
 
     PropertyAnimation {
@@ -86,7 +86,7 @@ CrystalWindow {
 
         if (index == uiItemsModel.currentVisibleIndex) {
             sideItemHideAnimation.target = sideItemsRepeater.itemAt(index);
-            sideItemHideAnimation.from = 340;
+            sideItemHideAnimation.from = 300 + (widgetsMargis * 2.0);
             sideItemHideAnimation.to = 0;
             sideItemHideAnimation.duration = 200;
             uiItemsModel.currentVisibleIndex = -1;
@@ -94,7 +94,7 @@ CrystalWindow {
         } else {
             sideItemShowAnimation.target = sideItemsRepeater.itemAt(index);
             sideItemShowAnimation.from = 0;
-            sideItemShowAnimation.to = 340;
+            sideItemShowAnimation.to = 300 + (widgetsMargis * 2.0);
             sideItemShowAnimation.duration = 200;
             uiItemsModel.currentVisibleIndex = index;
             sideItemShowAnimation.start();
@@ -106,7 +106,7 @@ CrystalWindow {
         id: menuWidget
         anchors.horizontalCenter: parent.horizontalCenter
 
-        y: (-height - 20) + (wnd.widgetsPositionFactor * (height + 40))
+        y: (-height - widgetsMargis) + (wnd.widgetsPositionFactor * (height + (widgetsMargis * 2.0)))
 
         width: implicitWidth
         height: implicitHeight
@@ -119,10 +119,10 @@ CrystalWindow {
 
     Item {
         id: sideWidgetContainer
-        x:  -660 + (wnd.widgetsPositionFactor * 340)
-        y: menuWidget.height + 40
-        width: 640
-        height: parent.height - menuWidget.height - 60
+        x:  -(600 + (widgetsMargis*3)) + (wnd.widgetsPositionFactor * (300 + (widgetsMargis*2.0)))
+        y: menuWidget.height + (widgetsMargis * 2.0)
+        width: 600 + (widgetsMargis * 2)
+        height: parent.height - menuWidget.height - (widgetsMargis * 3)
 
 
         PropertyAnimation {
@@ -151,23 +151,28 @@ CrystalWindow {
                 Rectangle {
                     anchors.fill: parent
                     color: "#404040"
+                    opacity: 0.8
                     radius: 10
+
                 }
 
                 Loader {
                     anchors.fill: parent
-                    source: innerItemUrl
+                    source: side_item_url
+                    onLoaded: function() {
+                        wnd.sideItemCreated(index, item);
+                    }
                 }
             }
         }
     }
 
-
-
-    function createSideWidget(comp, title, icon_url) {
-        var cobj = comp.createObject(container, {'anchors.centerIn': container,
-                             'width': 400,
-                             'height': 400,
-                             'opacity': 0.3});
+    function addSideItem(_title_text, _icon_url, _side_item_url) {
+        var new_index = uiItemsModel.count;
+        uiItemsModel.append({"title_text": _title_text,
+                                "icon_url": _icon_url,
+                                "side_item_url": _side_item_url});
+        return new_index;
     }
+
 }
