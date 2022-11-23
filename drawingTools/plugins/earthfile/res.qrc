@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/read.png</file>
+        <file>res/write.png</file>
+        <file>res/import.png</file>
+    </qresource>
+</RCC>
