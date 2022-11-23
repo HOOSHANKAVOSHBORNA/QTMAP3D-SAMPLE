@@ -1,0 +1,4 @@
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles/rebuild_cache.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles/edit_cache.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles/Crystal.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles/Crystal_autogen.dir

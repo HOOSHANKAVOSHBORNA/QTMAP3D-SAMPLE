@@ -1,0 +1,4 @@
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/build/CMakeFiles/rebuild_cache.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/build/CMakeFiles/edit_cache.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/build/CMakeFiles/CPTest.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/build/CMakeFiles/CPTest_autogen.dir

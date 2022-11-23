@@ -14,6 +14,7 @@ class TrackModelWidget : public QWidget
 public:
     TrackModelWidget(QWidget *parent = nullptr);
     void addModel(QString type, QString name);
+    void removeModel(QString type, QString name);
     void setModelPosition(QString name,QString type, double latitude , double longitude , double altitude);
     void setClose();
     void setModelInfo(QString type ,QString name, QJsonObject info);
@@ -32,6 +33,7 @@ private slots:
 
 signals:
     Q_INVOKABLE void modelAdded (QString type ,QString name);
+    void modelRemove (QString type ,QString name);
     Q_INVOKABLE void onPin (bool t);
     Q_INVOKABLE void modelInfo (QString t ,QString n,QString str);
     Q_INVOKABLE void close();

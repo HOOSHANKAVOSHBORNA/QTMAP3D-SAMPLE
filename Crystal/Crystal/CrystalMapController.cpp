@@ -152,7 +152,7 @@ void CrystalMapController::initializeOsgEarth()
     getViewer()->setCameraManipulator(earthManipulator);
 
     osgEarth::Drivers::GDALOptions gdal;
-    gdal.url() = "/home/client112/Desktop/Hooshan/Crystal/world.tif";
+    gdal.url() = "/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/world.tif";
     osg::ref_ptr<osgEarth::ImageLayer> imlayer = new osgEarth::ImageLayer("base-world", gdal);
     osgEarth::MapOptions mapOptGeo;
     mapOptGeo.coordSysType() = osgEarth::MapOptions::CSTYPE_GEOCENTRIC;

@@ -1,0 +1,4 @@
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/build-CPTest-Desktop_Qt_5_13_1_GCC_64bit-Debug/CMakeFiles/rebuild_cache.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/build-CPTest-Desktop_Qt_5_13_1_GCC_64bit-Debug/CMakeFiles/edit_cache.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/build-CPTest-Desktop_Qt_5_13_1_GCC_64bit-Debug/CMakeFiles/CPTest.dir
+/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/build-CPTest-Desktop_Qt_5_13_1_GCC_64bit-Debug/CMakeFiles/CPTest_autogen.dir

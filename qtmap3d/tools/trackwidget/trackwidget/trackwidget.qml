@@ -8,11 +8,11 @@ Rectangle{
     readonly property int textsize: 10
     readonly property int iconsize2: 10
     property bool valuepin: false
-    property var object:[]
-    property int i: 0
-
+    property var  object
+    property var listobject: []
     id:root
     width: 200
+    height: 300
     color: "transparent"
     Connections{
         target: DetaliObject
@@ -22,15 +22,27 @@ Rectangle{
                 widgetrack.state = "close"
             }
 
+
         }
+        onModelRemove:{
+            for(var i in listobject){
+                if (listobject[i].name === name && listobject[i].type === type){
+                    listobject[i].destroy()
+                      listobject=Array.from(listobject).filter(r => r !== listobject[i])
+                    break;
+                }
+
+        }
+        }
+
         onModelAdded:{
             var component = Qt.createComponent("PanelItem.qml");
-            object[i] = component.createObject(rootlayer);
-            object[i].title= type+ " : "+ name
-            object[i].name = name
-            object[i].type = type
-            object[i].width= laout_back.width
-            i+=1
+            object = component.createObject(rootlayer);
+            object.title= type+ " : "+ name
+            object.name = name
+            object.type = type
+            object.width= laout_back.width
+            listobject.push(object)
         }
         onMinimize:{
             if (isMax){
