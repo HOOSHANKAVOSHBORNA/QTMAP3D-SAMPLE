@@ -18,6 +18,7 @@ public:
 
 signals:
     void sideItemCreated(int index, QObject *pSideItem);
+    void toolboxItemClicked(QString itemName, QString categoryName);
 
 public slots:
     void initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfoList);

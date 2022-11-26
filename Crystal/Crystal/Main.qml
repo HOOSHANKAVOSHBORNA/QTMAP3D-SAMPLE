@@ -168,6 +168,7 @@ CrystalWindow {
 
                         if (index == 2) {
                             item.toolboxModel = toolboxModel;
+                            item.itemClicked.connect(wnd.toolboxItemClicked);
                         }
                     }
                 }

@@ -4,65 +4,55 @@ import Qt.labs.platform 1.1
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.13
 Item {
-    id : root
+    id : rootItem
    readonly property int margin: 5
-    ListModel {
+
+   signal itemClicked(string item_name, string category_name);
+
+   property var toolboxModel: ListModel {
         id : modeltest
-        ListElement {
-            nameCategory : "image"
-            listview :[]
-        }
+   }
 
-        ListElement {
-            nameCategory : "image1"
-            listview :[]
-        }
 
-        ListElement {
-            nameCategory : "image2"
-            listview :[]
-        }
+   function addToolboxItem(_name, _category) {
+       const toolboxModelCount = toolboxModel.count;
+       var category_found = false;
+       var category_index = -1;
+       for (var i = 0; i < toolboxModelCount; i++) {
+           if (toolboxModel.get(i).categoryName === _category) {
+               category_found = true;
+               category_index = i;
+               break;
+           }
+       }
+       if (category_found === true) {
+           const categoryModelCount = toolboxModel.get(category_index).categoryModel.count;
+           var item_found = false;
+           for (var j = 0; j < categoryModelCount; j++) {
+               if (toolboxModel.get(category_index).categoryModel.get(j).itemName === _name) {
+                   item_found = true;
+                   break;
+               }
+           }
+           if (item_found === false) {
+               toolboxModel.get(category_index).categoryModel.append({'itemName': _name});
+           } else {
+               return false;
+           }
+       } else {
+           toolboxModel.append({'categoryName': _category,
+                'categoryModel': listModelComponent.createObject(null, {})});
+           toolboxModel.get(toolboxModelCount).categoryModel.append({'itemName': _name});
+       }
 
-        ListElement {
-            nameCategory : "image3"
-            listview :[]
-        }
-        ListElement {
-            nameCategory : "image4"
-            listview :[]
-        }
-        ListElement {
-            nameCategory : "image5"
-            listview :[]
-        }
+       return true;
+   }
 
-        ListElement {
-            nameCategory : "image6"
-            listview :[]
-        }
-
-        ListElement {
-            nameCategory : "image7"
-            listview :[]
-        }
-
-        ListElement {
-            nameCategory : "image8"
-            listview :[]
-        }
-        ListElement {
-            nameCategory : "image9"
-            listview :[]
-        }
-        ListElement {
-            nameCategory : "image10"
-            listview :[]
-        }
-        ListElement {
-            nameCategory : "image11"
-            listview :[]
-        }
-    }
+   Component.onCompleted: function() {
+       addToolboxItem("Amir", "Jafari");
+       addToolboxItem("Bagher", "Roodsarabi");
+       addToolboxItem("Hasan", "Roodsarabi");
+   }
     ScrollView {
         id: scroller
         anchors.top: parent.top
@@ -83,6 +73,9 @@ Item {
                     delegate: DelegateItem{
                         width: 300
                         height: 30
+                        onItemClicked: function(item_name, category_name) {
+                            rootItem.itemClicked(item_name, category_name)
+                        }
                     }
             }
         }

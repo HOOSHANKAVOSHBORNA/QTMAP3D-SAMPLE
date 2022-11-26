@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.13
 
 Item {
     readonly property int round: 5
+    signal itemClicked(string item_name, string category_name);
+
     id :delegateItem
     width: 200
     height: container.height + rectangle.height
@@ -37,12 +39,17 @@ Item {
                 Repeater {
                     clip: true
                     id: repeater
-                    model: modeltest.node
+                    model: categoryModel
                     delegate: Button{
                         id:subbutton
                         width: columnLayout.width - margin
                         height: 30
-                        text: "hasan"
+                        text: itemName
+
+                        onClicked: function() {
+                            delegateItem.itemClicked(itemName, categoryName);
+                        }
+
                         contentItem: Text {
                                 text: subbutton.text
                                 font: subbutton.font
@@ -81,7 +88,7 @@ Item {
         Text {
             id: txt
             color: "white"
-            text: model.nameCategory
+            text: categoryName
             font.wordSpacing: 0.9
             font.weight: Font.Normal
             style: Text.Normal
