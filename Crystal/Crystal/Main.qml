@@ -165,8 +165,17 @@ CrystalWindow {
 
     Component.onCompleted: function() {
         addToolboxItem("Amir",   "Jafari");
-        addToolboxItem("Bagher", "Roodsarabi");
+        addToolboxItem("Bagher", "Roodsarab");
         addToolboxItem("Hasan",  "Roodsarabi");
+        addToolboxItem("Hasan1",  "Roodsarabi");
+        addToolboxItem("Hasan2",  "Roodsarabi");
+        addToolboxItem("Hasa3",  "Roodsara");
+        addToolboxItem("Hasa4",  "Roodsara");
+        addToolboxItem("Hasa5",  "Roodsara");
     }
 
+    NavigationWidget{
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
 }

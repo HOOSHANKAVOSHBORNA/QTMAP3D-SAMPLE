@@ -9,5 +9,6 @@
         <file>Layers.qml</file>
         <file>SideWidget.qml</file>
         <file>DelegateItem.qml</file>
+        <file>MenuPie.qml</file>
     </qresource>
 </RCC>

@@ -5,22 +5,19 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.13
 Item {
     id : rootItem
+
     readonly property int margin: 5
 
     signal itemClicked(string item_name, string category_name);
 
     property var toolboxModel
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: 20
-        spacing: 0
 
         ScrollView {
             id: scroller
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
+            anchors.fill: parent
+            contentHeight: columnLayout.implicitHeight
+            clip : true
             Item {
                 id: tmp
                 anchors.fill: parent
@@ -44,6 +41,7 @@ Item {
                 }
             }
         }
-    }
+
+
 }
 

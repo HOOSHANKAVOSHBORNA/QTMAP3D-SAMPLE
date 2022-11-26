@@ -4,6 +4,11 @@
         <file>Resources/Settings.png</file>
         <file>Resources/Layers.png</file>
         <file>Resources/File.png</file>
-        <file>Resources/down-r.png</file>
+        <file>Resources/zoomin-r.png</file>
+        <file>Resources/projection.png</file>
+        <file>Resources/home-r.png</file>
+        <file>Resources/geocentric.png</file>
+        <file>Resources/zoomout-r.png</file>
+        <file>Resources/chevron.png</file>
     </qresource>
 </RCC>
