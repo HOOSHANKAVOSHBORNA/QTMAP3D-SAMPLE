@@ -66,6 +66,7 @@ Crystal_autogen/EWIEGA46WW/qrc_Qml.cpp: ../Settings.qml
 Crystal_autogen/EWIEGA46WW/qrc_Qml.cpp: ../Toolbox.qml
 Crystal_autogen/EWIEGA46WW/qrc_Qml.cpp: ../Main.qml
 Crystal_autogen/EWIEGA46WW/qrc_Qml.cpp: ../NavigationWidget.qml
+Crystal_autogen/EWIEGA46WW/qrc_Qml.cpp: ../DelegateItem.qml
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for Qml.qrc"
 	/usr/local/bin/cmake -E cmake_autorcc /home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles/Crystal_autogen.dir/RCCQmlInfo.cmake Debug
 
@@ -75,6 +76,7 @@ Crystal_autogen/EWIEGA46WW/qrc_Crystal.cpp: ../Resources/File.png
 Crystal_autogen/EWIEGA46WW/qrc_Crystal.cpp: ../Resources/Layers.png
 Crystal_autogen/EWIEGA46WW/qrc_Crystal.cpp: ../Resources/Settings.png
 Crystal_autogen/EWIEGA46WW/qrc_Crystal.cpp: ../Resources/Toolbox.png
+Crystal_autogen/EWIEGA46WW/qrc_Crystal.cpp: ../Resources/down-r.png
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Automatic RCC for Crystal.qrc"
 	/usr/local/bin/cmake -E cmake_autorcc /home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/build/CMakeFiles/Crystal_autogen.dir/RCCCrystalInfo.cmake Debug
 

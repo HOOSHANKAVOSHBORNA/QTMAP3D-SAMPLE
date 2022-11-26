@@ -4,5 +4,6 @@
         <file>Resources/Settings.png</file>
         <file>Resources/Layers.png</file>
         <file>Resources/File.png</file>
+        <file>Resources/down-r.png</file>
     </qresource>
 </RCC>

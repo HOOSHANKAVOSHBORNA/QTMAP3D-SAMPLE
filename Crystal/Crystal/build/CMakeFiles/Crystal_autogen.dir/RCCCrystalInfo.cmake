@@ -14,4 +14,4 @@ set(ARCC_SOURCE "/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Cr
 set(ARCC_OUTPUT_CHECKSUM "EWIEGA46WW")
 set(ARCC_OUTPUT_NAME "qrc_Crystal.cpp")
 set(ARCC_OPTIONS "-name;Crystal")
-set(ARCC_INPUTS "/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/File.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/Layers.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/Settings.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/Toolbox.png")
+set(ARCC_INPUTS "/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/File.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/Layers.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/Settings.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/Toolbox.png;/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/Crystal/Resources/down-r.png")

@@ -7,5 +7,6 @@
         <file>File.qml</file>
         <file>Settings.qml</file>
         <file>Layers.qml</file>
+        <file>DelegateItem.qml</file>
     </qresource>
 </RCC>

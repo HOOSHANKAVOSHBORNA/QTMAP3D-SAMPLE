@@ -12,10 +12,6 @@ QObject
 QString
 -
 
-/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/CPTestPlugin.cpp
-CPTestPlugin.h
-/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/CPTestPlugin.h
-
 /home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/CPTestPlugin.h
 CrystalPluginInterface.h
 /home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/CPTest/CrystalPluginInterface.h

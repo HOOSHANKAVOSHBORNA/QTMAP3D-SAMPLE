@@ -14,7 +14,7 @@ CrystalWindow {
 
     property real widgetsPositionFactor: 1.0
     property bool widgetsVisible: true
-
+    readonly property color itemColor: "#404040"
     readonly property real widgetsMargis: 10
 
     onClicked: function() {
@@ -153,8 +153,9 @@ CrystalWindow {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: "#404040"
-                    opacity: 0.8
+                    color:"transparent"
+//                    color: "#404040"
+//                    opacity: 0.8
                     radius: 10
 
                 }
