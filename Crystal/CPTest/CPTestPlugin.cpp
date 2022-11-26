@@ -20,6 +20,11 @@ void CPTestPlugin::onSideItemCreated(int index, QObject *pSideItem)
 
 }
 
+void CPTestPlugin::onToolboxItemClicked(QString name, QString category)
+{
+
+}
+
 bool CPTestPlugin::initialize3D(CrystalMapController *pMapController)
 {
 
