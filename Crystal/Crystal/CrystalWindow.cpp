@@ -45,7 +45,5 @@ void CrystalWindow::initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfo
 
 void CrystalWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Space) {
-
-    }
+    OsgQuickWindow::keyPressEvent(event);
 }

@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "CrystalMapController.h"
-#include <osgEarthUtil/EarthManipulator>
 #include <osgEarthDrivers/gdal/GDALOptions>
 #include <osgEarth/ImageLayer>
 #include <osgEarthUtil/Sky>
@@ -11,6 +10,11 @@
 osgViewer::Viewer *CrystalMapController::getViewer()
 {
     return dynamic_cast<osgViewer::Viewer*>(m_pOsgRenderer);
+}
+
+osgEarth::Util::EarthManipulator *CrystalMapController::getEarthManipulator()
+{
+    return m_pEarthManipulator;
 }
 
 CrystalMapController::CrystalMapController(QQuickWindow *window) :
@@ -140,8 +144,8 @@ void CrystalMapController::initializeOsgEarth()
     constexpr double MAX_DISTANCE{1000000000.0};
     constexpr double MAX_OFSET{5000.0};
 
-    auto earthManipulator = new osgEarth::Util::EarthManipulator;
-    auto settings = earthManipulator->getSettings();
+    m_pEarthManipulator = new osgEarth::Util::EarthManipulator;
+    auto settings = m_pEarthManipulator->getSettings();
     settings->setSingleAxisRotation(true);
     settings->setMinMaxDistance(MIN_DISTANCE, MAX_DISTANCE);
     settings->setMaxOffset(MAX_OFSET, MAX_OFSET);
@@ -149,7 +153,7 @@ void CrystalMapController::initializeOsgEarth()
     settings->setTerrainAvoidanceEnabled(true);
     settings->setThrowingEnabled(false);
 
-    getViewer()->setCameraManipulator(earthManipulator);
+    getViewer()->setCameraManipulator(m_pEarthManipulator);
 
     osgEarth::Drivers::GDALOptions gdal;
     gdal.url() = "/home/client112/Desktop/Hooshan/Crystal/world.tif";

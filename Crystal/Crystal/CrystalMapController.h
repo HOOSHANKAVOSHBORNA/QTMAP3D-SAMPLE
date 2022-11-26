@@ -8,6 +8,7 @@
 #include <GL/gl.h>
 #include <osgEarth/MapNode>
 #include <osgEarth/Map>
+#include <osgEarthUtil/EarthManipulator>
 
 #include "OsgRenderer.h"
 
@@ -19,6 +20,7 @@ class CrystalMapController : public QObject
 
 public:
     osgViewer::Viewer *getViewer();
+    osgEarth::Util::EarthManipulator *getEarthManipulator();
 
 
 private:
@@ -51,6 +53,7 @@ private:
     GLuint m_renderTargetId = 0;
     QQuickWindow *m_pWindow = nullptr;
 
+    osgEarth::Util::EarthManipulator *m_pEarthManipulator = nullptr;
 };
 
 #endif // CrystalMapController_H

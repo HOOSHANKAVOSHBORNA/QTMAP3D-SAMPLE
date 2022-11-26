@@ -31,7 +31,6 @@ CrystalWindow {
 
     property var sideItemsModel: ListModel {
 
-        property int currentVisibleIndex: -1
 
         ListElement {
             title_text: "File"
@@ -78,31 +77,7 @@ CrystalWindow {
     }
 
     function menuWidgetClickCallback(index) {
-        sideItemHideAnimation.stop();
-        sideItemShowAnimation.stop();
-
-        for (var i = 0; i < sideItemsModel.count; i++) {
-            if(i !== index) {
-                sideItemsRepeater.itemAt(i).x = 0;
-            }
-        }
-
-        if (index == sideItemsModel.currentVisibleIndex) {
-            sideItemHideAnimation.target = sideItemsRepeater.itemAt(index);
-            sideItemHideAnimation.from = 300 + (widgetsMargis * 2.0);
-            sideItemHideAnimation.to = 0;
-            sideItemHideAnimation.duration = 200;
-            sideItemsModel.currentVisibleIndex = -1;
-            sideItemHideAnimation.start();
-        } else {
-            sideItemShowAnimation.target = sideItemsRepeater.itemAt(index);
-            sideItemShowAnimation.from = 0;
-            sideItemShowAnimation.to = 300 + (widgetsMargis * 2.0);
-            sideItemShowAnimation.duration = 200;
-            sideItemsModel.currentVisibleIndex = index;
-            sideItemShowAnimation.start();
-        }
-
+        sideWidget.menuWidgetItemClicked(index);
     }
 
     MenuWidget {
@@ -120,56 +95,20 @@ CrystalWindow {
         }
     }
 
-    Item {
-        id: sideWidgetContainer
+    SideWidget {
+        id: sideWidget
         x:  -(600 + (widgetsMargis*3)) + (wnd.widgetsPositionFactor * (300 + (widgetsMargis*2.0)))
         y: menuWidget.height + (widgetsMargis * 2.0)
         width: 600 + (widgetsMargis * 2)
         height: parent.height - menuWidget.height - (widgetsMargis * 3)
 
+        sideItemsModel: wnd.sideItemsModel
 
-        PropertyAnimation {
-            id: sideItemShowAnimation
-            property: 'x'
-
-            easing.type: Easing.OutQuint
-        }
-        PropertyAnimation {
-            id: sideItemHideAnimation
-            property: 'x'
-
-            easing.type: Easing.InQuint
-        }
-
-
-        Repeater {
-            id: sideItemsRepeater
-            model: sideItemsModel
-            delegate: Item {
-                anchors.top:parent.top
-                anchors.bottom: parent.bottom
-                x: 0
-                width: 300
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: "#404040"
-                    opacity: 0.8
-                    radius: 10
-
-                }
-
-                Loader {
-                    anchors.fill: parent
-                    source: side_item_url
-                    onLoaded: function() {
-                        wnd.sideItemCreated(index, item);
-
-                        if (index == 2) {
-                            item.toolboxModel = toolboxModel;
-                        }
-                    }
-                }
+        onSideItemCreated: function(index, item) {
+            switch(index) {
+            case 2:
+                item.toolboxModel = wnd.toolboxModel;
+                break;
             }
         }
     }
@@ -194,7 +133,7 @@ CrystalWindow {
                 break;
             }
         }
-        if (category_found === true) {
+        if (category_found == true) {
             const categoryModelCount = toolboxModel.get(category_index).categoryModel.count;
             var item_found = false;
             for (var j = 0; j < categoryModelCount; j++) {
@@ -224,8 +163,9 @@ CrystalWindow {
     }
 
     Component.onCompleted: function() {
-        addToolboxItem("Amir", "Jafari");
+        addToolboxItem("Amir",   "Jafari");
         addToolboxItem("Bagher", "Roodsarabi");
-        addToolboxItem("Hasan", "Roodsarabi");
+        addToolboxItem("Hasan",  "Roodsarabi");
     }
+
 }

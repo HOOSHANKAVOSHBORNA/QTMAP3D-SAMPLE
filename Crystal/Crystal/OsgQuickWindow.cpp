@@ -127,6 +127,49 @@ void OsgQuickWindow::keyPressEvent(QKeyEvent *event)
         return;
 
 
+    switch (event->key()) {
+    case Qt::Key_Up:
+    {
+        auto manip = m_pMapController->getEarthManipulator();
+        if (manip) {
+            manip->pan(0, -0.03);
+        }
+        event->accept();
+    }
+    break;
+    case Qt::Key_Down:
+    {
+        auto manip = m_pMapController->getEarthManipulator();
+        if (manip) {
+            manip->pan(0, 0.03);
+        }
+        event->accept();
+    }
+    break;
+    case Qt::Key_Left:
+    {
+        auto manip = m_pMapController->getEarthManipulator();
+        if (manip) {
+            manip->pan(0.03, 0);
+        }
+        event->accept();
+    }
+    break;
+    case Qt::Key_Right:
+    {
+        auto manip = m_pMapController->getEarthManipulator();
+        if (manip) {
+            manip->pan(-0.03, 0);
+        }
+        event->accept();
+    }
+    break;
+    }
+
+
+    if (event->isAccepted())
+        return;
+
     m_pMapController->keyPressEvent(event);
 
 
@@ -139,6 +182,17 @@ void OsgQuickWindow::keyReleaseEvent(QKeyEvent *event)
     if (event->isAccepted())
         return;
 
+    switch (event->key()) {
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+        event->accept();
+        break;
+    }
+
+    if (event->isAccepted())
+        return;
 
     m_pMapController->keyReleaseEvent(event);
 }

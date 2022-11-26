@@ -73,7 +73,6 @@ void CrystalApplication::createMainWindow()
 
 void CrystalApplication::onQmlObjectCreated(QObject *obj, const QUrl &objUrl)
 {
-
     if (!obj && m_mainUrl == objUrl)
         QCoreApplication::exit(-1);
     CrystalWindow *wnd = qobject_cast<CrystalWindow*>(obj);
@@ -81,7 +80,6 @@ void CrystalApplication::onQmlObjectCreated(QObject *obj, const QUrl &objUrl)
         m_pMainWindow = wnd;
         emit mainWindowCreated();
     }
-
 }
 
 void CrystalApplication::onMainWindowCreated()
@@ -94,7 +92,6 @@ void CrystalApplication::onMainWindowCreated()
                      Qt::DirectConnection);
 
     m_pPluginManager->performPluginsInitQMLDesc(m_pQmlEngine);
-
 
     m_pMainWindow->initializePluginsUI(m_pPluginManager->pluginsInfoList());
 }
