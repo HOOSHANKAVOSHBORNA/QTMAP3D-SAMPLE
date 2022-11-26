@@ -10,7 +10,6 @@ Item {
     property bool selected: false
     height: container.height + bar.height
 
-
     Rectangle {
 
         id: bar
@@ -58,11 +57,12 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                for (var i in object){
-                    if (object[i].name === name){
+
+                for (var index in listobject){
+                    if ((listobject[index].type + " : " + listobject[index].name) === type+ " : "+ name){
                         if (!selected){
-                            bar.color = "#006eff"
-                            selected = true
+                             listobject[index].children[0].color = "#006eff"
+                            listobject[index].selected = true
 
                             DetaliObject.onModelClicked(type,name)
                         }else{
@@ -71,8 +71,8 @@ Item {
                         }
                     }else{
 
-                        object[0].children[0].color = "#404142"
-                        object[i].selected = false
+                        listobject[index].children[0].color = "#404142"
+                        listobject[index].selected = false
                     }
                 }
             }

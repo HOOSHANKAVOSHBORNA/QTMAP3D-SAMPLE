@@ -37,6 +37,9 @@ void TrackModelWidget::addModel( QString type, QString name)
     emit modelAdded(type,name);
 }
 
+void TrackModelWidget::removeModel(QString type, QString name){
+    emit modelRemove(type,name);
+}
 void TrackModelWidget::setModelPosition(QString t, QString n, double latitude, double longitude, double altitude)
 {
     emit modelPosition(t,n,latitude,longitude,altitude);

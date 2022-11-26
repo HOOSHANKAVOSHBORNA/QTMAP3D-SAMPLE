@@ -94,6 +94,15 @@ void MainWindow::on_pushButton_2_clicked()
     double t =rand();
     double a =rand();
     double b =rand();
-    mTrackWidget->setModelPosition("air","karar",a,b,t);
+   mTrackWidget->removeModel("air","karar");
+   i--;
 }
 
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+
+    mTrackWidget->addModel(QString::number(i),QString::number(i));
+    i++;
+}

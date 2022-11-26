@@ -8,5 +8,6 @@
         <file>Settings.qml</file>
         <file>Layers.qml</file>
         <file>SideWidget.qml</file>
+        <file>DelegateItem.qml</file>
     </qresource>
 </RCC>

@@ -25,7 +25,7 @@ public:
     int main(int argc, char **argv);
 
 signals:
-    void mainWindowCreated();
+    void  mainWindowCreated();
 
 
 private:

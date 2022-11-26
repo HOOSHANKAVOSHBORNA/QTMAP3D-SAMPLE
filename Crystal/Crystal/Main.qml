@@ -14,7 +14,7 @@ CrystalWindow {
 
     property real widgetsPositionFactor: 1.0
     property bool widgetsVisible: true
-
+    readonly property color itemColor: "#404040"
     readonly property real widgetsMargis: 10
 
     onClicked: function() {
@@ -108,6 +108,7 @@ CrystalWindow {
             switch(index) {
             case 2:
                 item.toolboxModel = wnd.toolboxModel;
+                item.itemClicked.connect(wnd.toolboxItemClicked);
                 break;
             }
         }
