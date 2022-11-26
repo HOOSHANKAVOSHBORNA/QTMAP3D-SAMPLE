@@ -61,13 +61,12 @@ Item {
             x: 0
             width: 300
 
-            Rectangle {
-                anchors.fill: parent
-                color: "#404040"
-                opacity: 0.8
-                radius: 10
-
-            }
+//            Rectangle {
+//                anchors.fill: parent
+//                color: "#404040"
+//                opacity: 0.8
+//                radius: 10
+//            }
 
             Loader {
                 anchors.fill: parent

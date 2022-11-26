@@ -7,8 +7,8 @@ Item {
     signal itemClicked(string item_name, string category_name);
 
     id :delegateItem
-    width: 200
-    height: container.height + rectangle.height
+    //width: 200
+    //height: container.height + rectangle.height
     clip: true
     Rectangle {
         id: container
@@ -51,24 +51,24 @@ Item {
                         }
 
                         contentItem: Text {
-                                text: subbutton.text
-                                font: subbutton.font
-                                opacity: enabled ? 1.0 : 0.3
-                                color: subbutton.down ? "#9E9E9E " : "#FFFFFF"
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                                elide: Text.ElideRight
-                            }
+                            text: subbutton.text
+                            font: subbutton.font
+                            opacity: enabled ? 1.0 : 0.3
+                            color: subbutton.down ? "#9E9E9E " : "#FFFFFF"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            elide: Text.ElideRight
+                        }
 
-                            background: Rectangle {
-                                implicitWidth: 100
-                                implicitHeight: 40
-                                opacity: enabled ? 1 : 0.3
-                                color: "#212121"
-                                border.color: subbutton.down ? "#212121" : "black"
-                                border.width: 1
-                                radius: 2
-                            }
+                        background: Rectangle {
+                            implicitWidth: 100
+                            implicitHeight: 40
+                            opacity: enabled ? 1 : 0.3
+                            color: "#212121"
+                            border.color: subbutton.down ? "#212121" : "black"
+                            border.width: 1
+                            radius: 2
+                        }
 
                     }
                 }
