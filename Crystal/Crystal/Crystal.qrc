@@ -10,5 +10,8 @@
         <file>Resources/geocentric.png</file>
         <file>Resources/zoomout-r.png</file>
         <file>Resources/chevron.png</file>
+        <file>Resources/head-pitch.png</file>
+        <file>Resources/rotate.png</file>
+        <file>Resources/compass.png</file>
     </qresource>
 </RCC>

@@ -117,8 +117,8 @@ CrystalWindow {
     function addSideItem(_title_text, _icon_url, _side_item_url) {
         var new_index = sideItemsModel.count;
         sideItemsModel.append({"title_text": _title_text,
-                          "icon_url": _icon_url,
-                          "side_item_url": _side_item_url});
+                                  "icon_url": _icon_url,
+                                  "side_item_url": _side_item_url});
         return new_index;
     }
 
@@ -150,7 +150,7 @@ CrystalWindow {
             }
         } else {
             toolboxModel.append({'categoryName': _category,
-                 'categoryModel': listModelComponent.createObject(null, {})});
+                                    'categoryModel': listModelComponent.createObject(null, {})});
             toolboxModel.get(toolboxModelCount).categoryModel.append({'itemName': _name});
         }
 
@@ -175,7 +175,55 @@ CrystalWindow {
     }
 
     NavigationWidget{
-        anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
+        y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
+        // slot button
+        onBtnHomeClicked: {
+
+        }
+
+        onBtnProjectionClicked: {
+
+        }
+
+        onBtnZoomInClicked: {
+
+        }
+        onBtnZoomOutClicked: {
+
+        }
+        onBtnUpClicked: {
+
+        }
+        onBtnDownClicked: {
+
+        }
+        onBtnLeftClicked: {
+
+        }
+        onBtnRightClicked: {
+
+        }
+        onBtnRotateLeftClicked:{
+
+        }
+
+        onBtnRotateRightClicked:{
+
+        }
+        onBtnRotateDownClicked: {
+
+        }
+        onBtnRotateUpClicked: {
+
+        }
+       ///
+    }
+    Compass{
+        id:compass
+        anchors.right: parent.right
+        anchors.rightMargin: widgetsMargis
+        anchors.bottomMargin: widgetsMargis
+        y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
     }
 }
