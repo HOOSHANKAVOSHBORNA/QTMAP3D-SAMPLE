@@ -9,5 +9,7 @@
         <file>Layers.qml</file>
         <file>SideWidget.qml</file>
         <file>DelegateItem.qml</file>
+        <file>ControlCamera.qml</file>
+        <file>Compass.qml</file>
     </qresource>
 </RCC>

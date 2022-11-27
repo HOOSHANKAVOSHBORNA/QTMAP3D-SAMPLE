@@ -121,8 +121,8 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 5
-
-            icon.source: "qrc:/Resources/down-r.png"
+            rotation: -90
+            icon.source: "qrc:/Resources/chevron.png"
             icon.width:  28
             icon.height:   28
             icon.color :"white"
@@ -139,13 +139,13 @@ Item {
             onToggled: {
 
                 if (checked){
-                    button.rotation =180
+                    button.rotation = 180
                     container.height = 200
                     delegateItem.height = 230
 
                 }
                 else{
-                    button.rotation = 0
+                    button.rotation = -90
                     delegateItem.height = 30
                     container.height = 0
                 }
