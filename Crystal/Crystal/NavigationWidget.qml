@@ -6,12 +6,7 @@ Item {
     id:rootItem
     width: 330
     height: 80
-    readonly property int _iconSize: 32
-    readonly property int _margin: 10
-    readonly property int _radius: 10
-    readonly property color _colorRec: "#404040"
-    readonly property color _colorHover: "#E0E000"
-    readonly property color _colorIcon: "#FFFFFF"
+
     // signal Button
     signal btnUpClicked()
     signal btnDownClicked()

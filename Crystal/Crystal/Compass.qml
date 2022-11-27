@@ -28,7 +28,7 @@ Item {
             height: _widthimage
             anchors.centerIn: compass
             source: "qrc:/Resources/compass.png"
-            opacity: 1
+            opacity: 1            
         }
 
 

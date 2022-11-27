@@ -1,14 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
-
+import QtGraphicalEffects 1.0
 Item {
     readonly property int round: 5
     signal itemClicked(string item_name, string category_name);
 
     id :delegateItem
     //width: 200
-    //height: container.height + rectangle.height
+    //height: 230
     clip: true
     Rectangle {
         id: container
@@ -23,9 +23,10 @@ Item {
         opacity: 0.6
         ScrollView {
             id: scroller
-            anchors.bottomMargin: 3
+            anchors.bottomMargin:0
             anchors.topMargin: 2
             anchors.fill: container
+            contentHeight: columnLayout.implicitHeight
             clip : true
             Column {
                 id :columnLayout
@@ -45,27 +46,47 @@ Item {
                         width: columnLayout.width - margin
                         height: 30
                         text: itemName
+                        hoverEnabled: true
+                        display: AbstractButton.TextBesideIcon
+                        icon.source: itemIcon
+                        icon.width: 16
+                        icon.height: 16
 
                         onClicked: function() {
                             delegateItem.itemClicked(itemName, categoryName);
                         }
+                        contentItem:Item {
+                            Row{
+                                spacing: 5
+                                Image {
+                                    id: img
+                                    source: subbutton.icon.source
+                                    width: subbutton.icon.width
+                                    height: subbutton.icon.height
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    ColorOverlay{
+                                        source:img
+                                        anchors.fill: img
+                                        color: subbutton.hovered ? _colorHover : "#FFFFFF"
+                                    }
+                                }
 
-                        contentItem: Text {
-                            text: subbutton.text
-                            font: subbutton.font
-                            opacity: enabled ? 1.0 : 0.3
-                            color: subbutton.down ? "#9E9E9E " : "#FFFFFF"
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
+
+                                Text {
+                                    text: subbutton.text
+                                    font: subbutton.font
+                                    color: subbutton.hovered ? _colorHover: "#FFFFFF"
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    elide: Text.ElideRight
+                                }
+                            }
                         }
 
+
                         background: Rectangle {
-                            implicitWidth: 100
-                            implicitHeight: 40
-                            opacity: enabled ? 1 : 0.3
-                            color: "#212121"
-                            border.color: subbutton.down ? "#212121" : "black"
+                            color: _colorRec
+                            border.color: subbutton.down ? _colorHover : "black"
                             border.width: 1
                             radius: 2
                         }
@@ -87,7 +108,7 @@ Item {
 
         Text {
             id: txt
-            color: "white"
+            color: button.hovered ? _colorHover : "white"
             text: categoryName
             font.wordSpacing: 0.9
             font.weight: Font.Normal
@@ -125,11 +146,11 @@ Item {
             icon.source: "qrc:/Resources/chevron.png"
             icon.width:  28
             icon.height:   28
-            icon.color :"white"
+            icon.color : hovered ? _colorHover: "white"
 
             background: Rectangle{
                 color: button.hovered ? "transparent" : "transparent"
-                border.color: button.hovered ? "white" : "transparent"
+                border.color: button.hovered ? _colorHover: "transparent"
                 border.width: 1
                 radius: 5
 
