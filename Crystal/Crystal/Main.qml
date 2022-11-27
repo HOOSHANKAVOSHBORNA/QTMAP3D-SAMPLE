@@ -195,49 +195,47 @@ CrystalWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
         // slot button
-        onBtnHomeClicked: {
-
+        onBtnHomeClicked: function() {
+            wnd.homeButtonClicked();
         }
-
-        onBtnProjectionClicked: {
-
+        onBtnProjectionClicked: function() {
+            wnd.projectionButtonClicked();
         }
-
         onBtnZoomInClicked: {
-
+            wnd.zoomInButtonClicked();
         }
         onBtnZoomOutClicked: {
-
+            wnd.zoomOutButtonClicked();
         }
         onBtnUpClicked: {
-
+            wnd.upButtonClicked();
         }
         onBtnDownClicked: {
-
+            wnd.downButtonClicked();
         }
         onBtnLeftClicked: {
-
+            wnd.leftButtonClicked();
         }
         onBtnRightClicked: {
-
+            wnd.rightButtonClicked();
         }
         onBtnRotateLeftClicked:{
-
+            wnd.rotateLeftButtonClicked();
         }
-
         onBtnRotateRightClicked:{
-
+            wnd.rotateRightButtonClicked();
         }
         onBtnRotateDownClicked: {
-
+            wnd.rotateDownButtonClicked();
         }
         onBtnRotateUpClicked: {
-
+            wnd.rotateUpButtonClicked();
         }
        ///
     }
     Compass{
         id:compass
+        headingAngle: wnd.headingAngle
         anchors.right: parent.right
         anchors.rightMargin: widgetsMargis
         anchors.bottomMargin: widgetsMargis

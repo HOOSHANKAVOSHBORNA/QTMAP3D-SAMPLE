@@ -1,11 +1,45 @@
 
 #include <iostream>
-
-#include "CrystalMapController.h"
 #include <osgEarthDrivers/gdal/GDALOptions>
 #include <osgEarth/ImageLayer>
 #include <osgEarthUtil/Sky>
+#include <osgEarth/Registry>
+#include <QMessageBox>
+#include <QTimer>
 
+#include "CrystalMapController.h"
+
+class CrystalEventHandler : public osgGA::GUIEventHandler
+{
+public:
+    CrystalEventHandler(CrystalMapController *pMapController);
+    virtual ~CrystalEventHandler() override { }
+
+protected:
+    bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa) override;
+
+private:
+    void mouseEvent(osgViewer::View *view, const osgGA::GUIEventAdapter &ea, QEvent::Type qEventType);
+
+private:
+    CrystalMapController *m_pMapController = nullptr;
+};
+
+CrystalMapController::CrystalMapController(QQuickWindow *window) :
+    CrystalOsgController(window)
+{
+//        QTimer::singleShot(10000, [this](){this->setGeocentric(false);});
+}
+
+CrystalMapController::~CrystalMapController()
+{
+
+}
+
+void CrystalMapController::installEventHandler()
+{
+    getViewer()->addEventHandler(new CrystalEventHandler(this));
+}
 
 osgViewer::Viewer *CrystalMapController::getViewer()
 {
@@ -17,163 +51,267 @@ osgEarth::Util::EarthManipulator *CrystalMapController::getEarthManipulator()
     return m_pEarthManipulator;
 }
 
-CrystalMapController::CrystalMapController(QQuickWindow *window) :
-    m_pWindow(window)
+osgEarth::Viewpoint CrystalMapController::getViewpoint() const
 {
-
+    if (m_pEarthManipulator)
+        return m_pEarthManipulator->getViewpoint();
+    return osgEarth::Viewpoint();
 }
 
-CrystalMapController::~CrystalMapController()
+osgEarth::MapNode *CrystalMapController::getMapNode()
 {
-
+    return mMapNode;
 }
 
-void CrystalMapController::cleanup()
+const osgEarth::SpatialReference *CrystalMapController::getMapSRS() const
 {
-    if (m_pOsgRenderer) {
-        m_pOsgRenderer->deleteLater();
-        m_pOsgRenderer = nullptr;
+    return mMapNode->getMapSRS();
+}
+
+void CrystalMapController::setMap(osgEarth::Map *map)
+{
+    setGeocentric(map->isGeocentric());
+
+    mMapNode->getMap()->clear();
+    mMapNode->getMap()->setLayersFromMap(map);
+
+    goToHome();
+}
+
+void CrystalMapController::setTrackNode(osg::Node *node)
+{
+    auto vp = getEarthManipulator()->getViewpoint();
+    if(vp.getNode() == node)
+        return;
+
+    vp.setNode(node);
+    getEarthManipulator()->setViewpoint(vp);
+    auto camSet = getEarthManipulator()->getSettings();
+    camSet->setTetherMode(osgEarth::Util::EarthManipulator::TetherMode::TETHER_CENTER);
+    getEarthManipulator()->applySettings(camSet);
+}
+
+void CrystalMapController::untrackNode()
+{
+    auto vp = getEarthManipulator()->getViewpoint();
+    if(vp.getNode() == nullptr)
+        return;
+    vp.setNode(nullptr);
+    getEarthManipulator()->setViewpoint(vp);
+}
+
+bool CrystalMapController::addNode(osg::Node *node)
+{
+    osgEarth::Registry::shaderGenerator().run(node);// for textures or lighting
+    return mMapNode->addChild(node);
+}
+
+bool CrystalMapController::removeNode(osg::Node *node)
+{
+    return mMapNode->removeChild(node);
+}
+
+void CrystalMapController::setViewpoint(const osgEarth::Viewpoint &vp, double duration_s)
+{
+    getEarthManipulator()->setViewpoint(vp,duration_s);
+}
+
+void CrystalMapController::addLayer(osgEarth::Layer *layer)
+{
+
+    mMapNode->getMap()->addLayer(layer);
+    // Check if the layer is added successfully
+    auto added = mMapNode->getMap()->getLayerByName(layer->getName());
+    if (added && added->getEnabled())
+    {
+
+    }
+    else
+    {
+        QMessageBox::warning(nullptr, tr("Error"), tr("Data loading failed!"));
     }
 }
 
-void CrystalMapController::initializeGL(int width, int height, QScreen *screen, GLuint renderTargetId)
+void CrystalMapController::setZoom(double val)
 {
-    //std::cout << "one" << std::endl;
-
-    m_renderTargetId = renderTargetId;
-
-    createOsgRenderer(width, height, screen);
-
-    if(m_pWindow) {
-        QObject::connect(m_pOsgRenderer, &OSGRenderer::needsUpdate,
-                         m_pWindow, &QQuickWindow::update,
-                         Qt::DirectConnection);
-    }
+    getEarthManipulator()->zoom(0, -val, getViewer());
 }
 
-void CrystalMapController::resizeGL(int width, int height, QScreen *screen)
+void CrystalMapController::goToHome()
 {
-    if (m_pOsgRenderer) {
-        const float pixelRatio = static_cast<float>(screen->devicePixelRatio());
-        m_pOsgRenderer->resize(0, 0, width, height, pixelRatio);
-    }
+    getEarthManipulator()->home(0);
 }
 
-void CrystalMapController::paintGL()
+void CrystalMapController::goToPosition(double latitude, double longitude, double range)
 {
-    if (m_pOsgRenderer) {
-        if (m_isFirstFrame) {
-            m_isFirstFrame = false;
-            m_pOsgRenderer->getCamera()->getGraphicsContext()->setDefaultFboId(m_renderTargetId);
+    osgEarth::GeoPoint  pointLatLong(osgEarth::SpatialReference::get("wgs84"), latitude, longitude, 0);
+    osgEarth::GeoPoint  mapPoint;
+    pointLatLong.transform(getMapSRS(), mapPoint);
+
+    osgEarth::Viewpoint vp;
+    vp.focalPoint() = mapPoint;
+    vp.range()= range;
+    setViewpoint(vp, 3.0);
+}
+
+void CrystalMapController::setGeocentric(bool bGeocentric)
+{
+    if (m_bGeocentric == bGeocentric)
+        return;
+
+    m_bGeocentric = bGeocentric;
+
+    osgEarth::LayerVector layers;
+    mMapNode->getMap()->getLayers(layers);
+
+    createMapNode(bGeocentric);
+    for(auto layer: layers)
+       addLayer(layer);
+
+    osgEarth::Viewpoint vp = getEarthManipulator()->getViewpoint();
+
+    createCameraManipulator();
+    getViewer()->setCameraManipulator(getEarthManipulator());
+    getEarthManipulator()->setViewpoint(vp);
+}
+
+void CrystalMapController::toggleProjection()
+{
+    setGeocentric(!m_bGeocentric);
+}
+
+void CrystalMapController::frame()
+{
+    emit headingAngleChanged(-getViewpoint().getHeading());
+}
+
+void CrystalMapController::panUp()
+{
+    getEarthManipulator()->pan(0.0, -0.1);
+}
+
+void CrystalMapController::panDown()
+{
+    getEarthManipulator()->pan(0.0, 0.1);
+}
+
+void CrystalMapController::panLeft()
+{
+    getEarthManipulator()->pan(0.1, 0.0);
+}
+
+void CrystalMapController::panRight()
+{
+    getEarthManipulator()->pan(-0.1, 0.0);
+}
+
+void CrystalMapController::rotateUp()
+{
+    getEarthManipulator()->rotate(0.0, 0.1);
+}
+
+void CrystalMapController::rotateDown()
+{
+    getEarthManipulator()->rotate(0.0, -0.1);
+}
+
+void CrystalMapController::rotateLeft()
+{
+    getEarthManipulator()->rotate(-0.1, 0.0);
+}
+
+void CrystalMapController::rotateRight()
+{
+    getEarthManipulator()->rotate(0.1, 0.0);
+}
+
+void CrystalMapController::zoomIn()
+{
+    getEarthManipulator()->zoom(0.0, -0.4, getViewer());
+}
+
+void CrystalMapController::zoomOut()
+{
+    getEarthManipulator()->zoom(0.0, 0.4, getViewer());
+}
+
+bool CrystalEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
+{
+
+    osgViewer::View *view = dynamic_cast<osgViewer::View *>(&aa);
+
+    QEvent::Type qEventType;
+    switch (ea.getEventType())
+    {
+    case osgGA::GUIEventAdapter::FRAME:
+        m_pMapController->frame();
+        break;
+    case (osgGA::GUIEventAdapter::PUSH):
+        qEventType = QEvent::Type::MouseButtonPress;
+        if (view) { mouseEvent(view, ea, qEventType); }
+        break;
+    case (osgGA::GUIEventAdapter::RELEASE):
+        qEventType = QEvent::Type::MouseButtonRelease;
+        if (view) { mouseEvent(view, ea, qEventType); }
+        break;
+    case (osgGA::GUIEventAdapter::MOVE):
+        qEventType = QEvent::Type::MouseMove;
+        if (view) { mouseEvent(view, ea, qEventType); }
+        break;
+    case (osgGA::GUIEventAdapter::SCROLL):
+        qEventType = QEvent::Type::Wheel;
+        if (view) { mouseEvent(view, ea, qEventType); }
+        break;
+    case (osgGA::GUIEventAdapter::DOUBLECLICK):
+        qEventType = QEvent::Type::MouseButtonDblClick;
+        if (view) { mouseEvent(view, ea, qEventType); }
+        break;
+    default:
+        break;
+    }
+    return false;
+
+}
+
+void CrystalEventHandler::mouseEvent(osgViewer::View *view, const osgGA::GUIEventAdapter &ea, QEvent::Type qEventType)
+{
+
+    QMouseEvent* event;
+    Qt::MouseButton mb;
+    switch (ea.getButtonMask())
+    {
+    case osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON:
+        mb = Qt::MouseButton::LeftButton;
+        break;
+    case osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON:
+        mb = Qt::MouseButton::RightButton;
+        break;
+    case osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON:
+        mb = Qt::MouseButton::MiddleButton;
+        break;
+    default:
+        mb = Qt::MouseButton::NoButton;
+    }
+
+    event = new QMouseEvent(qEventType,
+                            QPointF(static_cast<qreal>(ea.getX()),static_cast<qreal>(ea.getY())),
+                            mb, mb, Qt::KeyboardModifier::NoModifier);
+
+    osgUtil::LineSegmentIntersector::Intersections intersections;
+    if (view->computeIntersections(ea, intersections))
+    {
+        for (const auto &intersection : intersections)
+        {
+            //            mCurrentLocalPos    = intersection.getLocalIntersectPoint();
+            osg::Vec3d currentWorldPos = intersection.getWorldIntersectPoint();
+            //m_pMapController->mapMouseEvent(event,currentWorldPos);
+            return;
         }
-
-        m_pOsgRenderer->frame();
     }
 }
 
-void CrystalMapController::keyPressEvent(QKeyEvent *event)
+CrystalEventHandler::CrystalEventHandler(CrystalMapController *pMapController) :
+    m_pMapController(pMapController)
 {
-    if (m_pOsgRenderer)
-        m_pOsgRenderer->keyPressEvent(event);
-}
-
-void CrystalMapController::keyReleaseEvent(QKeyEvent *event)
-{
-
-    if (m_pOsgRenderer)
-        m_pOsgRenderer->keyReleaseEvent(event);
-}
-
-void CrystalMapController::mousePressEvent(QMouseEvent *event)
-{
-    if (m_pOsgRenderer) {
-        m_pOsgRenderer->mousePressEvent(event);
-    }
-
-}
-
-void CrystalMapController::mouseReleaseEvent(QMouseEvent *event)
-{
-
-    if (m_pOsgRenderer) {
-        m_pOsgRenderer->mouseReleaseEvent(event);
-    }
-}
-
-void CrystalMapController::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    if (m_pOsgRenderer)
-        m_pOsgRenderer->mouseDoubleClickEvent(event);
-
-}
-
-void CrystalMapController::mouseMoveEvent(QMouseEvent *event)
-{
-
-    if (m_pOsgRenderer) {
-        m_pOsgRenderer->mouseMoveEvent(event);
-    }
-}
-
-void CrystalMapController::wheelEvent(QWheelEvent *event)
-{
-
-    if (m_pOsgRenderer)
-        m_pOsgRenderer->wheelEvent(event);
-}
-
-
-void CrystalMapController::createOsgRenderer(int width, int height, QScreen *screen)
-{
-    osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
-    ds->setNvOptimusEnablement(1);
-    ds->setStereo(false);
-
-
-    m_pOsgRenderer = new OSGRenderer(this);
-    const float pixelRatio = static_cast<float>(screen->devicePixelRatio());
-    m_pOsgRenderer->setupOSG(0 , 0, width, height, pixelRatio);
-
-    m_pOsgRenderer->getCamera()->setClearColor(osg::Vec4(0.15f, 0.15f, 0.15f, 1.0f));
-
-}
-
-void CrystalMapController::initializeOsgEarth()
-{
-    constexpr double MIN_DISTANCE{10.0};
-    constexpr double MAX_DISTANCE{1000000000.0};
-    constexpr double MAX_OFSET{5000.0};
-
-    m_pEarthManipulator = new osgEarth::Util::EarthManipulator;
-    auto settings = m_pEarthManipulator->getSettings();
-    settings->setSingleAxisRotation(true);
-    settings->setMinMaxDistance(MIN_DISTANCE, MAX_DISTANCE);
-    settings->setMaxOffset(MAX_OFSET, MAX_OFSET);
-    settings->setMinMaxPitch(-90, 90);
-    settings->setTerrainAvoidanceEnabled(true);
-    settings->setThrowingEnabled(false);
-
-    getViewer()->setCameraManipulator(m_pEarthManipulator);
-
-    osgEarth::Drivers::GDALOptions gdal;
-    gdal.url() = "/home/client112/Documents/mbr/QTMAP3D-SAMPLE/Crystal/world.tif";
-    osg::ref_ptr<osgEarth::ImageLayer> imlayer = new osgEarth::ImageLayer("base-world", gdal);
-    osgEarth::MapOptions mapOptGeo;
-    mapOptGeo.coordSysType() = osgEarth::MapOptions::CSTYPE_GEOCENTRIC;
-    mapOptGeo.profile() = osgEarth::ProfileOptions("global-mercator");
-
-    osgEarth::Map *mp = new osgEarth::Map(mapOptGeo);
-
-    mMapNodeGeo = new osgEarth::MapNode(mp);
-    mMapNodeGeo->getMap()->addLayer(imlayer);
-
-    osg::ref_ptr<osgEarth::Util::SkyNode> skyNodeGeo = osgEarth::Util::SkyNode::create( mMapNodeGeo);
-    skyNodeGeo->addChild(mMapNodeGeo);
-
-    mMapRoot = new osg::Group();
-    mMapRoot->addChild(skyNodeGeo);
-
-    getViewer()->setSceneData(mMapRoot);
-
 
 }

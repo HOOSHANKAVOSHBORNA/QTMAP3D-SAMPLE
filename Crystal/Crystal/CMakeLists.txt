@@ -27,6 +27,7 @@ add_executable(Crystal
         CrystalApplication.cpp
         CrystalMapController.cpp
         CrystalPluginManager.cpp
+        CrystalOsgController.cpp
         Qml.qrc
         Crystal.qrc)
 

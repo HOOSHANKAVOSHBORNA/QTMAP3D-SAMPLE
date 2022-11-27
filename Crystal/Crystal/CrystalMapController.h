@@ -11,49 +11,64 @@
 #include <osgEarthUtil/EarthManipulator>
 
 #include "OsgRenderer.h"
+#include "CrystalOsgController.h"
 
-class CrystalMapController : public QObject
+
+class CrystalEventHandler;
+
+
+class CrystalMapController : public CrystalOsgController
 {
     friend class OsgQuickWindow;
-
     Q_OBJECT
+
+signals:
+    void headingAngleChanged(qreal angle);
 
 public:
     osgViewer::Viewer *getViewer();
     osgEarth::Util::EarthManipulator *getEarthManipulator();
+    osgEarth::Viewpoint getViewpoint() const;
+    osgEarth::MapNode *getMapNode();
+    const osgEarth::SpatialReference* getMapSRS() const;
+
+public:
+    void setMap(osgEarth::Map *map);
+    void setTrackNode(osg::Node *node);
+    void untrackNode();
+    bool addNode(osg::Node *node);
+    bool removeNode(osg::Node *node);
+    void setViewpoint(const osgEarth::Viewpoint& vp, double duration_s = 0.0);
+    void addLayer(osgEarth::Layer* layer);
+
+public slots:
+    void setZoom(double);
+    void goToHome();
+    void goToPosition(double latitude, double longitude, double range);
+    void setGeocentric(bool bGeocentric);
+    void toggleProjection();
+    void frame();
+
+    void panUp();
+    void panDown();
+    void panLeft();
+    void panRight();
+
+    void rotateUp();
+    void rotateDown();
+    void rotateLeft();
+    void rotateRight();
+
+    void zoomIn();
+    void zoomOut();
 
 
 private:
     explicit CrystalMapController(QQuickWindow *window);
     ~CrystalMapController();
 
-    void cleanup();
 
-    void initializeGL(int width, int height, QScreen *screen, GLuint renderTargetId); void resizeGL(int width, int height, QScreen *screen);
-    void paintGL();
-
-    void keyPressEvent(QKeyEvent* event);
-    void keyReleaseEvent(QKeyEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mouseDoubleClickEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void wheelEvent(QWheelEvent* event);
-
-    void createOsgRenderer(int width, int height, QScreen *screen);
-    void initializeOsgEarth();
-
-private:
-    osg::ref_ptr<osgEarth::MapNode> mMapNodeGeo;
-    osg::ref_ptr<osg::Group> mMapRoot;
-
-private:
-    OSGRenderer *m_pOsgRenderer = nullptr;
-    bool m_isFirstFrame = true;
-    GLuint m_renderTargetId = 0;
-    QQuickWindow *m_pWindow = nullptr;
-
-    osgEarth::Util::EarthManipulator *m_pEarthManipulator = nullptr;
+    virtual void installEventHandler() override;
 };
 
 #endif // CrystalMapController_H

@@ -69,8 +69,6 @@ void OsgQuickWindow::restoreContext()
 
 void OsgQuickWindow::initializeGL()
 {
-    //std::cout << "initializeGL" << std::endl;
-
     m_pOGLF->initializeOpenGLFunctions();
 
     m_pContext = QOpenGLContext::currentContext();
