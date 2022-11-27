@@ -131,6 +131,7 @@ void CrystalOsgController::initializeOsgEarth()
     createCameraManipulator();
     m_pOsgRenderer->setCameraManipulator(m_pEarthManipulator);
 
+    installEventHandler();
 
     mMapRoot = new osg::Group();
     mSkyNode = osgEarth::Util::SkyNode::create(mMapNode);

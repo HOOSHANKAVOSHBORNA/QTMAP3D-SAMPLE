@@ -17,10 +17,13 @@
 class CrystalEventHandler;
 
 
-class CrystalMapController : private CrystalOsgController
+class CrystalMapController : public CrystalOsgController
 {
     friend class OsgQuickWindow;
     Q_OBJECT
+
+signals:
+    void headingAngleChanged(qreal angle);
 
 public:
     osgViewer::Viewer *getViewer();
@@ -43,10 +46,29 @@ public slots:
     void goToHome();
     void goToPosition(double latitude, double longitude, double range);
     void setGeocentric(bool bGeocentric);
+    void toggleProjection();
+    void frame();
+
+    void panUp();
+    void panDown();
+    void panLeft();
+    void panRight();
+
+    void rotateUp();
+    void rotateDown();
+    void rotateLeft();
+    void rotateRight();
+
+    void zoomIn();
+    void zoomOut();
+
 
 private:
     explicit CrystalMapController(QQuickWindow *window);
     ~CrystalMapController();
+
+
+    virtual void installEventHandler() override;
 };
 
 #endif // CrystalMapController_H

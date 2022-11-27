@@ -15,11 +15,50 @@ CrystalWindow::CrystalWindow(QWindow *parent) :
                      [](const QString& itemName, const QString& categoryName){
         qDebug() << "toolbox : " << itemName << " : " << categoryName;
     });
+
+    QObject::connect(this, &CrystalWindow::homeButtonClicked,
+                     m_pMapController, &CrystalMapController::goToHome);
+    QObject::connect(this, &CrystalWindow::projectionButtonClicked,
+                     m_pMapController, &CrystalMapController::toggleProjection);
+
+
+    QObject::connect(this, &CrystalWindow::upButtonClicked,
+                     m_pMapController, &CrystalMapController::panUp);
+    QObject::connect(this, &CrystalWindow::downButtonClicked,
+                     m_pMapController, &CrystalMapController::panDown);
+    QObject::connect(this, &CrystalWindow::leftButtonClicked,
+                     m_pMapController, &CrystalMapController::panLeft);
+    QObject::connect(this, &CrystalWindow::rightButtonClicked,
+                     m_pMapController, &CrystalMapController::panRight);
+
+
+    QObject::connect(this, &CrystalWindow::rotateUpButtonClicked,
+                     m_pMapController, &CrystalMapController::rotateUp);
+    QObject::connect(this, &CrystalWindow::rotateDownButtonClicked,
+                     m_pMapController, &CrystalMapController::rotateDown);
+    QObject::connect(this, &CrystalWindow::rotateLeftButtonClicked,
+                     m_pMapController, &CrystalMapController::rotateLeft);
+    QObject::connect(this, &CrystalWindow::rotateRightButtonClicked,
+                     m_pMapController, &CrystalMapController::rotateRight);
+
+
+    QObject::connect(this, &CrystalWindow::zoomInButtonClicked,
+                     m_pMapController, &CrystalMapController::zoomIn);
+    QObject::connect(this, &CrystalWindow::zoomOutButtonClicked,
+                     m_pMapController, &CrystalMapController::zoomOut);
+
+    QObject::connect(m_pMapController, &CrystalMapController::headingAngleChanged,
+                     this, &CrystalWindow::setHeadingAngle);
 }
 
 CrystalWindow::~CrystalWindow()
 {
 
+}
+
+qreal CrystalWindow::headingAngle() const
+{
+    return m_headingAngle;
 }
 
 void CrystalWindow::initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfoList)
@@ -45,6 +84,15 @@ void CrystalWindow::initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfo
         }
     }
 }
+
+void CrystalWindow::setHeadingAngle(qreal angle)
+{
+    if (m_headingAngle != angle) {
+        m_headingAngle = angle;
+        emit headingAngleChanged(angle);
+    }
+}
+
 
 void CrystalWindow::keyPressEvent(QKeyEvent *event)
 {

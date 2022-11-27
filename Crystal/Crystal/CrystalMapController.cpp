@@ -28,12 +28,17 @@ private:
 CrystalMapController::CrystalMapController(QQuickWindow *window) :
     CrystalOsgController(window)
 {
-        QTimer::singleShot(10000, [this](){this->setGeocentric(false);});
+//        QTimer::singleShot(10000, [this](){this->setGeocentric(false);});
 }
 
 CrystalMapController::~CrystalMapController()
 {
 
+}
+
+void CrystalMapController::installEventHandler()
+{
+    getViewer()->addEventHandler(new CrystalEventHandler(this));
 }
 
 osgViewer::Viewer *CrystalMapController::getViewer()
@@ -170,6 +175,66 @@ void CrystalMapController::setGeocentric(bool bGeocentric)
     getEarthManipulator()->setViewpoint(vp);
 }
 
+void CrystalMapController::toggleProjection()
+{
+    setGeocentric(!m_bGeocentric);
+}
+
+void CrystalMapController::frame()
+{
+    emit headingAngleChanged(-getViewpoint().getHeading());
+}
+
+void CrystalMapController::panUp()
+{
+    getEarthManipulator()->pan(0.0, -0.1);
+}
+
+void CrystalMapController::panDown()
+{
+    getEarthManipulator()->pan(0.0, 0.1);
+}
+
+void CrystalMapController::panLeft()
+{
+    getEarthManipulator()->pan(0.1, 0.0);
+}
+
+void CrystalMapController::panRight()
+{
+    getEarthManipulator()->pan(-0.1, 0.0);
+}
+
+void CrystalMapController::rotateUp()
+{
+    getEarthManipulator()->rotate(0.0, 0.1);
+}
+
+void CrystalMapController::rotateDown()
+{
+    getEarthManipulator()->rotate(0.0, -0.1);
+}
+
+void CrystalMapController::rotateLeft()
+{
+    getEarthManipulator()->rotate(-0.1, 0.0);
+}
+
+void CrystalMapController::rotateRight()
+{
+    getEarthManipulator()->rotate(0.1, 0.0);
+}
+
+void CrystalMapController::zoomIn()
+{
+    getEarthManipulator()->zoom(0.0, -0.4, getViewer());
+}
+
+void CrystalMapController::zoomOut()
+{
+    getEarthManipulator()->zoom(0.0, 0.4, getViewer());
+}
+
 bool CrystalEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
 
@@ -179,7 +244,7 @@ bool CrystalEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIAct
     switch (ea.getEventType())
     {
     case osgGA::GUIEventAdapter::FRAME:
-        //m_pMapController->frame();
+        m_pMapController->frame();
         break;
     case (osgGA::GUIEventAdapter::PUSH):
         qEventType = QEvent::Type::MouseButtonPress;
@@ -243,4 +308,10 @@ void CrystalEventHandler::mouseEvent(osgViewer::View *view, const osgGA::GUIEven
             return;
         }
     }
+}
+
+CrystalEventHandler::CrystalEventHandler(CrystalMapController *pMapController) :
+    m_pMapController(pMapController)
+{
+
 }

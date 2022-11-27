@@ -26,11 +26,12 @@ protected:
     explicit CrystalOsgController(QQuickWindow *window);
     virtual ~CrystalOsgController();
 
-
     void cleanup();
 
     void initializeGL(int width, int height, QScreen *screen, GLuint renderTargetId); void resizeGL(int width, int height, QScreen *screen);
     void paintGL();
+
+    virtual void installEventHandler() = 0;
 
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
