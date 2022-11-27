@@ -3,12 +3,11 @@ import QtQuick 2.13
 import Qt.labs.platform 1.1
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.13
+
 Item {
     id : rootItem
     readonly property int margin: 5
-
     signal itemClicked(string item_name, string category_name);
-
     property var toolboxModel
 
     ColumnLayout {

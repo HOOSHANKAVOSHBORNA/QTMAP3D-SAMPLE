@@ -12,7 +12,9 @@ CrystalWindow::CrystalWindow(QWindow *parent) :
     OsgQuickWindow(parent)
 {
     QObject::connect(this, &CrystalWindow::toolboxItemClicked,
-                     [](){qDebug() << "toolbox";});
+                     [](const QString& itemName, const QString& categoryName){
+        qDebug() << "toolbox : " << itemName << " : " << categoryName;
+    });
 }
 
 CrystalWindow::~CrystalWindow()
