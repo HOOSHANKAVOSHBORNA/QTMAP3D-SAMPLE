@@ -130,7 +130,7 @@ CrystalWindow {
     }
 
 
-    function addToolboxItem(_name, _category, _url, _checkable,) {
+    function addToolboxItem(_name, _category, _url, _checkable) {
         const toolboxModelCount = toolboxModel.count;
         var category_found = false;
         var category_index = -1;

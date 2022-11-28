@@ -88,9 +88,9 @@ void CrystalWindow::initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfo
                                       Qt::DirectConnection,
                                       Q_RETURN_ARG(QVariant, ret),
                                       Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.name)),
-                                      Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.category))//,
-                                      //Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.iconUrl)),
-                                      //Q_ARG(QVariant, QVariant::fromValue<bool>(toolboxItem.checkable))
+                                      Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.category)),
+                                      Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.iconUrl)),
+                                      Q_ARG(QVariant, QVariant::fromValue<bool>(toolboxItem.checkable))
                                       );
              bool bOk = false;
             const int idx = ret.toInt(&bOk);
