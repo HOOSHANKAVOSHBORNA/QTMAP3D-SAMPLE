@@ -1,5 +1,5 @@
-#ifndef CrystalMapController_H
-#define CrystalMapController_H
+#ifndef MapController_H
+#define MapController_H
 
 #include <QQuickWindow>
 #include <QObject>
@@ -10,14 +10,14 @@
 #include <osgEarth/Map>
 #include <osgEarthUtil/EarthManipulator>
 
-#include "OsgRenderer.h"
-#include "CrystalOsgController.h"
+#include "osgrenderer.h"
+#include "osgcontroller.h"
 
 
-class CrystalEventHandler;
+class MainEventHandler;
 
 
-class CrystalMapController : public CrystalOsgController
+class MapController : public OsgController
 {
     friend class OsgQuickWindow;
     Q_OBJECT
@@ -64,11 +64,11 @@ public slots:
 
 
 private:
-    explicit CrystalMapController(QQuickWindow *window);
-    ~CrystalMapController();
+    explicit MapController(QQuickWindow *window);
+    ~MapController();
 
 
     virtual void installEventHandler() override;
 };
 
-#endif // CrystalMapController_H
+#endif // MapController_H

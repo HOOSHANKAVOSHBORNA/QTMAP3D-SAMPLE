@@ -32,10 +32,10 @@ namespace eveBIM
 
 class OSGRenderer : public QObject, public osgViewer::Viewer
 {
-    bool                                       m_osgInitialized {false};
-    osg::ref_ptr<osgViewer::GraphicsWindow>    m_osgWinEmb;
-    float                                      m_windowScale {1.0f};
-    bool                                       m_continuousUpdate {true};
+    bool                                       mosgInitialized {false};
+    osg::ref_ptr<osgViewer::GraphicsWindow>    mosgWinEmb;
+    float                                      mwindowScale {1.0f};
+    bool                                       mcontinuousUpdate {true};
 
     int                                        _timerId{0};
     osg::Timer                                 _lastFrameStartTime;
@@ -55,11 +55,11 @@ public:
 
     bool continuousUpdate() const
     {
-        return m_continuousUpdate;
+        return mcontinuousUpdate;
     }
     void setContinuousUpdate(bool continuousUpdate)
     {
-        m_continuousUpdate = continuousUpdate;
+        mcontinuousUpdate = continuousUpdate;
     }
 
     virtual void keyPressEvent(QKeyEvent* event);

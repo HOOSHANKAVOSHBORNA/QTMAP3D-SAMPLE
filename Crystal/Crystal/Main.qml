@@ -5,7 +5,7 @@ import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 import Crystal 1.0
 
-CrystalWindow {
+MainWindow {
 
 
     readonly property int       _iconSize   : 32
@@ -49,19 +49,19 @@ CrystalWindow {
         ListElement {
             title_text: "File"
             icon_url: "qrc:///Resources/File.png"
-            side_item_url: "qrc:///File.qml"
+            side_itemurl: "qrc:///File.qml"
         }
 
         ListElement {
             title_text: "Settings"
             icon_url: "qrc:///Resources/Settings.png"
-            side_item_url: "qrc:///Settings.qml"
+            side_itemurl: "qrc:///Settings.qml"
         }
 
         ListElement {
             title_text: "Toolbox"
             icon_url: "qrc:///Resources/Toolbox.png"
-            side_item_url: "qrc:///Toolbox.qml"
+            side_itemurl: "qrc:///Toolbox.qml"
         }
     }
 
@@ -128,11 +128,11 @@ CrystalWindow {
         }
     }
 
-    function addSideItem(_title_text, _icon_url, _side_item_url) {
+    function addSideItem(_title_text, _icon_url, _side_itemurl) {
         var new_index = sideItemsModel.count;
         sideItemsModel.append({"title_text": _title_text,
                                   "icon_url": _icon_url,
-                                  "side_item_url": _side_item_url});
+                                  "side_itemurl": _side_itemurl});
         return new_index;
     }
 
@@ -150,14 +150,14 @@ CrystalWindow {
         }
         if (category_found == true) {
             const categoryModelCount = toolboxModel.get(category_index).categoryModel.count;
-            var item_found = false;
+            var itemfound = false;
             for (var j = 0; j < categoryModelCount; j++) {
                 if (toolboxModel.get(category_index).categoryModel.get(j).itemName === _name) {
-                    item_found = true;
+                    itemfound = true;
                     break;
                 }
             }
-            if (item_found === false) {
+            if (itemfound === false) {
                 toolboxModel.get(category_index).categoryModel.append({'itemName': _name,
                                                                        'itemIcon' : _url,
                                                                        'itemCheckable' : _checkable

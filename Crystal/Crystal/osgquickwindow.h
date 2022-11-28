@@ -14,8 +14,8 @@
 #include <osgEarthDrivers/gdal/GDALOptions>
 #include <QTime>
 
-#include "OsgRenderer.h"
-#include "CrystalMapController.h"
+#include "osgrenderer.h"
+#include "mapcontroller.h"
 
 
 class OsgQuickWindow : public QQuickWindow
@@ -26,7 +26,7 @@ public:
     OsgQuickWindow(QWindow *parent = nullptr);
     ~OsgQuickWindow();
 
-    CrystalMapController* mapController() const;
+    MapController* mapController() const;
 
 
 public slots:
@@ -57,24 +57,24 @@ signals:
     void osgInitialized();
 
 private:
-    QOpenGLFunctions_2_0 *m_pOGLF = nullptr;
+    QOpenGLFunctions_2_0 *mOGLF = nullptr;
 
-    bool m_bResized     = false;
+    bool mResized     = false;
 
-    int m_viewportWidth = 0;
-    int m_viewportHeight = 0;
+    int mViewportWidth = 0;
+    int mViewportHeight = 0;
 
-    bool m_isFirstFrame = true;
+    bool mIsFirstFrame = true;
 
 
-    QTime m_lastMousePressTime = QTime::currentTime();
-    QPoint m_lastPressPoint = QPoint();
+    QTime mLastMousePressTime = QTime::currentTime();
+    QPoint mLastPressPoint = QPoint();
 
-    QOpenGLContext *m_pContext = nullptr;
-    QSurface       *m_pSurface = nullptr;
+    QOpenGLContext *mContext = nullptr;
+    QSurface       *mSurface = nullptr;
 
 protected:
-    CrystalMapController *m_pMapController = nullptr;
+    MapController *mMapController = nullptr;
 };
 
 #endif // OSGQUICKWINDOW_H

@@ -1,27 +1,27 @@
-#ifndef CRYSTALAPPLICATION_H
-#define CRYSTALAPPLICATION_H
+#ifndef Application_H
+#define Application_H
 
 #include <QObject>
 #include <QUrl>
 #include <list>
 
-#include "CrystalPluginInterface.h"
-#include "CrystalPluginManager.h"
+#include "plugininterface.h"
+#include "pluginmanager.h"
 
 
-class CrystalWindow;
+class MainWindow;
 class CRYSTAL_PLUGIN_QML_INPUT_DESC;
 class QQmlApplicationEngine;
 
-class CrystalApplication : public QObject
+class Application : public QObject
 {
     Q_OBJECT
 
 private:
-    explicit CrystalApplication();
+    explicit Application();
 
 public:
-    static CrystalApplication *instance();
+    static Application *instance();
     int main(int argc, char **argv);
 
 signals:
@@ -42,11 +42,11 @@ private slots:
 signals:
 
 private:
-    QQmlApplicationEngine *m_pQmlEngine = nullptr;
-    const QUrl m_mainUrl{QStringLiteral("qrc:///Main.qml")};
-    CrystalWindow *m_pMainWindow = nullptr;
+    QQmlApplicationEngine *mpQmlEngine = nullptr;
+    const QUrl mmainUrl{QStringLiteral("qrc:///Main.qml")};
+    MainWindow *mpMainWindow = nullptr;
 
-    CrystalPluginManager *m_pPluginManager = nullptr;
+    PluginManager *mpPluginManager = nullptr;
 };
 
-#endif // CRYSTALAPPLICATION_H
+#endif // Application_H

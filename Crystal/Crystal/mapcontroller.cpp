@@ -7,13 +7,13 @@
 #include <QMessageBox>
 #include <QTimer>
 
-#include "CrystalMapController.h"
+#include "mapcontroller.h"
 
-class CrystalEventHandler : public osgGA::GUIEventHandler
+class MainEventHandler : public osgGA::GUIEventHandler
 {
 public:
-    CrystalEventHandler(CrystalMapController *pMapController);
-    virtual ~CrystalEventHandler() override { }
+    MainEventHandler(MapController *pMapController);
+    virtual ~MainEventHandler() override { }
 
 protected:
     bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa) override;
@@ -22,53 +22,53 @@ private:
     void mouseEvent(osgViewer::View *view, const osgGA::GUIEventAdapter &ea, QEvent::Type qEventType);
 
 private:
-    CrystalMapController *m_pMapController = nullptr;
+    MapController *mpMapController = nullptr;
 };
 
-CrystalMapController::CrystalMapController(QQuickWindow *window) :
-    CrystalOsgController(window)
+MapController::MapController(QQuickWindow *window) :
+    OsgController(window)
 {
 //        QTimer::singleShot(10000, [this](){this->setGeocentric(false);});
 }
 
-CrystalMapController::~CrystalMapController()
+MapController::~MapController()
 {
 
 }
 
-void CrystalMapController::installEventHandler()
+void MapController::installEventHandler()
 {
-    getViewer()->addEventHandler(new CrystalEventHandler(this));
+    getViewer()->addEventHandler(new MainEventHandler(this));
 }
 
-osgViewer::Viewer *CrystalMapController::getViewer()
+osgViewer::Viewer *MapController::getViewer()
 {
-    return dynamic_cast<osgViewer::Viewer*>(m_pOsgRenderer);
+    return dynamic_cast<osgViewer::Viewer*>(mpOsgRenderer);
 }
 
-osgEarth::Util::EarthManipulator *CrystalMapController::getEarthManipulator()
+osgEarth::Util::EarthManipulator *MapController::getEarthManipulator()
 {
-    return m_pEarthManipulator;
+    return mpEarthManipulator;
 }
 
-osgEarth::Viewpoint CrystalMapController::getViewpoint() const
+osgEarth::Viewpoint MapController::getViewpoint() const
 {
-    if (m_pEarthManipulator)
-        return m_pEarthManipulator->getViewpoint();
+    if (mpEarthManipulator)
+        return mpEarthManipulator->getViewpoint();
     return osgEarth::Viewpoint();
 }
 
-osgEarth::MapNode *CrystalMapController::getMapNode()
+osgEarth::MapNode *MapController::getMapNode()
 {
     return mMapNode;
 }
 
-const osgEarth::SpatialReference *CrystalMapController::getMapSRS() const
+const osgEarth::SpatialReference *MapController::getMapSRS() const
 {
     return mMapNode->getMapSRS();
 }
 
-void CrystalMapController::setMap(osgEarth::Map *map)
+void MapController::setMap(osgEarth::Map *map)
 {
     setGeocentric(map->isGeocentric());
 
@@ -78,7 +78,7 @@ void CrystalMapController::setMap(osgEarth::Map *map)
     goToHome();
 }
 
-void CrystalMapController::setTrackNode(osg::Node *node)
+void MapController::setTrackNode(osg::Node *node)
 {
     auto vp = getEarthManipulator()->getViewpoint();
     if(vp.getNode() == node)
@@ -91,7 +91,7 @@ void CrystalMapController::setTrackNode(osg::Node *node)
     getEarthManipulator()->applySettings(camSet);
 }
 
-void CrystalMapController::untrackNode()
+void MapController::untrackNode()
 {
     auto vp = getEarthManipulator()->getViewpoint();
     if(vp.getNode() == nullptr)
@@ -100,23 +100,23 @@ void CrystalMapController::untrackNode()
     getEarthManipulator()->setViewpoint(vp);
 }
 
-bool CrystalMapController::addNode(osg::Node *node)
+bool MapController::addNode(osg::Node *node)
 {
     osgEarth::Registry::shaderGenerator().run(node);// for textures or lighting
     return mMapNode->addChild(node);
 }
 
-bool CrystalMapController::removeNode(osg::Node *node)
+bool MapController::removeNode(osg::Node *node)
 {
     return mMapNode->removeChild(node);
 }
 
-void CrystalMapController::setViewpoint(const osgEarth::Viewpoint &vp, double duration_s)
+void MapController::setViewpoint(const osgEarth::Viewpoint &vp, double duration_s)
 {
     getEarthManipulator()->setViewpoint(vp,duration_s);
 }
 
-void CrystalMapController::addLayer(osgEarth::Layer *layer)
+void MapController::addLayer(osgEarth::Layer *layer)
 {
 
     mMapNode->getMap()->addLayer(layer);
@@ -132,17 +132,17 @@ void CrystalMapController::addLayer(osgEarth::Layer *layer)
     }
 }
 
-void CrystalMapController::setZoom(double val)
+void MapController::setZoom(double val)
 {
     getEarthManipulator()->zoom(0, -val, getViewer());
 }
 
-void CrystalMapController::goToHome()
+void MapController::goToHome()
 {
     getEarthManipulator()->home(0);
 }
 
-void CrystalMapController::goToPosition(double latitude, double longitude, double range)
+void MapController::goToPosition(double latitude, double longitude, double range)
 {
     osgEarth::GeoPoint  pointLatLong(osgEarth::SpatialReference::get("wgs84"), latitude, longitude, 0);
     osgEarth::GeoPoint  mapPoint;
@@ -154,12 +154,12 @@ void CrystalMapController::goToPosition(double latitude, double longitude, doubl
     setViewpoint(vp, 3.0);
 }
 
-void CrystalMapController::setGeocentric(bool bGeocentric)
+void MapController::setGeocentric(bool bGeocentric)
 {
-    if (m_bGeocentric == bGeocentric)
+    if (mbGeocentric == bGeocentric)
         return;
 
-    m_bGeocentric = bGeocentric;
+    mbGeocentric = bGeocentric;
 
     osgEarth::LayerVector layers;
     mMapNode->getMap()->getLayers(layers);
@@ -175,67 +175,67 @@ void CrystalMapController::setGeocentric(bool bGeocentric)
     getEarthManipulator()->setViewpoint(vp);
 }
 
-void CrystalMapController::toggleProjection()
+void MapController::toggleProjection()
 {
-    setGeocentric(!m_bGeocentric);
+    setGeocentric(!mbGeocentric);
 }
 
-void CrystalMapController::frame()
+void MapController::frame()
 {
     emit headingAngleChanged(-getViewpoint().getHeading());
 }
 
-void CrystalMapController::panUp()
+void MapController::panUp()
 {
     getEarthManipulator()->pan(0.0, -0.1);
 }
 
-void CrystalMapController::panDown()
+void MapController::panDown()
 {
     getEarthManipulator()->pan(0.0, 0.1);
 }
 
-void CrystalMapController::panLeft()
+void MapController::panLeft()
 {
     getEarthManipulator()->pan(0.1, 0.0);
 }
 
-void CrystalMapController::panRight()
+void MapController::panRight()
 {
     getEarthManipulator()->pan(-0.1, 0.0);
 }
 
-void CrystalMapController::rotateUp()
+void MapController::rotateUp()
 {
     getEarthManipulator()->rotate(0.0, -0.1);
 }
 
-void CrystalMapController::rotateDown()
+void MapController::rotateDown()
 {
     getEarthManipulator()->rotate(0.0, 0.1);
 }
 
-void CrystalMapController::rotateLeft()
+void MapController::rotateLeft()
 {
     getEarthManipulator()->rotate(-0.1, 0.0);
 }
 
-void CrystalMapController::rotateRight()
+void MapController::rotateRight()
 {
     getEarthManipulator()->rotate(0.1, 0.0);
 }
 
-void CrystalMapController::zoomIn()
+void MapController::zoomIn()
 {
     getEarthManipulator()->zoom(0.0, -0.4, getViewer());
 }
 
-void CrystalMapController::zoomOut()
+void MapController::zoomOut()
 {
     getEarthManipulator()->zoom(0.0, 0.4, getViewer());
 }
 
-bool CrystalEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
+bool MainEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
 
     osgViewer::View *view = dynamic_cast<osgViewer::View *>(&aa);
@@ -244,7 +244,7 @@ bool CrystalEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIAct
     switch (ea.getEventType())
     {
     case osgGA::GUIEventAdapter::FRAME:
-        m_pMapController->frame();
+        mpMapController->frame();
         break;
     case (osgGA::GUIEventAdapter::PUSH):
         qEventType = QEvent::Type::MouseButtonPress;
@@ -273,7 +273,7 @@ bool CrystalEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIAct
 
 }
 
-void CrystalEventHandler::mouseEvent(osgViewer::View *view, const osgGA::GUIEventAdapter &ea, QEvent::Type qEventType)
+void MainEventHandler::mouseEvent(osgViewer::View *view, const osgGA::GUIEventAdapter &ea, QEvent::Type qEventType)
 {
 
     QMouseEvent* event;
@@ -304,14 +304,14 @@ void CrystalEventHandler::mouseEvent(osgViewer::View *view, const osgGA::GUIEven
         {
             //            mCurrentLocalPos    = intersection.getLocalIntersectPoint();
             osg::Vec3d currentWorldPos = intersection.getWorldIntersectPoint();
-            //m_pMapController->mapMouseEvent(event,currentWorldPos);
+            //mpMapController->mapMouseEvent(event,currentWorldPos);
             return;
         }
     }
 }
 
-CrystalEventHandler::CrystalEventHandler(CrystalMapController *pMapController) :
-    m_pMapController(pMapController)
+MainEventHandler::MainEventHandler(MapController *pMapController) :
+    mpMapController(pMapController)
 {
 
 }

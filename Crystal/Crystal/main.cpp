@@ -6,12 +6,12 @@
 #include <iostream>
 #include <QObject>
 
-#include "CrystalApplication.h"
+#include "application.h"
 
 
 int main(int argc, char *argv[])
 {
-    CrystalApplication *const app = CrystalApplication::instance();
+    Application *const app = Application::instance();
 
     return app->main(argc, argv);
 }

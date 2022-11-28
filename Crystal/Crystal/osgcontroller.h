@@ -1,5 +1,5 @@
-#ifndef CRYSTALOSGCONTROLLER_H
-#define CRYSTALOSGCONTROLLER_H
+#ifndef OsgController_H
+#define OsgController_H
 
 #include <QObject>
 #include <QQuickWindow>
@@ -12,9 +12,9 @@
 #include <osgEarthUtil/EarthManipulator>
 #include <osgEarthUtil/Sky>
 
-#include "OsgRenderer.h"
+#include "osgrenderer.h"
 
-class CrystalOsgController : public QObject
+class OsgController : public QObject
 {
     friend class OsgQuickWindow;
 
@@ -23,8 +23,8 @@ class CrystalOsgController : public QObject
 public:
 
 protected:
-    explicit CrystalOsgController(QQuickWindow *window);
-    virtual ~CrystalOsgController();
+    explicit OsgController(QQuickWindow *window);
+    virtual ~OsgController();
 
     void cleanup();
 
@@ -53,15 +53,15 @@ protected:
     osg::ref_ptr<osg::Group> mMapRoot;
 
 protected:
-    OSGRenderer *m_pOsgRenderer = nullptr;
-    bool m_isFirstFrame = true;
-    GLuint m_renderTargetId = 0;
-    QQuickWindow *m_pWindow = nullptr;
+    OSGRenderer *mpOsgRenderer = nullptr;
+    bool misFirstFrame = true;
+    GLuint mrenderTargetId = 0;
+    QQuickWindow *mpWindow = nullptr;
 
-    osgEarth::Util::EarthManipulator *m_pEarthManipulator = nullptr;
+    osgEarth::Util::EarthManipulator *mpEarthManipulator = nullptr;
 
-    bool m_bGeocentric = true;
+    bool mbGeocentric = true;
 
 };
 
-#endif // CRYSTALOSGCONTROLLER_H
+#endif // OsgController_H

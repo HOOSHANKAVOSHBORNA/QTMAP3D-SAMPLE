@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.13
 import QtGraphicalEffects 1.0
 Item {
     readonly property int round: 5
-    signal itemClicked(string item_name, string category_name);
+    signal itemClicked(string itemname, string category_name);
     signal changeCheckable(bool check)
     id :delegateItem
     clip: true

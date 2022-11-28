@@ -70,7 +70,7 @@ Item {
 
             Loader {
                 anchors.fill: parent
-                source: side_item_url
+                source: side_itemurl
                 onLoaded: function() {
                     rootItem.sideItemCreated(index, item);
 //                    wnd.sideItemCreated(index, item);

@@ -15,8 +15,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#include "OsgRenderer.h"
-#include "OsgQuickWindow.h"
+#include "osgrenderer.h"
+#include "osgquickwindow.h"
 
 //
 //#include <osgQOpenGL/osgQOpenGLWindow>
@@ -173,18 +173,18 @@ void OSGRenderer::update()
 
 void OSGRenderer::resize(int windowX, int windowY, int windowWidth, int windowHeight, float windowScale)
 {
-    if(!m_osgInitialized)
+    if(!mosgInitialized)
         return;
 
-    m_windowScale = windowScale;
+    mwindowScale = windowScale;
 
     /*  _camera->setViewport(new osg::Viewport(0, 0, windowWidth * windowScale,
                                            windowHeight * windowScale));*/
 
-    m_osgWinEmb->resized(windowX * windowScale, windowX * windowScale,
+    mosgWinEmb->resized(windowX * windowScale, windowX * windowScale,
                          windowWidth * windowScale,
                          windowHeight * windowScale);
-    m_osgWinEmb->getEventQueue()->windowResize(windowX * windowScale, windowY * windowScale,
+    mosgWinEmb->getEventQueue()->windowResize(windowX * windowScale, windowY * windowScale,
                                                windowWidth * windowScale,
                                                windowHeight * windowScale);
     _camera->setViewport(new osg::Viewport(windowX * windowScale, windowY *windowScale, windowWidth * windowScale,
@@ -196,16 +196,16 @@ void OSGRenderer::resize(int windowX, int windowY, int windowWidth, int windowHe
 
 void OSGRenderer::setupOSG(int windowX, int windowY, int windowWidth, int windowHeight, float windowScale)
 {
-    m_osgInitialized = true;
-    m_windowScale = windowScale;
-    m_osgWinEmb = new osgViewer::GraphicsWindowEmbedded(windowX * windowScale, windowY * windowScale,
+    mosgInitialized = true;
+    mwindowScale = windowScale;
+    mosgWinEmb = new osgViewer::GraphicsWindowEmbedded(windowX * windowScale, windowY * windowScale,
                                                         windowWidth * windowScale, windowHeight * windowScale);
-    //m_osgWinEmb = new osgViewer::GraphicsWindowEmbedded(0, 0, windowWidth * windowScale, windowHeight * windowScale);
+    //mosgWinEmb = new osgViewer::GraphicsWindowEmbedded(0, 0, windowWidth * windowScale, windowHeight * windowScale);
     // make sure the event queue has the correct window rectangle size and input range
-    m_osgWinEmb->getEventQueue()->syncWindowRectangleWithGraphicsContext();
+    mosgWinEmb->getEventQueue()->syncWindowRectangleWithGraphicsContext();
     _camera->setViewport(new osg::Viewport(windowX * windowScale, windowY *windowScale, windowWidth * windowScale,
                                            windowHeight * windowScale));
-    _camera->setGraphicsContext(m_osgWinEmb.get());
+    _camera->setGraphicsContext(mosgWinEmb.get());
     // disable key event (default is Escape key) that the viewer checks on each
     // frame to see
     // if the viewer's done flag should be set to signal end of viewers main
@@ -234,14 +234,14 @@ void OSGRenderer::setKeyboardModifiers(QInputEvent* event)
 
     if(modkey & Qt::AltModifier) mask |= osgGA::GUIEventAdapter::MODKEY_ALT;
 
-    m_osgWinEmb->getEventQueue()->getCurrentEventState()->setModKeyMask(mask);
+    mosgWinEmb->getEventQueue()->getCurrentEventState()->setModKeyMask(mask);
 }
 
 void OSGRenderer::keyPressEvent(QKeyEvent* event)
 {
     setKeyboardModifiers(event);
     int value = s_QtKeyboardMap.remapKey(event);
-    m_osgWinEmb->getEventQueue()->keyPress(value);
+    mosgWinEmb->getEventQueue()->keyPress(value);
 }
 
 void OSGRenderer::keyReleaseEvent(QKeyEvent* event)
@@ -254,7 +254,7 @@ void OSGRenderer::keyReleaseEvent(QKeyEvent* event)
     {
         setKeyboardModifiers(event);
         int value = s_QtKeyboardMap.remapKey(event);
-        m_osgWinEmb->getEventQueue()->keyRelease(value);
+        mosgWinEmb->getEventQueue()->keyRelease(value);
     }
 }
 
@@ -286,8 +286,8 @@ void OSGRenderer::mousePressEvent(QMouseEvent* event)
     }
 
     setKeyboardModifiers(event);
-    m_osgWinEmb->getEventQueue()->mouseButtonPress(event->x() * m_windowScale,
-                                                   event->y() * m_windowScale, button);
+    mosgWinEmb->getEventQueue()->mouseButtonPress(event->x() * mwindowScale,
+                                                   event->y() * mwindowScale, button);
 }
 
 void OSGRenderer::mouseReleaseEvent(QMouseEvent* event)
@@ -318,8 +318,8 @@ void OSGRenderer::mouseReleaseEvent(QMouseEvent* event)
     }
 
     setKeyboardModifiers(event);
-    m_osgWinEmb->getEventQueue()->mouseButtonRelease(event->x() * m_windowScale,
-                                                     event->y() * m_windowScale,
+    mosgWinEmb->getEventQueue()->mouseButtonRelease(event->x() * mwindowScale,
+                                                     event->y() * mwindowScale,
                                                      button);
 }
 
@@ -351,23 +351,23 @@ void OSGRenderer::mouseDoubleClickEvent(QMouseEvent* event)
     }
 
     setKeyboardModifiers(event);
-    m_osgWinEmb->getEventQueue()->mouseDoubleButtonPress(event->x() * m_windowScale,
-                                                         event->y() * m_windowScale, button);
+    mosgWinEmb->getEventQueue()->mouseDoubleButtonPress(event->x() * mwindowScale,
+                                                         event->y() * mwindowScale, button);
 }
 
 void OSGRenderer::mouseMoveEvent(QMouseEvent* event)
 {
     setKeyboardModifiers(event);
-    m_osgWinEmb->getEventQueue()->mouseMotion(event->x() * m_windowScale,
-                                              event->y() * m_windowScale);
+    mosgWinEmb->getEventQueue()->mouseMotion(event->x() * mwindowScale,
+                                              event->y() * mwindowScale);
 }
 
 void OSGRenderer::wheelEvent(QWheelEvent* event)
 {
     setKeyboardModifiers(event);
-    m_osgWinEmb->getEventQueue()->mouseMotion(event->x() * m_windowScale,
-                                              event->y() * m_windowScale);
-    m_osgWinEmb->getEventQueue()->mouseScroll(
+    mosgWinEmb->getEventQueue()->mouseMotion(event->x() * mwindowScale,
+                                              event->y() * mwindowScale);
+    mosgWinEmb->getEventQueue()->mouseScroll(
         event->orientation() == Qt::Vertical ?
         (event->delta() > 0 ? osgGA::GUIEventAdapter::SCROLL_UP :
          osgGA::GUIEventAdapter::SCROLL_DOWN) :

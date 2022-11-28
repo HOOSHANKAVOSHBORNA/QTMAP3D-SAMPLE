@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.13
 Item {
     id : rootItem
     readonly property int margin: 5
-    signal itemClicked(string item_name, string category_name);
+    signal itemClicked(string itemname, string category_name);
     signal changeCheckable(bool check)
 
     property var toolboxModel
@@ -33,8 +33,8 @@ Item {
                         Layout.fillWidth: true
                         width: tmp.width
                         height: 30
-                        onItemClicked: function(item_name, category_name) {
-                            rootItem.itemClicked(item_name, category_name)
+                        onItemClicked: function(itemname, category_name) {
+                            rootItem.itemClicked(itemname, category_name)
                         }
                         onChangeCheckable: {
                             rootItem.changeCheckable(check)

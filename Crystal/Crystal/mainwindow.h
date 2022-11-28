@@ -1,27 +1,27 @@
-#ifndef CRYSTALWINDOW_H
-#define CRYSTALWINDOW_H
+#ifndef MainWindow_H
+#define MainWindow_H
 
 #include <QQmlComponent>
-#include "OsgQuickWindow.h"
+#include "osgquickwindow.h"
 
 class CrystalPluginInfo;
-class CrystalPluginInterface;
+class PluginInterface;
 
-class CrystalWindow : public OsgQuickWindow
+class MainWindow : public OsgQuickWindow
 {
     Q_OBJECT
     Q_PROPERTY(qreal headingAngle READ headingAngle WRITE setHeadingAngle NOTIFY headingAngleChanged)
 
 public:
-    CrystalWindow(QWindow *parent = nullptr);
-    ~CrystalWindow();
+    MainWindow(QWindow *parent = nullptr);
+    ~MainWindow();
 
     qreal headingAngle() const;
 
 signals:
     void sideItemCreated(int index, QObject *pSideItem);
     void toolboxItemCreated(QString itemName, QString categoryName,
-                            CrystalPluginInterface *pInterface);
+                            PluginInterface *pInterface);
     void toolboxItemClicked(QString itemName, QString categoryName);
 
     void homeButtonClicked();
@@ -47,7 +47,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
 
 private:
-    qreal m_headingAngle = 0.0;
+    qreal mheadingAngle = 0.0;
 };
 
-#endif // CRYSTALWINDOW_H
+#endif // MainWindow_H
