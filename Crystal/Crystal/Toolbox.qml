@@ -16,7 +16,7 @@ Item {
             id: scroller
             anchors.fill: parent
             contentHeight: columnLayout.implicitHeight
-            clip : true
+            //clip : true
             Item {
                 id: tmp
                 anchors.fill: parent

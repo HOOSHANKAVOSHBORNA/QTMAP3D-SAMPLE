@@ -140,7 +140,7 @@ void CrystalOsgController::initializeOsgEarth()
     m_pOsgRenderer->setSceneData(mMapRoot);
 
     osgEarth::Drivers::GDALOptions gdal;
-    gdal.url() = "/home/client112/Desktop/Hooshan/QTMAP3D-SAMPLE/Crystal/world.tif";
+    gdal.url() = "../../world.tif";
     osg::ref_ptr<osgEarth::ImageLayer> imlayer = new osgEarth::ImageLayer("base-world", gdal);
     mMapNode->getMap()->addLayer(imlayer);
 }

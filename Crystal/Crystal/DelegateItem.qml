@@ -4,8 +4,9 @@ import QtQuick.Layouts 1.13
 import QtGraphicalEffects 1.0
 Item {
     readonly property int round: 5
+    property bool _checked: false
     signal itemClicked(string item_name, string category_name);
-
+    signal changeCheckable(bool check)
     id :delegateItem
     //width: 200
     //height: 230
@@ -23,15 +24,15 @@ Item {
         opacity: 0.6
         ScrollView {
             id: scroller
-            anchors.bottomMargin:0
+            anchors.bottomMargin:2
             anchors.topMargin: 2
             anchors.fill: container
-            contentHeight: columnLayout.implicitHeight
+            contentHeight: columnLayout.implicitHeight + 10
             clip : true
             Column {
                 id :columnLayout
                 width: scroller.width -10
-                height: 190
+                //height: 150
                 anchors.top: parent.top
                 anchors.topMargin: 4
                 anchors.left: parent.left
@@ -53,6 +54,15 @@ Item {
                         icon.height: 16
 
                         onClicked: function() {
+                                if (itemCheckable)
+                                    if (!_checked){
+                                        _checked = true
+                                        delegateItem.changeCheckable(_checked)
+                                    }
+                                    else{
+                                        _checked = false
+                                        delegateItem.changeCheckable(_checked)
+                                     }
                             delegateItem.itemClicked(itemName, categoryName);
                         }
                         contentItem:Item {
@@ -65,17 +75,19 @@ Item {
                                     height: subbutton.icon.height
                                     anchors.verticalCenter: parent.verticalCenter
                                     ColorOverlay{
+                                        id:layeColor
                                         source:img
                                         anchors.fill: img
-                                        color: subbutton.hovered ? _colorHover : "#FFFFFF"
+                                        color: subbutton.hovered || _checked ? _colorHover : "#FFFFFF"
                                     }
                                 }
 
 
                                 Text {
+                                    id:subtxt
                                     text: subbutton.text
                                     font: subbutton.font
-                                    color: subbutton.hovered ? _colorHover: "#FFFFFF"
+                                    color: subbutton.hovered || _checked  ? _colorHover: "#FFFFFF"
                                     horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
                                     elide: Text.ElideRight
@@ -85,7 +97,7 @@ Item {
 
 
                         background: Rectangle {
-                            color: _colorRec
+                            color:  _colorRec
                             border.color: subbutton.down ? _colorHover : "black"
                             border.width: 1
                             radius: 2

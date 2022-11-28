@@ -5,6 +5,7 @@ Rectangle {
     width: 100
     property url buttonIcon: "qrc:/Resources/chevron.png"
     signal itemClicked(string direction)
+
     Button {
         id: btn_right
         width: 34
@@ -23,8 +24,12 @@ Rectangle {
             color:_colorRec
             radius: _radius * 10
         }
-        onClicked: {
-            itemClicked("RIGHT")
+        onPressed: timerRight.running = true
+        onReleased: timerRight.running = false
+        Timer {
+            id:timerRight
+            interval: 150; running: false; repeat: true
+            onTriggered:  itemClicked("RIGHT")
         }
     }
 
@@ -47,8 +52,12 @@ Rectangle {
             color:_colorRec
             radius: _radius * 10
         }
-        onClicked: {
-            itemClicked("UP")
+        onPressed: timerUp.running = true
+        onReleased: timerUp.running = false
+        Timer {
+            id:timerUp
+            interval: 150; running: false; repeat: true
+            onTriggered:  itemClicked("UP")
         }
     }
 
@@ -69,8 +78,12 @@ Rectangle {
             color:_colorRec
             radius: _radius * 10
         }
-        onClicked: {
-            itemClicked("LEFT")
+        onPressed: timerLeft.running = true
+        onReleased: timerLeft.running = false
+        Timer {
+            id:timerLeft
+            interval: 150; running: false; repeat: true
+            onTriggered:  itemClicked("LEFT")
         }
     }
 
@@ -92,8 +105,12 @@ Rectangle {
             color:_colorRec
             radius: _radius * 10
         }
-        onClicked: {
-            itemClicked("DOWN")
+        onPressed: timerDown.running = true
+        onReleased: timerDown.running = false
+        Timer {
+            id:timerDown
+            interval: 150; running: false; repeat: true
+            onTriggered:  itemClicked("DOWN")
         }
     }
 }

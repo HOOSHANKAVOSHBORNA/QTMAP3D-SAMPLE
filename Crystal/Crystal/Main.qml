@@ -12,7 +12,7 @@ CrystalWindow {
     minimumHeight: 600
     title: qsTr("Hello World")
     readonly property int _iconSize: 32
-    readonly property int _margin: 10
+    readonly property int _margin: 15
     readonly property int _radius: 10
     readonly property color _colorRec: "#404040"
     readonly property color _colorHover: "#FFCC00"
@@ -20,6 +20,7 @@ CrystalWindow {
 
     property real widgetsPositionFactor: 1.0
     property bool widgetsVisible: true
+    property string modeMap: "geocentric"
     readonly property color itemColor: "#404040"
     readonly property real widgetsMargis: 10
 
@@ -129,7 +130,7 @@ CrystalWindow {
     }
 
 
-    function addToolboxItem(_name, _category, _url, _checked,) {
+    function addToolboxItem(_name, _category, _url, _checkable,) {
         const toolboxModelCount = toolboxModel.count;
         var category_found = false;
         var category_index = -1;
@@ -152,7 +153,7 @@ CrystalWindow {
             if (item_found === false) {
                 toolboxModel.get(category_index).categoryModel.append({'itemName': _name,
                                                                        'itemIcon' : _url,
-                                                                       'itemChecked' : _checked
+                                                                       'itemCheckable' : _checkable
                                                                       });
             } else {
                 return false;
@@ -162,7 +163,7 @@ CrystalWindow {
                                     'categoryModel': listModelComponent.createObject(null, {})});
             toolboxModel.get(toolboxModelCount).categoryModel.append({'itemName': _name,
                                                                          'itemIcon' : _url,
-                                                                         'itemChecked' : _checked
+                                                                         'itemCheckable' : _checkable
                                                                         });
         }
 
@@ -177,7 +178,7 @@ CrystalWindow {
 
     Component.onCompleted: function() {
         addToolboxItem("Amir",   "Jafari","qrc:/Resources/geocentric.png" ,true );
-        addToolboxItem("Bagher", "Roodsarab","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Bagher", "Roodsarab","qrc:/Resources/geocentric.png" ,false);
         addToolboxItem("Hasan",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
         addToolboxItem("Hasan1",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
         addToolboxItem("Hasan2",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
