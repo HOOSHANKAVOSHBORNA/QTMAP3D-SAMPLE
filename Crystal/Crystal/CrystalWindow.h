@@ -5,6 +5,7 @@
 #include "OsgQuickWindow.h"
 
 class CrystalPluginInfo;
+class CrystalPluginInterface;
 
 class CrystalWindow : public OsgQuickWindow
 {
@@ -19,6 +20,8 @@ public:
 
 signals:
     void sideItemCreated(int index, QObject *pSideItem);
+    void toolboxItemCreated(QString itemName, QString categoryName,
+                            CrystalPluginInterface *pInterface);
     void toolboxItemClicked(QString itemName, QString categoryName);
 
     void homeButtonClicked();

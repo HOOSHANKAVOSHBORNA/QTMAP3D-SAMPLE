@@ -207,12 +207,12 @@ void CrystalMapController::panRight()
 
 void CrystalMapController::rotateUp()
 {
-    getEarthManipulator()->rotate(0.0, 0.1);
+    getEarthManipulator()->rotate(0.0, -0.1);
 }
 
 void CrystalMapController::rotateDown()
 {
-    getEarthManipulator()->rotate(0.0, -0.1);
+    getEarthManipulator()->rotate(0.0, 0.1);
 }
 
 void CrystalMapController::rotateLeft()

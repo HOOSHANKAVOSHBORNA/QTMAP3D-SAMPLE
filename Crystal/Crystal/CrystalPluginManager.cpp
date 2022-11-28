@@ -11,15 +11,13 @@
 
 CrystalPluginManager::CrystalPluginManager(QObject *parent) : QObject(parent)
 {
-
+    m_toolboxItemsMap["Ali"]["Askari"] = nullptr;
 }
 
 void CrystalPluginManager::loadPlugins()
 {
-
     QDir pluginsDir = QCoreApplication::applicationDirPath();
     pluginsDir.cd("../../CPTest/build");
-
 
     for (const QString& fileName : pluginsDir.entryList(QDir::Files)) {
 
@@ -45,7 +43,6 @@ void CrystalPluginManager::loadPlugins()
             }
         }
     }
-
 }
 
 void CrystalPluginManager::performPluginsInitQMLDesc(QQmlEngine *qmlEngine)
@@ -54,7 +51,6 @@ void CrystalPluginManager::performPluginsInitQMLDesc(QQmlEngine *qmlEngine)
         item.pInterface->initializeQMLDesc(qmlEngine, item.qmlDesc);
     }
 }
-
 
 void CrystalPluginManager::performPluginsInit3D(CrystalMapController *mapController)
 {
@@ -78,5 +74,22 @@ void CrystalPluginManager::onSideItemCreated(int index, QObject *pSideItem)
 
     if (it != m_pluginsInfoList.end()) {
         it->pInterface->onSideItemCreated(index, pSideItem);
+    }
+}
+
+void CrystalPluginManager::onToolboxItemCreated(const QString &name, const QString &category, CrystalPluginInterface *pInterface)
+{
+    m_toolboxItemsMap[category][name] = pInterface;
+}
+
+void CrystalPluginManager::onToolboxItemClicked(const QString &name, const QString &category)
+{
+    if (m_toolboxItemsMap.contains(category)) {
+        if (m_toolboxItemsMap[category].contains(name)) {
+                CrystalPluginInterface* pInterface = m_toolboxItemsMap[category][name];
+                if (pInterface) {
+                    pInterface->onToolboxItemClicked(name, category);
+                }
+        }
     }
 }

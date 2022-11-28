@@ -11,10 +11,6 @@
 CrystalWindow::CrystalWindow(QWindow *parent) :
     OsgQuickWindow(parent)
 {
-    QObject::connect(this, &CrystalWindow::toolboxItemClicked,
-                     [](const QString& itemName, const QString& categoryName){
-        qDebug() << "toolbox : " << itemName << " : " << categoryName;
-    });
 
     QObject::connect(this, &CrystalWindow::homeButtonClicked,
                      m_pMapController, &CrystalMapController::goToHome);
@@ -80,6 +76,26 @@ void CrystalWindow::initializePluginsUI(std::list<CrystalPluginInfo> pluginsInfo
             const int idx = ret.toInt(&bOk);
             if (bOk) {
                 item.sideItemIndex = idx;
+            }
+        }
+
+        for (auto& toolboxItem : item.qmlDesc->toolboxItemsList) {
+
+
+            QVariant ret;
+            QMetaObject::invokeMethod(this,
+                                      "addToolboxItem",
+                                      Qt::DirectConnection,
+                                      Q_RETURN_ARG(QVariant, ret),
+                                      Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.name)),
+                                      Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.category))//,
+                                      //Q_ARG(QVariant, QVariant::fromValue<QString>(toolboxItem.iconUrl)),
+                                      //Q_ARG(QVariant, QVariant::fromValue<bool>(toolboxItem.checkable))
+                                      );
+             bool bOk = false;
+            const int idx = ret.toInt(&bOk);
+            if (bOk) {
+                emit toolboxItemCreated(toolboxItem.name, toolboxItem.category, item.pInterface);
             }
         }
     }

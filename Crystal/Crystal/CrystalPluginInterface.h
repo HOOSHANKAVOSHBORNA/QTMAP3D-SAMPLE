@@ -18,6 +18,8 @@ struct ToolboxItem
 {
     QString name;
     QString category;
+    QString iconUrl;
+    bool    checkable;
 };
 
 struct CrystalPluginQMLDesc

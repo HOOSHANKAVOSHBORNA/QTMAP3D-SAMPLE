@@ -87,6 +87,12 @@ void CrystalApplication::onMainWindowCreated()
     QObject::connect(m_pMainWindow, &CrystalWindow::sideItemCreated,
                      m_pPluginManager, &CrystalPluginManager::onSideItemCreated,
                      Qt::QueuedConnection);
+    QObject::connect(m_pMainWindow, &CrystalWindow::toolboxItemCreated,
+                     m_pPluginManager, &CrystalPluginManager::onToolboxItemCreated,
+                     Qt::DirectConnection);
+    QObject::connect(m_pMainWindow, &CrystalWindow::toolboxItemClicked,
+                     m_pPluginManager, &CrystalPluginManager::onToolboxItemClicked,
+                     Qt::DirectConnection);
     QObject::connect(m_pMainWindow, &CrystalWindow::osgInitialized,
                      this, &CrystalApplication::initialize3D,
                      Qt::DirectConnection);

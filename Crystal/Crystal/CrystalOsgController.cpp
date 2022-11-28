@@ -181,4 +181,5 @@ void CrystalOsgController::createCameraManipulator()
     settings->setMinMaxPitch(-90, 90);
     settings->setTerrainAvoidanceEnabled(true);
     settings->setThrowingEnabled(false);
+
 }
