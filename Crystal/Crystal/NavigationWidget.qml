@@ -42,11 +42,13 @@ Item {
             icon.source : "qrc:/Resources/home-r.png"
             icon.width : _iconSize
             icon.height : _iconSize
-            icon.color : hovered ? _colorHover : _colorIcon
+            icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                                   (pressed ? _colorHover : "#FFFFFF");
             background: Rectangle{
                 radius: 10
                 color: _colorRec
             }
+
             onClicked: btnHomeClicked()
         }
 
@@ -88,14 +90,19 @@ Item {
             icon.source : "qrc:/Resources/zoomin-r.png"
             icon.width : _iconSize
             icon.height : _iconSize
-            icon.color : hovered ? _colorHover : _colorIcon
+            icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                                   (pressed ? _colorHover : "#FFFFFF");
             background:Rectangle {
                 color:_colorRec
                 radius: _radius
             }
             //onClicked: btnZoomInClicked()
-            onPressed: timerPositive.running =true
-            onReleased: timerPositive.running = false
+            onPressed:{
+                timerPositive.running =true
+            }
+            onReleased:{
+                timerPositive.running = false
+               }
             Timer {
                 id:timerPositive
                 interval: 150; running: false; repeat: true
@@ -116,14 +123,19 @@ Item {
             icon.source : "qrc:/Resources/zoomout-r.png"
             icon.width : _iconSize
             icon.height : _iconSize
-            icon.color : hovered ? _colorHover : _colorIcon
+            icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                                   (pressed ? _colorHover : "#FFFFFF");
             background:Rectangle {
                 color:_colorRec
                 radius: _radius
             }
 
-            onPressed: timerNegative.running =true
-            onReleased: timerNegative.running = false
+            onPressed:{
+                timerNegative.running =true
+               }
+            onReleased:{
+                timerNegative.running = false
+            }
             Timer {
                 id:timerNegative
                 interval: 150; running: false; repeat: true
@@ -173,11 +185,13 @@ Item {
             icon.source : modeMap === "projection" ? "qrc:/Resources/projection.png" :"qrc:/Resources/geocentric.png"
             icon.width : _iconSize
             icon.height : _iconSize
-            icon.color : hovered ? _colorHover : _colorIcon
+            icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                                   (pressed ? _colorHover : "#FFFFFF");
             background: Rectangle{
                 radius: _radius
                 color: _colorRec
             }
+
             onClicked:{
                 if (modeMap==="projection")
                     modeMap = "geocentric"

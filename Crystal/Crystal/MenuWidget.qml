@@ -68,8 +68,8 @@ Item {
                             Layout.preferredHeight: implicitHeight
                             text: title_text
                             color: "white"
-                            font.family: "Srouce Sans Pro"
-                            font.pointSize: 11
+                            font.family: _fontFamily
+                            font.pointSize: _fontPointSize
                         }
                         visible: false
                     }
@@ -97,8 +97,8 @@ Item {
                         anchors.fill: col
                         source: col
                         color: mouseArea.isMouseOnItem ?
-                                   (mouseArea.pressed ? "#908000" : "#E0E000") :
-                                   (mouseArea.pressed ? "#E0E000" : "#FFFFFF");
+                                   (mouseArea.pressed ? _colorPresed: _colorHover) :
+                                   (mouseArea.pressed ? _colorHover : "#FFFFFF");
                     }
                 }
             }

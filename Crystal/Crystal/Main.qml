@@ -6,17 +6,24 @@ import QtQuick.Layouts 1.13
 import Crystal 1.0
 
 CrystalWindow {
+
+
+    readonly property int       _iconSize   : 32
+    readonly property int       _margin     : 15
+    readonly property int       _radius     : 10
+    readonly property color     _colorRec   : "#404040"
+    readonly property color     _colorHover : "#FFCC00"
+    readonly property color     _colorPresed : "#908000"
+    readonly property color     _colorIcon  : "#FFFFFF"
+    readonly property string    _fontFamily : "Srouce Sans Pro"
+    readonly property int    _fontPointSize : 11
+
     id: wnd
     visible: true
     minimumWidth: 800
     minimumHeight: 600
     title: qsTr("Hello World")
-    readonly property int _iconSize: 32
-    readonly property int _margin: 15
-    readonly property int _radius: 10
-    readonly property color _colorRec: "#404040"
-    readonly property color _colorHover: "#FFCC00"
-    readonly property color _colorIcon: "#FFFFFF"
+
 
     property real widgetsPositionFactor: 1.0
     property bool widgetsVisible: true
@@ -107,7 +114,7 @@ CrystalWindow {
         x:  -(600 + (widgetsMargis*3)) + (wnd.widgetsPositionFactor * (300 + (widgetsMargis*2.0)))
         y: menuWidget.height + (widgetsMargis * 2.0)
         width: 600 + (widgetsMargis * 2)
-        height: parent.height - menuWidget.height - (widgetsMargis * 3)
+        height: parent.height - menuWidget.height - (widgetsMargis * 3) - navigationWidget.height
 
         sideItemsModel: wnd.sideItemsModel
 
@@ -180,19 +187,20 @@ CrystalWindow {
         addToolboxItem("Amir",   "Jafari","qrc:/Resources/geocentric.png" ,true );
         addToolboxItem("Bagher", "Roodsarab","qrc:/Resources/geocentric.png" ,false);
         addToolboxItem("Hasan",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasan1",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasan2",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasan1",  "Roodsarabi","qrc:/Resources/geocentric.png" ,false);
+        addToolboxItem("Hasan2",  "Roodsarabi","qrc:/Resources/geocentric.png" ,false);
         addToolboxItem("Hasa3",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasa4",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasa5",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasa6",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa4",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
+        addToolboxItem("Hasa5",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
+        addToolboxItem("Hasa6",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
         addToolboxItem("Hasa7",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
         addToolboxItem("Hasa8",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-         addToolboxItem("Hasa9",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-         addToolboxItem("Hasa10",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+         addToolboxItem("Hasa9",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
+         addToolboxItem("Hasa10",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
     }
 
     NavigationWidget{
+        id : navigationWidget
         anchors.horizontalCenter: parent.horizontalCenter
         y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
         // slot button

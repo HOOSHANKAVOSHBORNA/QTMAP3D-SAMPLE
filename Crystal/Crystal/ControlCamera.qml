@@ -19,7 +19,8 @@ Rectangle {
         icon.source : buttonIcon
         icon.width : _iconSize
         icon.height : _iconSize
-        icon.color : hovered ? _colorHover : _colorIcon
+        icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                               (pressed ? _colorHover : "#FFFFFF");
         background: Rectangle{
             color:_colorRec
             radius: _radius * 10
@@ -47,7 +48,8 @@ Rectangle {
         icon.source : buttonIcon
         icon.width : _iconSize
         icon.height : _iconSize
-        icon.color : hovered ? _colorHover : _colorIcon
+        icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                               (pressed ? _colorHover : "#FFFFFF");
         background: Rectangle{
             color:_colorRec
             radius: _radius * 10
@@ -73,7 +75,8 @@ Rectangle {
         icon.source : buttonIcon
         icon.width : _iconSize
         icon.height : _iconSize
-        icon.color : hovered ? _colorHover : _colorIcon
+        icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                               (pressed ? _colorHover : "#FFFFFF");
         background: Rectangle{
             color:_colorRec
             radius: _radius * 10
@@ -100,7 +103,8 @@ Rectangle {
         icon.source : buttonIcon
         icon.width : _iconSize
         icon.height : _iconSize
-        icon.color : hovered ? _colorHover : _colorIcon
+        icon.color : hovered ? (pressed ? _colorPresed: _colorHover) :
+                               (pressed ? _colorHover : "#FFFFFF");
         background: Rectangle{
             color:_colorRec
             radius: _radius * 10

@@ -6,22 +6,22 @@ import QtQuick.Layouts 1.13
 
 Item {
     id : rootItem
-
     readonly property int margin: 5
     signal itemClicked(string item_name, string category_name);
+    signal changeCheckable(bool check)
+
     property var toolboxModel
-
-
         ScrollView {
             id: scroller
             anchors.fill: parent
             contentHeight: columnLayout.implicitHeight
-            //clip : true
+            //ScrollBar.vertical.interactive: true
+
+            clip : true
             Item {
                 id: tmp
                 anchors.fill: parent
             }
-
             Column {
                 id :columnLayout
                 anchors.fill: parent
@@ -36,11 +36,12 @@ Item {
                         onItemClicked: function(item_name, category_name) {
                             rootItem.itemClicked(item_name, category_name)
                         }
+                        onChangeCheckable: {
+                            rootItem.changeCheckable(check)
+                        }
                     }
                 }
             }
         }
-
-
 }
 
