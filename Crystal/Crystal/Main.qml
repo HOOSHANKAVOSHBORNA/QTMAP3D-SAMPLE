@@ -11,9 +11,16 @@ CrystalWindow {
     minimumWidth: 800
     minimumHeight: 600
     title: qsTr("Hello World")
+    readonly property int _iconSize: 32
+    readonly property int _margin: 15
+    readonly property int _radius: 10
+    readonly property color _colorRec: "#404040"
+    readonly property color _colorHover: "#FFCC00"
+    readonly property color _colorIcon: "#FFFFFF"
 
     property real widgetsPositionFactor: 1.0
     property bool widgetsVisible: true
+    property string modeMap: "geocentric"
     readonly property color itemColor: "#404040"
     readonly property real widgetsMargis: 10
 
@@ -123,7 +130,7 @@ CrystalWindow {
     }
 
 
-    function addToolboxItem(_name, _category) {
+    function addToolboxItem(_name, _category, _url, _checkable,) {
         const toolboxModelCount = toolboxModel.count;
         var category_found = false;
         var category_index = -1;
@@ -144,14 +151,20 @@ CrystalWindow {
                 }
             }
             if (item_found === false) {
-                toolboxModel.get(category_index).categoryModel.append({'itemName': _name});
+                toolboxModel.get(category_index).categoryModel.append({'itemName': _name,
+                                                                       'itemIcon' : _url,
+                                                                       'itemCheckable' : _checkable
+                                                                      });
             } else {
                 return false;
             }
         } else {
             toolboxModel.append({'categoryName': _category,
                                     'categoryModel': listModelComponent.createObject(null, {})});
-            toolboxModel.get(toolboxModelCount).categoryModel.append({'itemName': _name});
+            toolboxModel.get(toolboxModelCount).categoryModel.append({'itemName': _name,
+                                                                         'itemIcon' : _url,
+                                                                         'itemCheckable' : _checkable
+                                                                        });
         }
 
         return true;
@@ -164,14 +177,19 @@ CrystalWindow {
     }
 
     Component.onCompleted: function() {
-        addToolboxItem("Amir",   "Jafari");
-        addToolboxItem("Bagher", "Roodsarab");
-        addToolboxItem("Hasan",  "Roodsarabi");
-        addToolboxItem("Hasan1",  "Roodsarabi");
-        addToolboxItem("Hasan2",  "Roodsarabi");
-        addToolboxItem("Hasa3",  "Roodsara");
-        addToolboxItem("Hasa4",  "Roodsara");
-        addToolboxItem("Hasa5",  "Roodsara");
+        addToolboxItem("Amir",   "Jafari","qrc:/Resources/geocentric.png" ,true );
+        addToolboxItem("Bagher", "Roodsarab","qrc:/Resources/geocentric.png" ,false);
+        addToolboxItem("Hasan",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasan1",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasan2",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa3",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa4",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa5",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa6",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa7",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+        addToolboxItem("Hasa8",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+         addToolboxItem("Hasa9",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
+         addToolboxItem("Hasa10",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
     }
 
     NavigationWidget{

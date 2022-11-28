@@ -6,12 +6,7 @@ Item {
     id:rootItem
     width: 330
     height: 80
-    readonly property int _iconSize: 32
-    readonly property int _margin: 10
-    readonly property int _radius: 10
-    readonly property color _colorRec: "#404040"
-    readonly property color _colorHover: "#E0E000"
-    readonly property color _colorIcon: "#FFFFFF"
+
     // signal Button
     signal btnUpClicked()
     signal btnDownClicked()
@@ -67,17 +62,17 @@ Item {
             color: "transparent"
             onItemClicked: {
                 switch (direction){
-                    case "UP" :
-                        btnUpClicked()
-                        break
-                    case "DOWN" :
-                        btnDownClicked()
-                        break
-                    case "LEFT" :
-                        btnLeftClicked()
-                        break
-                    case "RIGHT" :
-                        btnRightClicked()
+                case "UP" :
+                    btnUpClicked()
+                    break
+                case "DOWN" :
+                    btnDownClicked()
+                    break
+                case "LEFT" :
+                    btnLeftClicked()
+                    break
+                case "RIGHT" :
+                    btnRightClicked()
                 }
             }
         }
@@ -98,7 +93,14 @@ Item {
                 color:_colorRec
                 radius: _radius
             }
-            onClicked: btnZoomInClicked()
+            //onClicked: btnZoomInClicked()
+            onPressed: timerPositive.running =true
+            onReleased: timerPositive.running = false
+            Timer {
+                id:timerPositive
+                interval: 150; running: false; repeat: true
+                onTriggered:  btnZoomInClicked()
+            }
         }
 
         Button {
@@ -119,7 +121,14 @@ Item {
                 color:_colorRec
                 radius: _radius
             }
-            onClicked: btnZoomOutClicked()
+
+            onPressed: timerNegative.running =true
+            onReleased: timerNegative.running = false
+            Timer {
+                id:timerNegative
+                interval: 150; running: false; repeat: true
+                onTriggered:  btnZoomOutClicked()
+            }
         }
         ControlCamera{
             id: recRotation
@@ -135,17 +144,17 @@ Item {
             buttonIcon: "qrc:/Resources/rotate.png"
             onItemClicked: {
                 switch (direction){
-                    case "UP" :
-                        btnRotateUpClicked()
-                        break
-                    case "DOWN" :
-                        btnRotateDownClicked()
-                        break
-                    case "LEFT" :
-                        btnRotateLeftClicked()
-                        break
-                    case "RIGHT" :
-                        btnRotateRightClicked()
+                case "UP" :
+                    btnRotateUpClicked()
+                    break
+                case "DOWN" :
+                    btnRotateDownClicked()
+                    break
+                case "LEFT" :
+                    btnRotateLeftClicked()
+                    break
+                case "RIGHT" :
+                    btnRotateRightClicked()
                 }
             }
 
@@ -161,7 +170,7 @@ Item {
             anchors.leftMargin: _margin
             display: AbstractButton.IconOnly
             anchors.left: parent.left
-            icon.source : "qrc:/Resources/geocentric.png"
+            icon.source : modeMap === "projection" ? "qrc:/Resources/projection.png" :"qrc:/Resources/geocentric.png"
             icon.width : _iconSize
             icon.height : _iconSize
             icon.color : hovered ? _colorHover : _colorIcon
@@ -169,7 +178,13 @@ Item {
                 radius: _radius
                 color: _colorRec
             }
-            onClicked: btnProjectionClicked()
+            onClicked:{
+                if (modeMap==="projection")
+                    modeMap = "geocentric"
+                else
+                    modeMap = "projection"
+                btnProjectionClicked()
+            }
         }
     }
 
