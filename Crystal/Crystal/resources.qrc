@@ -13,5 +13,14 @@
         <file>Resources/head-pitch.png</file>
         <file>Resources/rotate.png</file>
         <file>Resources/compass.png</file>
+        <file>Resources/extrudepoly.png</file>
+        <file>Resources/sphere.png</file>
+        <file>Resources/rectangle.png</file>
+        <file>Resources/polygon.png</file>
+        <file>Resources/line.png</file>
+        <file>Resources/image.png</file>
+        <file>Resources/ellipse.png</file>
+        <file>Resources/circle.png</file>
+        <file>Resources/location.png</file>
     </qresource>
 </RCC>

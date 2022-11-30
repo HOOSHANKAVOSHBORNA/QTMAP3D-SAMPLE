@@ -17,6 +17,13 @@ MainWindow {
     readonly property color     _colorIcon  : "#FFFFFF"
     readonly property string    _fontFamily : "Srouce Sans Pro"
     readonly property int    _fontPointSize : 11
+    readonly property color itemColor: "#404040"
+    readonly property real widgetsMargis: 10
+
+    property real widgetsPositionFactor: 1.0
+    property bool widgetsVisible: true
+    property string modeMap: "geocentric"
+
 
     id: wnd
     visible: true
@@ -25,11 +32,8 @@ MainWindow {
     title: qsTr("Hello World")
 
 
-    property real widgetsPositionFactor: 1.0
-    property bool widgetsVisible: true
-    property string modeMap: "geocentric"
-    readonly property color itemColor: "#404040"
-    readonly property real widgetsMargis: 10
+
+
 
     onClicked: function() {
         if (wnd.widgetsVisible === true) {
@@ -63,6 +67,12 @@ MainWindow {
             icon_url: "qrc:///Resources/Toolbox.png"
             side_itemurl: "qrc:///Toolbox.qml"
         }
+        ListElement {
+            title_text: "Location"
+            icon_url: "qrc:/Resources/location.png"
+            side_itemurl: "qrc:/Location.qml"
+        }
+
     }
 
     property var toolboxModel: ListModel {
@@ -184,25 +194,25 @@ MainWindow {
     }
 
     Component.onCompleted: function() {
-        addToolboxItem("Amir",   "Jafari","qrc:/Resources/geocentric.png" ,true );
+        addToolboxItem("Amir",   "Jafari","qrc:/Resources/extrudepoly.png" ,true );
         addToolboxItem("Bagher", "Roodsarab","qrc:/Resources/geocentric.png" ,false);
         addToolboxItem("Hasan",  "Roodsarabi","qrc:/Resources/geocentric.png" ,true);
         addToolboxItem("Hasan1",  "Roodsarabi","qrc:/Resources/geocentric.png" ,false);
         addToolboxItem("Hasan2",  "Roodsarabi","qrc:/Resources/geocentric.png" ,false);
-        addToolboxItem("Hasa3",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasa4",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
-        addToolboxItem("Hasa5",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
-        addToolboxItem("Hasa6",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
-        addToolboxItem("Hasa7",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-        addToolboxItem("Hasa8",  "Roodsara","qrc:/Resources/geocentric.png" ,true);
-         addToolboxItem("Hasa9",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
-         addToolboxItem("Hasa10",  "Roodsara","qrc:/Resources/geocentric.png" ,false);
+        addToolboxItem("Hasa3",  "Roodsara","qrc:/Resources/circle.png" ,true);
+        addToolboxItem("Hasa4",  "Roodsara","qrc:/Resources/ellipse.png" ,false);
+        addToolboxItem("Hasa5",  "Roodsara","qrc:/Resources/image.png" ,false);
+        addToolboxItem("Hasa6",  "Roodsara","qrc:/Resources/line.png" ,false);
+        addToolboxItem("Hasa7", "Roodsara", "qrc:/Resources/polygon.png" ,true);
+        addToolboxItem("Hasa8", "Roodsara", "qrc:/Resources/rectangle.png" ,true);
+         addToolboxItem("Hasa9",  "Roodsara","qrc:/Resources/sphere.png" ,false);
+         addToolboxItem("Hasa10",  "Roodsara","qrc:/Resources/extrudepoly.png" ,false);
     }
 
     NavigationWidget{
         id : navigationWidget
         anchors.horizontalCenter: parent.horizontalCenter
-        y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
+        y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis/2)))
         // slot button
         onBtnHomeClicked: function() {
             wnd.homeButtonClicked();
@@ -250,4 +260,14 @@ MainWindow {
         anchors.bottomMargin: widgetsMargis
         y: wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
     }
+    LocationWidget{
+        anchors.left: navigationWidget.right
+        anchors.leftMargin: _margin
+        anchors.right: compass.left
+        anchors.rightMargin: _margin / 2
+        anchors.bottomMargin:  widgetsMargis
+        y : wnd.height  - (wnd.widgetsPositionFactor * (height + (widgetsMargis)))
+    }
+
+
 }

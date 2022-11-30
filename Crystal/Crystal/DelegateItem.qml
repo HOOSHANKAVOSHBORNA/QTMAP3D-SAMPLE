@@ -41,9 +41,9 @@ Item {
                     hoverEnabled: true
                     display: AbstractButton.TextBesideIcon
                     icon.source: itemIcon
-                    icon.width: 24
+                    icon.width: 32
                     checkable: itemCheckable
-                    icon.height: 24
+                    icon.height: 32
                     font.family: _fontFamily
                     font.pointSize: _fontPointSize - 1
                     opacity: 1
@@ -62,13 +62,7 @@ Item {
                                 width: subbutton.icon.width
                                 height: subbutton.icon.height
                                 anchors.verticalCenter: parent.verticalCenter
-                                ColorOverlay{
-                                    id:layeColor
-                                    source:img
-                                    anchors.fill: img
-                                    color: hovered || checked ? (pressed ? _colorPresed: _colorHover) :
-                                                                (pressed ? _colorHover : "#FFFFFF");
-                                }
+
                             }
 
 
